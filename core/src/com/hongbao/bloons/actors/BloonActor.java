@@ -13,6 +13,8 @@ import com.hongbao.bloons.entities.Bloon;
 
 public class BloonActor extends Actor {
 
+	public static final float SCALE = 0.5f;
+
 	Bloon bloon;
 	Texture texture;
 
@@ -21,7 +23,7 @@ public class BloonActor extends Actor {
 		texture = new Texture(Gdx.files.internal(bloon.getImageFileName()));
 
 		setTouchable(Touchable.enabled);
-		setBounds(x - texture.getWidth() / 2f, y - texture.getHeight() / 2f, texture.getWidth(), texture.getHeight());
+		setBounds(x - texture.getWidth() * SCALE / 2f, y - texture.getHeight() * SCALE / 2f, texture.getWidth() * SCALE, texture.getHeight() * SCALE);
 		addListener(new InputListener() {
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 				if (button == Input.Buttons.LEFT) {
@@ -35,11 +37,11 @@ public class BloonActor extends Actor {
 	}
 
 	public float getCenterX() {
-		return getX() + texture.getWidth() / 2f;
+		return getX() + texture.getWidth() * SCALE / 2f;
 	}
 
 	public float getCenterY() {
-		return getY() + texture.getHeight() / 2f;
+		return getY() + texture.getHeight() * SCALE / 2f;
 	}
 
 	public void pop() {
@@ -49,9 +51,9 @@ public class BloonActor extends Actor {
 			float centerY = getCenterY();
 
 			texture = new Texture(Gdx.files.internal(bloon.getImageFileName()));
-			setX(centerX - texture.getWidth() / 2f);
-			setY(centerY - texture.getHeight() / 2f);
-			setBounds(getX(), getY(), texture.getWidth(), texture.getHeight());
+			setX(centerX - texture.getWidth() * SCALE / 2f);
+			setY(centerY - texture.getHeight() * SCALE / 2f);
+			setBounds(getX(), getY(), texture.getWidth() * SCALE, texture.getHeight() * SCALE);
 		} else {
 			remove();
 		}
@@ -59,6 +61,6 @@ public class BloonActor extends Actor {
 
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
-		batch.draw(texture, getX(), getY());
+		batch.draw(texture, getX(), getY(), texture.getWidth() * SCALE, texture.getHeight() * SCALE);
 	}
 }

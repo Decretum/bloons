@@ -21,8 +21,8 @@ public class BloonsTowerDefence implements ApplicationListener {
 		stage = new Stage();
 		Gdx.input.setInputProcessor(stage);
 
-		for (int x = 0; x < 1800; x += 50) {
-			for (int y = 0; y < 900; y += 50) {
+		for (int x = 0; x < 1800; x += 33) {
+			for (int y = 0; y < 900; y += 33) {
 				stage.addActor(new BloonActor(BloonFactory.createRandomBloon(), x, y));
 			}
 		}
