@@ -36,6 +36,14 @@ public class BloonActor extends Actor {
 		});
 	}
 
+	public Bloon getBloon() {
+		return bloon;
+	}
+
+	public void setBloon(Bloon bloon) {
+		this.bloon = bloon;
+	}
+
 	public float getCenterX() {
 		return getX() + texture.getWidth() * SCALE / 2f;
 	}

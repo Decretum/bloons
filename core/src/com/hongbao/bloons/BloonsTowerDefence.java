@@ -3,6 +3,7 @@ package com.hongbao.bloons;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.hongbao.bloons.actors.BloonActor;
 import com.hongbao.bloons.entities.Bloon;
@@ -10,11 +11,11 @@ import com.hongbao.bloons.factories.BloonFactory;
 
 
 public class BloonsTowerDefence implements ApplicationListener {
-	
+
 	Music titleBGM;
 
 	private Stage stage;
-	
+
 	@Override
 	public void create() {
 		Gdx.graphics.setWindowedMode(1800, 900);
@@ -50,6 +51,29 @@ public class BloonsTowerDefence implements ApplicationListener {
 
 	@Override
 	public void render() {
+		Actor[] actors = stage.getActors().items;
+
+		int biggestHealth = 0;
+		for (Actor actor : actors) {
+			if (actor != null) {
+				BloonActor bloon = (BloonActor) actor;
+				if (bloon.getBloon().getHealth() > biggestHealth) {
+					biggestHealth = bloon.getBloon().getHealth();
+				}
+			}
+
+		}
+
+		for (Actor actor : actors) {
+			if (actor != null) {
+				BloonActor bloon = (BloonActor) actor;
+				if (bloon.getBloon().getHealth() == biggestHealth) {
+					bloon.pop();
+					break;
+				}
+			}
+		}
+
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		stage.draw();
 	}
@@ -68,5 +92,5 @@ public class BloonsTowerDefence implements ApplicationListener {
 	public void dispose() {
 		stage.dispose();
 	}
-	
+
 }
