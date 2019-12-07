@@ -4,6 +4,8 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -13,7 +15,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class BloonsTowerDefence extends ApplicationAdapter implements InputProcessor {
 	
 	SpriteBatch batch;
+	Music titleBGM;
 	BitmapFont font;
+	BitmapFont volume;
 	Texture img;
 	String message;
 	int textX;
@@ -23,12 +27,17 @@ public class BloonsTowerDefence extends ApplicationAdapter implements InputProce
 	public void create() {
 		batch = new SpriteBatch();
 		font = new BitmapFont();
+		volume = new BitmapFont();
 		img = new Texture("badlogic.jpg");
 		message = "";
 		textX = 200;
 		textY = 200;
 		
 		Gdx.input.setInputProcessor(this);
+		
+		titleBGM = Gdx.audio.newMusic(Gdx.files.internal("music/title.mp3"));
+		titleBGM.setVolume(0.5f);
+		titleBGM.play();
 	}
 	
 	@Override
@@ -38,6 +47,7 @@ public class BloonsTowerDefence extends ApplicationAdapter implements InputProce
 		batch.begin();
 		//batch.draw(img, 0, 0);
 		font.draw(batch, message, textX, textY);
+		volume.draw(batch, "Volume: " + ((int)((titleBGM.getVolume() + 0.005f) * 100)), 10, 15);
 		batch.end();
 	}
 	
@@ -105,7 +115,16 @@ public class BloonsTowerDefence extends ApplicationAdapter implements InputProce
 	
 	@Override
 	public boolean scrolled(int amount) {
-		return false;
+		float newVolume = titleBGM.getVolume() + -0.1f * amount;
+		if (newVolume < 0) {
+			newVolume = 0;
+		}
+		if (newVolume > 1) {
+			newVolume = 1;
+		}
+		titleBGM.setVolume(newVolume);
+		
+		return true;
 	}
 	
 }
