@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.hongbao.bloons.BloonsTowerDefence;
 import com.hongbao.bloons.entities.Bloon;
 
 
@@ -28,7 +29,8 @@ public class BloonActor extends Actor {
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 				if (button == Input.Buttons.LEFT) {
 					BloonActor target = (BloonActor) event.getTarget();
-					target.pop();
+					int moneyEarned = target.pop();
+					((BloonsTowerDefence)Gdx.app.getApplicationListener()).money += moneyEarned;
 					return true;
 				}
 				return false;
@@ -52,8 +54,8 @@ public class BloonActor extends Actor {
 		return getY() + texture.getHeight() * SCALE / 2f;
 	}
 
-	public void pop() {
-		bloon.pop();
+	public int pop() {
+		int popCount = bloon.pop();
 		if (bloon.getHealth() > 0) {
 			float centerX = getCenterX();
 			float centerY = getCenterY();
@@ -65,6 +67,7 @@ public class BloonActor extends Actor {
 		} else {
 			remove();
 		}
+		return popCount;
 	}
 
 	@Override

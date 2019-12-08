@@ -96,16 +96,20 @@ public class Bloon {
 		this.regen = regen;
 	}
 
-	public void pop() {
-		pop(1);
+	public int pop() {
+		return pop(1);
 	}
 
-	public void pop(int damage) {
+	public int pop(int damage) {
+		int oldHealth = health;
 		health -= damage;
 		if (health > 0) {
 			color = HEALTH_TO_COLOR.get(health);
 			imageFileName = createImageFileName(color.getValue(), camo, regen);
+		} else {
+			health = 0;
 		}
+		return oldHealth - health;
 	}
 
 	public static String createImageFileName(String color, boolean camo, boolean regen) {
