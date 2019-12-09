@@ -7,6 +7,8 @@ import javafx.util.Pair;
 
 public class MapFactory {
 	
+	public static final float ROOT_2_OVER_2 = 0.7071f;
+	
 	public static Map createBasicMap(Stage stage) {
 		Map map = new Map("basic_map.png", stage);
 		Pair<Float, Float>[][] directions = initializeEmptyDirections();
@@ -26,10 +28,10 @@ public class MapFactory {
 		directions[1][8] = new Pair<>(1f, 0f);
 		directions[2][8] = new Pair<>(1f, 0f);
 		directions[3][8] = new Pair<>(1f, 0f);
-		directions[4][8] = new Pair<>(1f, 1f);
+		directions[4][8] = new Pair<>(ROOT_2_OVER_2, ROOT_2_OVER_2);
 		directions[4][9] = new Pair<>(0f, 1f);
 		directions[4][10] = new Pair<>(0f, 1f);
-		directions[4][11] = new Pair<>(1f, 1f);
+		directions[4][11] = new Pair<>(ROOT_2_OVER_2, ROOT_2_OVER_2);
 		
 		for (int x = 5; x < 32; x++) {
 			directions[x][11] = new Pair<>(1f, 0f);
