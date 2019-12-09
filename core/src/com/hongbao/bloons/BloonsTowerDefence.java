@@ -57,7 +57,7 @@ public class BloonsTowerDefence implements ApplicationListener {
 	private void createMenu() {
 		Skin skin = new Skin(Gdx.files.internal("uiskins/uiskin.json"));
 
-		Drawable drawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("img/header.png"))));
+		Drawable drawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("img/ui/header.png"))));
 		ImageButton title = new ImageButton(drawable);
 		title.setPosition(1500, 0);
 		stage.addActor(new RenderableImageButton(title, 1000));
@@ -90,7 +90,7 @@ public class BloonsTowerDefence implements ApplicationListener {
 	}
 	
 	public void createMap() {
-		map = MapFactory.createBasicMap(stage);
+		map = MapFactory.createMapWithTurn(stage);
 		
 		Drawable drawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal(map.getBackgroundImageFilePath()))));
 		ImageButton backgroundMap = new ImageButton(drawable);
