@@ -1,24 +1,26 @@
 package com.hongbao.bloons;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.hongbao.bloons.actors.BloonActor;
 import com.hongbao.bloons.factories.BloonFactory;
 
 
-public class BloonCreator implements Runnable {
+public class BloonCreator {
 	
-	public BloonCreator() {
+	private Stage stage;
+	private long lastActionTime;
+	
+	public BloonCreator(Stage stage) {
+		this.stage = stage;
+		lastActionTime = 0;
 	}
-
-	public void run() {
-		try {
-			for (int x = 0; x < 10; x++) {
-				BloonsTowerDefence app = (BloonsTowerDefence)Gdx.app.getApplicationListener();
-				app.createBloon(BloonFactory.createRandomBloon());
-				Thread.sleep(1000L);
-			}
-		} catch (InterruptedException ie) {
-			throw new RuntimeException(ie);
+	
+	public void createBloon() {
+		long time = System.currentTimeMillis();
+		if (time > lastActionTime + 1000) {
+			stage.addActor(new BloonActor(BloonFactory.createRandomBloon(), -25, 425));
+			lastActionTime = time;
 		}
 	}
-
+	
 }

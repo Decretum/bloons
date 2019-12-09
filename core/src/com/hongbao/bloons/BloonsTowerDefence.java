@@ -33,12 +33,19 @@ public class BloonsTowerDefence implements ApplicationListener {
 		health = 100;
 		money = 0;
 		stage = new Stage();
+		final RunnableAction bloonCreationAction = new RunnableAction();
+		bloonCreationAction.setRunnable(new Runnable() {
+			@Override
+			public void run() {
+				map.getBloonCreator().createBloon();
+			}
+		});
+		stage.addAction(Actions.repeat(RepeatAction.FOREVER, bloonCreationAction));
+		
+		
 		Gdx.input.setInputProcessor(stage);
 		
 		createMap();
-		
-		createBloon(BloonFactory.createRandomBloon());
-		
 		createMenu();
 
 		titleBGM = Gdx.audio.newMusic(Gdx.files.internal("music/title.mp3"));
@@ -70,7 +77,7 @@ public class BloonsTowerDefence implements ApplicationListener {
 	}
 	
 	public void createMap() {
-		map = MapFactory.createBasicMap();
+		map = MapFactory.createBasicMap(stage);
 		
 		Drawable drawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal(map.getBackgroundImageFilePath()))));
 		ImageButton backgroundMap = new ImageButton(drawable);
@@ -80,15 +87,6 @@ public class BloonsTowerDefence implements ApplicationListener {
 	
 	public Map getMap() {
 		return map;
-	}
-	
-	//public void createBloons() {
-	//	Thread createBloonsThread = new Thread(new BloonCreator());
-	//	createBloonsThread.start();
-	//}
-	
-	public void createBloon(Bloon bloon) {
-		stage.addActor(new BloonActor(bloon, -25, 425));
 	}
 
 	@Override

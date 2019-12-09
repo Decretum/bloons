@@ -1,5 +1,6 @@
 package com.hongbao.bloons;
 
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import javafx.util.Pair;
 
 
@@ -10,10 +11,12 @@ public class Map {
 	public static final int TILE_HEIGHT = 50;
 	
 	private String backgroundImage;
+	private BloonCreator bloonCreator;
 	private Pair<Float, Float>[][] directions;
 	
-	public Map(String backgroundImage) {
+	public Map(String backgroundImage, Stage stage) {
 		this.backgroundImage = backgroundImage;
+		this.bloonCreator = new BloonCreator(stage);
 	}
 	
 	public void setDirections(Pair<Float, Float>[][] directions) {
@@ -38,6 +41,10 @@ public class Map {
 		} else {
 			return new Pair<>(0f, 0f);
 		}
+	}
+	
+	public BloonCreator getBloonCreator() {
+		return bloonCreator;
 	}
 	
 }

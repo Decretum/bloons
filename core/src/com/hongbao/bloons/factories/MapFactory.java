@@ -1,13 +1,14 @@
 package com.hongbao.bloons.factories;
 
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.hongbao.bloons.Map;
 import javafx.util.Pair;
 
 
 public class MapFactory {
 	
-	public static Map createBasicMap() {
-		Map map = new Map("basic_map.png");
+	public static Map createBasicMap(Stage stage) {
+		Map map = new Map("basic_map.png", stage);
 		Pair<Float, Float>[][] directions = initializeEmptyDirections();
 		
 		for (int x = 0; x < 32; x++) {
