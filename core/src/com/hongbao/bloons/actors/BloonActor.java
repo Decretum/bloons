@@ -71,10 +71,19 @@ public class BloonActor extends Actor {
 		return popCount;
 	}
 	
+	public void release() {
+		((BloonsTowerDefence)Gdx.app.getApplicationListener()).health -= bloon.getHealth();
+		remove();
+	}
+	
 	public void move(Pair<Float, Float> direction) {
 		// this is generally fine if the bloon doesn't pop at the same time. Which it shouldn't, I think.
 		setX(getX() + direction.getKey());
 		setY(getY() + direction.getValue());
+		
+		if (getX() > 1500) {
+			release();
+		}
 	}
 
 	@Override

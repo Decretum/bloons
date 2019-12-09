@@ -12,9 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.hongbao.bloons.actors.BloonActor;
-import com.hongbao.bloons.entities.Bloon;
-import com.hongbao.bloons.factories.BloonFactory;
 import com.hongbao.bloons.factories.MapFactory;
 
 
@@ -63,7 +60,7 @@ public class BloonsTowerDefence implements ApplicationListener {
 		stage.addActor(title);
 
 		Label moneyLabel = new Label(String.valueOf(money), skin);
-		moneyLabel.setPosition(1680, 760);
+		moneyLabel.setPosition(1680, 765);
 		moneyLabel.setFontScale(1.5f,1.5f);
 		final RunnableAction moneyLabelAction = new RunnableAction();
 		moneyLabelAction.setRunnable(new Runnable() {
@@ -74,6 +71,19 @@ public class BloonsTowerDefence implements ApplicationListener {
 		});
 		moneyLabel.addAction(Actions.repeat(RepeatAction.FOREVER, moneyLabelAction));
 		stage.addActor(moneyLabel);
+		
+		Label healthLabel = new Label(String.valueOf(health), skin);
+		healthLabel.setPosition(1540, 765);
+		healthLabel.setFontScale(1.5f,1.5f);
+		final RunnableAction healthLabelAction = new RunnableAction();
+		healthLabelAction.setRunnable(new Runnable() {
+			@Override
+			public void run() {
+				((Label)healthLabelAction.getActor()).setText(String.valueOf(health));
+			}
+		});
+		healthLabel.addAction(Actions.repeat(RepeatAction.FOREVER, healthLabelAction));
+		stage.addActor(healthLabel);
 	}
 	
 	public void createMap() {
