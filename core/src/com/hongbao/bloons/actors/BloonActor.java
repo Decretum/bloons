@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.hongbao.bloons.BloonsTowerDefence;
 import com.hongbao.bloons.entities.Bloon;
+import javafx.util.Pair;
 
 
 public class BloonActor extends Actor {
@@ -69,9 +70,23 @@ public class BloonActor extends Actor {
 		}
 		return popCount;
 	}
+	
+	public void move(Pair<Float, Float> direction) {
+		// this is generally fine if the bloon doesn't pop at the same time. Which it shouldn't, I think.
+		setX(getX() + direction.getKey());
+		setY(getY() + direction.getValue());
+	}
 
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
 		batch.draw(texture, getX(), getY(), texture.getWidth() * SCALE, texture.getHeight() * SCALE);
+	}
+	
+	@Override
+	public void act(float delta) {
+		BloonsTowerDefence app = (BloonsTowerDefence)Gdx.app.getApplicationListener();
+		Pair<Float, Float> direction = app.getMap().getDirection(getCenterX(), getCenterY());
+		move(direction);
+		super.act(delta);
 	}
 }
