@@ -12,6 +12,9 @@ import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.hongbao.bloons.actors.RenderableImageButton;
+import com.hongbao.bloons.actors.RenderableLabel;
+import com.hongbao.bloons.comparators.SortByZIndex;
 import com.hongbao.bloons.factories.MapFactory;
 
 
@@ -57,7 +60,7 @@ public class BloonsTowerDefence implements ApplicationListener {
 		Drawable drawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("img/header.png"))));
 		ImageButton title = new ImageButton(drawable);
 		title.setPosition(1500, 0);
-		stage.addActor(title);
+		stage.addActor(new RenderableImageButton(title, 1000));
 
 		Label moneyLabel = new Label(String.valueOf(money), skin);
 		moneyLabel.setPosition(1680, 765);
@@ -70,7 +73,7 @@ public class BloonsTowerDefence implements ApplicationListener {
 			}
 		});
 		moneyLabel.addAction(Actions.repeat(RepeatAction.FOREVER, moneyLabelAction));
-		stage.addActor(moneyLabel);
+		stage.addActor(new RenderableLabel(moneyLabel, 1001));
 		
 		Label healthLabel = new Label(String.valueOf(health), skin);
 		healthLabel.setPosition(1540, 765);
@@ -83,7 +86,7 @@ public class BloonsTowerDefence implements ApplicationListener {
 			}
 		});
 		healthLabel.addAction(Actions.repeat(RepeatAction.FOREVER, healthLabelAction));
-		stage.addActor(healthLabel);
+		stage.addActor(new RenderableLabel(healthLabel, 1001));
 	}
 	
 	public void createMap() {
@@ -108,6 +111,7 @@ public class BloonsTowerDefence implements ApplicationListener {
 	public void render() {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		stage.act(Gdx.graphics.getDeltaTime());
+		stage.getActors().sort(new SortByZIndex());
 		stage.draw();
 	}
 

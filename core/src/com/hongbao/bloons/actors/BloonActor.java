@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -13,9 +12,10 @@ import com.hongbao.bloons.entities.Bloon;
 import javafx.util.Pair;
 
 
-public class BloonActor extends Actor {
+public class BloonActor extends RenderableActor {
 
 	public static final float SCALE = 0.5f;
+	public static final int BLOON_Z_INDEX = 0;
 
 	Bloon bloon;
 	Texture texture;
@@ -24,6 +24,7 @@ public class BloonActor extends Actor {
 		this.bloon = bloon;
 		texture = new Texture(Gdx.files.internal(bloon.getImageFileName()));
 
+		setZIndex(BLOON_Z_INDEX);
 		setTouchable(Touchable.enabled);
 		setBounds(x - texture.getWidth() * SCALE / 2f, y - texture.getHeight() * SCALE / 2f, texture.getWidth() * SCALE, texture.getHeight() * SCALE);
 		addListener(new InputListener() {
@@ -96,6 +97,5 @@ public class BloonActor extends Actor {
 		BloonsTowerDefence app = (BloonsTowerDefence)Gdx.app.getApplicationListener();
 		Pair<Float, Float> direction = app.getMap().getDirection(getCenterX(), getCenterY());
 		move(direction);
-		super.act(delta);
 	}
 }
