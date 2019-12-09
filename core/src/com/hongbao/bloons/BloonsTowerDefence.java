@@ -26,6 +26,7 @@ public class BloonsTowerDefence implements ApplicationListener {
 	private Music titleBGM; // todo probably could be refactored to an object
 	public int health;
 	public int money;
+	public boolean paused;
 
 	private Stage stage;
 	private Map map;
@@ -35,6 +36,7 @@ public class BloonsTowerDefence implements ApplicationListener {
 		Gdx.graphics.setWindowedMode(1800, 900);
 		health = 100;
 		money = 0;
+		paused = false;
 		stage = new Stage();
 		final RunnableAction bloonCreationAction = new RunnableAction();
 		bloonCreationAction.setRunnable(new Runnable() {
@@ -85,7 +87,15 @@ public class BloonsTowerDefence implements ApplicationListener {
 		healthLabelAction.setRunnable(new Runnable() {
 			@Override
 			public void run() {
+				if (health < 0) {
+					health = 0;
+				}
+				
 				((Label)healthLabelAction.getActor()).setText(String.valueOf(health));
+				
+				if (health == 0) {
+					pause();
+				}
 			}
 		});
 		healthLabel.addAction(Actions.repeat(RepeatAction.FOREVER, healthLabelAction));
@@ -112,26 +122,28 @@ public class BloonsTowerDefence implements ApplicationListener {
 
 	@Override
 	public void render() {
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		stage.act(Gdx.graphics.getDeltaTime());
-		
-		if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
-			BulletActor bulletActor = new BulletActor(new Bullet(), Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
-			stage.addActor(bulletActor);
+		if (!paused) {
+			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+			stage.act(Gdx.graphics.getDeltaTime());
+			
+			if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
+				BulletActor bulletActor = new BulletActor(new Bullet(), Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
+				stage.addActor(bulletActor);
+			}
+			
+			stage.getActors().sort(new SortByZIndex());
 		}
-		
-		stage.getActors().sort(new SortByZIndex());
 		stage.draw();
 	}
 
 	@Override
 	public void pause() {
-
+		paused = true;
 	}
 
 	@Override
 	public void resume() {
-
+		paused = false;
 	}
 
 	@Override
