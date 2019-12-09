@@ -45,12 +45,14 @@ public class Bloon {
 	private Color color;
 	private String imageFileName;
 	private int health;
+	private int speed;
 	private boolean camo;
 	private boolean regen;
 
-	public Bloon(Color color, int health, boolean camo, boolean regen) {
+	public Bloon(Color color, int health, int speed, boolean camo, boolean regen) {
 		this.color = color;
 		this.health = health;
+		this.speed = speed;
 		this.camo = camo;
 		this.regen = regen;
 		this.imageFileName = createImageFileName(color.getValue(), camo, regen);
@@ -79,7 +81,15 @@ public class Bloon {
 	public void setHealth(int health) {
 		this.health = health;
 	}
-
+	
+	public int getSpeed() {
+		return speed;
+	}
+	
+	public void setSpeed(int speed) {
+		this.speed = speed;
+	}
+	
 	public boolean isCamo() {
 		return camo;
 	}
@@ -103,6 +113,7 @@ public class Bloon {
 	public int pop(int damage) {
 		int oldHealth = health;
 		health -= damage;
+		speed -= damage;
 		if (health > 0) {
 			color = HEALTH_TO_COLOR.get(health);
 			imageFileName = createImageFileName(color.getValue(), camo, regen);
