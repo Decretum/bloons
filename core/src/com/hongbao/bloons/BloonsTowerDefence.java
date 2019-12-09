@@ -12,10 +12,13 @@ import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.hongbao.bloons.actors.BulletActor;
 import com.hongbao.bloons.actors.RenderableImageButton;
 import com.hongbao.bloons.actors.RenderableLabel;
 import com.hongbao.bloons.comparators.SortByZIndex;
+import com.hongbao.bloons.entities.Bullet;
 import com.hongbao.bloons.factories.MapFactory;
+import com.hongbao.bloons.helpers.ZIndex;
 
 
 public class BloonsTowerDefence implements ApplicationListener {
@@ -60,7 +63,7 @@ public class BloonsTowerDefence implements ApplicationListener {
 		Drawable drawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("img/ui/header.png"))));
 		ImageButton title = new ImageButton(drawable);
 		title.setPosition(1500, 0);
-		stage.addActor(new RenderableImageButton(title, 1000));
+		stage.addActor(new RenderableImageButton(title, ZIndex.MENU_Z_INDEX));
 
 		Label moneyLabel = new Label(String.valueOf(money), skin);
 		moneyLabel.setPosition(1680, 765);
@@ -73,7 +76,7 @@ public class BloonsTowerDefence implements ApplicationListener {
 			}
 		});
 		moneyLabel.addAction(Actions.repeat(RepeatAction.FOREVER, moneyLabelAction));
-		stage.addActor(new RenderableLabel(moneyLabel, 1001));
+		stage.addActor(new RenderableLabel(moneyLabel, ZIndex.MENU_ITEM_Z_INDEX));
 		
 		Label healthLabel = new Label(String.valueOf(health), skin);
 		healthLabel.setPosition(1540, 765);
@@ -86,7 +89,7 @@ public class BloonsTowerDefence implements ApplicationListener {
 			}
 		});
 		healthLabel.addAction(Actions.repeat(RepeatAction.FOREVER, healthLabelAction));
-		stage.addActor(new RenderableLabel(healthLabel, 1001));
+		stage.addActor(new RenderableLabel(healthLabel, ZIndex.MENU_ITEM_Z_INDEX));
 	}
 	
 	public void createMap() {
@@ -111,6 +114,12 @@ public class BloonsTowerDefence implements ApplicationListener {
 	public void render() {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		stage.act(Gdx.graphics.getDeltaTime());
+		
+		if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
+			BulletActor bulletActor = new BulletActor(new Bullet(), Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
+			stage.addActor(bulletActor);
+		}
+		
 		stage.getActors().sort(new SortByZIndex());
 		stage.draw();
 	}

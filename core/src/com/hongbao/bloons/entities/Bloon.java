@@ -26,7 +26,7 @@ public class Bloon {
 		}
 	}
 
-	public static final String IMAGE_FOLDER = "img/";
+	public static final String IMAGE_FOLDER = "img/bloons/";
 	public static final String CAMO_BLOON_DENOTATION = "_camo";
 	public static final String REGROWTH_BLOON_DENOTATION = "_regrowth";
 	public static final String IMAGE_FILE_EXTENSION = ".png";

@@ -9,13 +9,13 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.hongbao.bloons.BloonsTowerDefence;
 import com.hongbao.bloons.entities.Bloon;
+import com.hongbao.bloons.helpers.ZIndex;
 import javafx.util.Pair;
 
 
 public class BloonActor extends RenderableActor {
 
 	public static final float SCALE = 0.5f;
-	public static final int BLOON_Z_INDEX = 0;
 
 	Bloon bloon;
 	Texture texture;
@@ -24,7 +24,7 @@ public class BloonActor extends RenderableActor {
 		this.bloon = bloon;
 		texture = new Texture(Gdx.files.internal(bloon.getImageFileName()));
 
-		setZIndex(BLOON_Z_INDEX);
+		setZIndex(ZIndex.BLOON_Z_INDEX);
 		setTouchable(Touchable.enabled);
 		setBounds(x - texture.getWidth() * SCALE / 2f, y - texture.getHeight() * SCALE / 2f, texture.getWidth() * SCALE, texture.getHeight() * SCALE);
 		addListener(new InputListener() {
