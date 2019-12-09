@@ -23,13 +23,13 @@ import com.hongbao.bloons.helpers.ZIndex;
 
 public class BloonsTowerDefence implements ApplicationListener {
 
-	private Music titleBGM; // todo probably could be refactored to an object
 	public int health;
 	public int money;
 	public boolean paused;
 
 	private Stage stage;
 	private Map map;
+	private MusicPlayer musicPlayer;
 	
 	@Override
 	public void create() {
@@ -38,6 +38,8 @@ public class BloonsTowerDefence implements ApplicationListener {
 		money = 0;
 		paused = false;
 		stage = new Stage();
+		musicPlayer = new MusicPlayer();
+		
 		final RunnableAction bloonCreationAction = new RunnableAction();
 		bloonCreationAction.setRunnable(new Runnable() {
 			@Override
@@ -47,16 +49,11 @@ public class BloonsTowerDefence implements ApplicationListener {
 		});
 		stage.addAction(Actions.repeat(RepeatAction.FOREVER, bloonCreationAction));
 		
-		
 		Gdx.input.setInputProcessor(stage);
 		
 		createMap();
 		createMenu();
-
-		titleBGM = Gdx.audio.newMusic(Gdx.files.internal("music/title.mp3"));
-		titleBGM.setVolume(0.5f);
-		titleBGM.setLooping(true);
-		titleBGM.play();
+		musicPlayer.playTitleMusic();
 	}
 
 	private void createMenu() {
