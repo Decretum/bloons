@@ -51,7 +51,7 @@ public class BloonManager {
 					
 					if (bulletActor.getBullet().getPierce() == 0) {
 						// don't bother checking collisions if the bullet is used up.
-						return;
+						break;
 					}
 				}
 			}
