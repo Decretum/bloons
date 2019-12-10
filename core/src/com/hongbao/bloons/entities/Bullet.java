@@ -18,11 +18,21 @@ public class Bullet {
 	
 	public Bullet() {
 		speed = 20f;
-		damage = 1;
-		pierce = 10;
+		damage = 2;
+		pierce = 2;
 		maxRange = 500;
 		distanceTraveled = 0;
 		imageFileName = IMAGE_FOLDER + "red_spell_card.png";
+		damagedBloons = new HashSet<>(pierce);
+	}
+	
+	public Bullet(float speed, int damage, int pierce, float maxRange, String imageFileName) {
+		this.speed = speed;
+		this.damage = damage;
+		this.pierce = pierce;
+		this.maxRange = maxRange;
+		this.imageFileName = IMAGE_FOLDER + imageFileName;
+		distanceTraveled = 0;
 		damagedBloons = new HashSet<>(pierce);
 	}
 	
@@ -71,7 +81,7 @@ public class Bullet {
 	}
 	
 	public void setImageFileName(String imageFileName) {
-		this.imageFileName = imageFileName;
+		this.imageFileName = IMAGE_FOLDER + imageFileName;
 	}
 	
 	public boolean hasDamagedBloon(Bloon bloon) {

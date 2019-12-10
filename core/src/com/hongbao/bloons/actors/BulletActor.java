@@ -12,7 +12,6 @@ import com.hongbao.bloons.helpers.ZIndex;
 public class BulletActor extends RenderableActor {
 	
 	private Bullet bullet;
-	private TextureRegion texture;
 	private float dx; // This should be a unit vector
 	private float dy;
 	private float rotationAngle;
@@ -20,18 +19,18 @@ public class BulletActor extends RenderableActor {
 	
 	public BulletActor(Bullet bullet, float x, float y, float dx, float dy) {
 		this.bullet = bullet;
-		texture = new TextureRegion(new Texture(Gdx.files.internal(bullet.getImageFileName())));
+		textureRegion = new TextureRegion(new Texture(Gdx.files.internal(bullet.getImageFileName())));
 		this.dx = dx;
 		this.dy = dy;
 		calculateRotationAngle();
-		collisionRadius = texture.getTexture().getWidth() / 2f;
+		collisionRadius = textureRegion.getTexture().getWidth() / 2f;
 		
 		setZIndex(ZIndex.BULLET_Z_INDEX);
 		setBounds(
-		 x - texture.getTexture().getWidth() / 2f,
-		 y - texture.getTexture().getHeight() / 2f,
-		 texture.getTexture().getWidth(),
-		 texture.getTexture().getHeight()
+		 x - textureRegion.getTexture().getWidth() / 2f,
+		 y - textureRegion.getTexture().getHeight() / 2f,
+		 textureRegion.getTexture().getWidth(),
+		 textureRegion.getTexture().getHeight()
 		);
 	}
 	
@@ -41,14 +40,6 @@ public class BulletActor extends RenderableActor {
 	
 	public void setBullet(Bullet bullet) {
 		this.bullet = bullet;
-	}
-	
-	public float getCenterX() {
-		return getX() + texture.getTexture().getWidth() / 2f;
-	}
-	
-	public float getCenterY() {
-		return getY() + texture.getTexture().getHeight() / 2f;
 	}
 	
 	private void calculateRotationAngle() {
@@ -73,13 +64,13 @@ public class BulletActor extends RenderableActor {
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
 		batch.draw(
-		 texture,
+		 textureRegion,
 		 getX(),
 		 getY(),
 		 getCenterX() - getX(),
 		 getCenterY() - getY(),
-		 texture.getTexture().getWidth(),
-		 texture.getTexture().getHeight(),
+		 textureRegion.getTexture().getWidth(),
+		 textureRegion.getTexture().getHeight(),
 		 1f,
 		 1f,
 		 -rotationAngle

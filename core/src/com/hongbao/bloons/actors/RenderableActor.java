@@ -1,6 +1,7 @@
 package com.hongbao.bloons.actors;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 
@@ -11,6 +12,7 @@ public abstract class RenderableActor extends Actor {
 
 	private int zIndex;
 	private Actor actor;
+	public TextureRegion textureRegion;
 	
 	public int getZIndex() {
 		return zIndex;
@@ -27,6 +29,22 @@ public abstract class RenderableActor extends Actor {
 	
 	public void setActor(Actor actor) {
 		this.actor = actor;
+	}
+	
+	public TextureRegion getTextureRegion() {
+		return textureRegion;
+	}
+	
+	public void setTextureRegion(TextureRegion textureRegion) {
+		this.textureRegion = textureRegion;
+	}
+	
+	public float getCenterX() {
+		return getX() + textureRegion.getTexture().getWidth() / 2f;
+	}
+	
+	public float getCenterY() {
+		return getY() + textureRegion.getTexture().getHeight() / 2f;
 	}
 	
 	@Override

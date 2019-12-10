@@ -34,11 +34,13 @@ public class BloonActor extends RenderableActor {
 	public void setBloon(Bloon bloon) {
 		this.bloon = bloon;
 	}
-
+	
+	@Override
 	public float getCenterX() {
 		return getX() + texture.getWidth() * SCALE / 2f;
 	}
-
+	
+	@Override
 	public float getCenterY() {
 		return getY() + texture.getHeight() * SCALE / 2f;
 	}

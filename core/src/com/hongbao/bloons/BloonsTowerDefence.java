@@ -15,11 +15,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.hongbao.bloons.actors.BulletActor;
+import com.hongbao.bloons.actors.GirlActor;
 import com.hongbao.bloons.actors.RenderableImageButton;
 import com.hongbao.bloons.actors.RenderableLabel;
 import com.hongbao.bloons.comparators.SortByZIndex;
-import com.hongbao.bloons.entities.Bullet;
+import com.hongbao.bloons.entities.Girl;
 import com.hongbao.bloons.factories.MapFactory;
 import com.hongbao.bloons.helpers.ZIndex;
 
@@ -127,8 +127,10 @@ public class BloonsTowerDefence implements ApplicationListener {
 			stage.act(Gdx.graphics.getDeltaTime());
 			
 			if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
-				BulletActor bulletActor = new BulletActor(new Bullet(), Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(), 0.7071f, 0.7071f);
-				stage.addActor(bulletActor);
+				//BulletActor bulletActor = new BulletActor(new Bullet(), Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(), 0.7071f, 0.7071f);
+				//stage.addActor(bulletActor);
+				GirlActor girlActor = new GirlActor(new Girl(), Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
+				stage.addActor(girlActor);
 			}
 			
 			stage.getActors().sort(new SortByZIndex());

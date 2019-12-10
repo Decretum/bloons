@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.hongbao.bloons.actors.BloonActor;
 import com.hongbao.bloons.actors.BulletActor;
+import com.hongbao.bloons.actors.GirlActor;
+import com.hongbao.bloons.actors.RenderableActor;
 import com.hongbao.bloons.factories.BloonFactory;
 
 import java.util.HashSet;
@@ -26,7 +28,7 @@ public class BloonManager {
 	
 	public void createBloon() {
 		long time = System.currentTimeMillis();
-		if (time > lastActionTime + 1000) {
+		if (time > lastActionTime + 200) {
 			BloonActor actor = new BloonActor(BloonFactory.createRandomBloon(), -25, 425);
 			stage.addActor(actor);
 			onstageBloons.add(actor);
@@ -67,9 +69,34 @@ public class BloonManager {
 		}
 	}
 	
-	private static float distanceBetweenActors(BulletActor bulletActor, BloonActor bloonActor) {
+	public boolean attackBloonIfInRange(GirlActor girlActor) {
+		for (BloonActor bloonActor : onstageBloons) {
+			float distance = distanceBetweenActors(girlActor, bloonActor);
+			
+			if (distance < girlActor.getGirl().getVisualRange()) {
+				
+				BulletActor bulletActor = girlActor.createBulletActor(bloonActor);
+				stage.addActor(bulletActor);
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public void lookAtBloon(GirlActor girlActor) {
+		for (BloonActor bloonActor : onstageBloons) {
+			float distance = distanceBetweenActors(girlActor, bloonActor);
+			
+			if (distance < girlActor.getGirl().getVisualRange()) {
+				girlActor.lookAtBloon(bloonActor);
+				return;
+			}
+		}
+	}
+	
+	private static float distanceBetweenActors(RenderableActor actor1, RenderableActor actor2) {
 		return (float)Math.sqrt(
-		 Math.pow(bulletActor.getCenterX() - bloonActor.getCenterX(), 2) + Math.pow(bulletActor.getCenterY() - bloonActor.getCenterY(), 2));
+		 Math.pow(actor1.getCenterX() - actor2.getCenterX(), 2) + Math.pow(actor1.getCenterY() - actor2.getCenterY(), 2));
 	}
 	
 }
