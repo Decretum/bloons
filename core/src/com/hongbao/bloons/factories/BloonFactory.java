@@ -268,14 +268,20 @@ public class BloonFactory {
 		for (String line : lines) {
 			if (line.contains(" ")) {
 				String[] parts = line.split(" ");
-				if (parts.length == 2) {
-					String bloonType = parts[0];
+				if (parts.length == 3) {
+					int amount = Integer.parseInt(parts[0]);
 					long delay = Long.parseLong(parts[1]);
+					String bloonTypes = parts[2];
 					
-					Bloon bloon = createBloonOfType(bloonType);
-					bloons.add(bloon);
-					intervals.add(timer);
-					timer += delay;
+					for (int x = 0; x < amount; x++) {
+						String[] types = bloonTypes.split(",");
+						for (String type : types) {
+							Bloon bloon = createBloonOfType(type);
+							bloons.add(bloon);
+							intervals.add(timer);
+							timer += delay;
+						}
+					}
 				} else {
 					System.out.println("BloonFactory.createBloonQueue(wtf2) { " + line + " }");
 				}
