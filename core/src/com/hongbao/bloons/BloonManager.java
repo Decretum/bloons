@@ -34,21 +34,28 @@ public class BloonManager {
 		}
 	}
 	
-	public void checkCollision(BulletActor bulletActor) {
+	public void checkCollision(final BulletActor bulletActor) {
+		Set<BloonActor> bloonsToBePopped = new HashSet<>(); // to avoid ConcurrentModificationException
+		
 		for (BloonActor bloonActor : onstageBloons) {
 			float collisionDistance = bloonActor.getCollisionRadius() + bulletActor.getCollisionRadius();
 			float distance = distanceBetweenActors(bulletActor, bloonActor);
 			
 			if (distance < collisionDistance) {
-				popBloon(bloonActor, bulletActor.getBullet().getDamage());
-				bulletActor.decrementPierce();
-				
-				if (bulletActor.getBullet().getPierce() == 0) {
-					// don't bother checking collisions if the bullet is used up.
-					return;
+				if (!bulletActor.getBullet().hasDamagedBloon(bloonActor.getBloon())) {
+					bulletActor.getBullet().damageBloon(bloonActor.getBloon());
+					bloonsToBePopped.add(bloonActor);
+					bulletActor.decrementPierce();
+					
+					if (bulletActor.getBullet().getPierce() == 0) {
+						// don't bother checking collisions if the bullet is used up.
+						return;
+					}
 				}
 			}
 		}
+		
+		bloonsToBePopped.forEach((bloonActor) -> popBloon(bloonActor, bulletActor.getBullet().getDamage()));
 	}
 	
 	public void popBloon(BloonActor bloonActor, int damage) {

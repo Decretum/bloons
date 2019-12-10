@@ -1,23 +1,29 @@
 package com.hongbao.bloons.entities;
 
+import java.util.HashSet;
+import java.util.Set;
+
+
 public class Bullet {
 	
 	public static final String IMAGE_FOLDER = "img/projectiles/";
 	
 	private float speed;
 	private int damage;
-	private int pierce; // todo make this somehow remember the balloons it has hit so it doesn't multihit them.
+	private int pierce;
 	private float maxRange; // because of how actions are evaluated, this is an approximation. But that's fine.
 	private float distanceTraveled;
 	private String imageFileName;
+	private Set<Bloon> damagedBloons;
 	
 	public Bullet() {
 		speed = 20f;
 		damage = 1;
-		pierce = 1;
+		pierce = 10;
 		maxRange = 500;
 		distanceTraveled = 0;
 		imageFileName = IMAGE_FOLDER + "red_spell_card.png";
+		damagedBloons = new HashSet<>(pierce);
 	}
 	
 	public float getSpeed() {
@@ -67,4 +73,13 @@ public class Bullet {
 	public void setImageFileName(String imageFileName) {
 		this.imageFileName = imageFileName;
 	}
+	
+	public boolean hasDamagedBloon(Bloon bloon) {
+		return damagedBloons.contains(bloon);
+	}
+	
+	public void damageBloon(Bloon bloon) {
+		damagedBloons.add(bloon);
+	}
+	
 }
