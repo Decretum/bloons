@@ -19,6 +19,14 @@ public class MusicPlayer {
 		backgroundMusic.play();
 	}
 	
+	public void pause() {
+		backgroundMusic.pause();
+	}
+	
+	public void resume() {
+		backgroundMusic.play();
+	}
+	
 	public void stopMusic() {
 		backgroundMusic.stop();
 	}

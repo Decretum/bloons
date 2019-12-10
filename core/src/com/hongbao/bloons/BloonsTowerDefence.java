@@ -1,7 +1,8 @@
 package com.hongbao.bloons;
 
-import com.badlogic.gdx.*;
-import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -9,7 +10,9 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.RepeatAction;
 import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.hongbao.bloons.actors.BulletActor;
@@ -124,7 +127,7 @@ public class BloonsTowerDefence implements ApplicationListener {
 			stage.act(Gdx.graphics.getDeltaTime());
 			
 			if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
-				BulletActor bulletActor = new BulletActor(new Bullet(), Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
+				BulletActor bulletActor = new BulletActor(new Bullet(), Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(), 0.7071f, 0.7071f);
 				stage.addActor(bulletActor);
 			}
 			
@@ -136,11 +139,13 @@ public class BloonsTowerDefence implements ApplicationListener {
 	@Override
 	public void pause() {
 		paused = true;
+		musicPlayer.pause();
 	}
 
 	@Override
 	public void resume() {
 		paused = false;
+		musicPlayer.resume();
 	}
 
 	@Override
