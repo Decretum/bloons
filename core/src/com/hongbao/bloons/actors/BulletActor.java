@@ -95,6 +95,11 @@ public class BulletActor extends RenderableActor {
 			remove();
 		}
 		
+		bullet.incrementDistanceTraveled();
+		if (bullet.getDistanceTraveled() >= bullet.getMaxRange()) {
+			remove();
+		}
+		
 		((BloonsTowerDefence)Gdx.app.getApplicationListener()).getMap().getBloonManager().checkCollision(this);
 	}
 }
