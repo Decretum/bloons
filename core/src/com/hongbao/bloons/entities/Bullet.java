@@ -6,7 +6,7 @@ public class Bullet {
 	
 	private float speed;
 	private int damage;
-	private int pierce;
+	private int pierce; // todo make this somehow remember the balloons it has hit so it doesn't multihit them.
 	private String imageFileName;
 	
 	public Bullet() {
@@ -36,8 +36,8 @@ public class Bullet {
 		return pierce;
 	}
 	
-	public void setPierce(int pierce) {
-		this.pierce = pierce;
+	public void decrementPierce() {
+		pierce--;
 	}
 	
 	public String getImageFileName() {

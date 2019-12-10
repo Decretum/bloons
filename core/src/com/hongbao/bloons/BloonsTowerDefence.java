@@ -47,7 +47,7 @@ public class BloonsTowerDefence implements ApplicationListener {
 		bloonCreationAction.setRunnable(new Runnable() {
 			@Override
 			public void run() {
-				map.getBloonCreator().createBloon();
+				map.getBloonManager().createBloon();
 			}
 		});
 		stage.addAction(Actions.repeat(RepeatAction.FOREVER, bloonCreationAction));

@@ -1,12 +1,8 @@
 package com.hongbao.bloons.actors;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.hongbao.bloons.BloonsTowerDefence;
 import com.hongbao.bloons.entities.Bloon;
 import com.hongbao.bloons.helpers.ZIndex;
@@ -17,27 +13,18 @@ public class BloonActor extends RenderableActor {
 
 	public static final float SCALE = 0.5f;
 
-	Bloon bloon;
-	Texture texture;
+	private Bloon bloon;
+	private Texture texture;
+	private float collisionRadius;
 
 	public BloonActor(Bloon bloon, float x, float y) {
 		this.bloon = bloon;
 		texture = new Texture(Gdx.files.internal(bloon.getImageFileName()));
 
+		collisionRadius = texture.getWidth() * SCALE / 2f;
+		
 		setZIndex(ZIndex.BLOON_Z_INDEX);
-		setTouchable(Touchable.enabled);
 		setBounds(x - texture.getWidth() * SCALE / 2f, y - texture.getHeight() * SCALE / 2f, texture.getWidth() * SCALE, texture.getHeight() * SCALE);
-		addListener(new InputListener() {
-			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-				if (button == Input.Buttons.LEFT) {
-					BloonActor target = (BloonActor) event.getTarget();
-					int moneyEarned = target.pop();
-					((BloonsTowerDefence)Gdx.app.getApplicationListener()).money += moneyEarned;
-					return true;
-				}
-				return false;
-			}
-		});
 	}
 
 	public Bloon getBloon() {
@@ -55,9 +42,19 @@ public class BloonActor extends RenderableActor {
 	public float getCenterY() {
 		return getY() + texture.getHeight() * SCALE / 2f;
 	}
-
-	public int pop() {
-		int popCount = bloon.pop();
+	
+	public float getCollisionRadius() {
+		return collisionRadius;
+	}
+	
+	public void setCollisionRadius(float collisionRadius) {
+		this.collisionRadius = collisionRadius;
+	}
+	
+	
+	// Please avoid calling this method directly, instead use the BloonManager pop()
+	public int pop(int damage) {
+		int popCount = bloon.pop(damage);
 		if (bloon.getHealth() > 0) {
 			float centerX = getCenterX();
 			float centerY = getCenterY();
@@ -66,6 +63,7 @@ public class BloonActor extends RenderableActor {
 			setX(centerX - texture.getWidth() * SCALE / 2f);
 			setY(centerY - texture.getHeight() * SCALE / 2f);
 			setBounds(getX(), getY(), texture.getWidth() * SCALE, texture.getHeight() * SCALE);
+			collisionRadius = texture.getWidth() * SCALE / 2f;
 		} else {
 			remove();
 		}

@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.hongbao.bloons.BloonsTowerDefence;
 import com.hongbao.bloons.entities.Bullet;
 import com.hongbao.bloons.helpers.ZIndex;
 
@@ -15,30 +16,37 @@ public class BulletActor extends RenderableActor {
 	private float dx; // This should be a unit vector
 	private float dy;
 	private float rotationAngle;
-
+	private float collisionRadius;
+	
 	public BulletActor(Bullet bullet, float x, float y, float dx, float dy) {
 		this.bullet = bullet;
 		texture = new TextureRegion(new Texture(Gdx.files.internal(bullet.getImageFileName())));
 		this.dx = dx;
 		this.dy = dy;
 		calculateRotationAngle();
+		collisionRadius = texture.getTexture().getWidth() / 2f;
 		
 		setZIndex(ZIndex.BULLET_Z_INDEX);
-		setBounds(x - texture.getTexture().getWidth() / 2f, y - texture.getTexture().getHeight() / 2f, texture.getTexture().getWidth(), texture.getTexture().getHeight());
+		setBounds(
+		 x - texture.getTexture().getWidth() / 2f,
+		 y - texture.getTexture().getHeight() / 2f,
+		 texture.getTexture().getWidth(),
+		 texture.getTexture().getHeight()
+		);
 	}
-
+	
 	public Bullet getBullet() {
 		return bullet;
 	}
-
+	
 	public void setBullet(Bullet bullet) {
 		this.bullet = bullet;
 	}
-
+	
 	public float getCenterX() {
 		return getX() + texture.getTexture().getWidth() / 2f;
 	}
-
+	
 	public float getCenterY() {
 		return getY() + texture.getTexture().getHeight() / 2f;
 	}
@@ -47,9 +55,35 @@ public class BulletActor extends RenderableActor {
 		rotationAngle = (float)(Math.atan2(dx, dy) / Math.PI * 180);
 	}
 	
+	public float getCollisionRadius() {
+		return collisionRadius;
+	}
+	
+	public void setCollisionRadius(float collisionRadius) {
+		this.collisionRadius = collisionRadius;
+	}
+	
+	public void decrementPierce() {
+		bullet.decrementPierce();
+		if (bullet.getPierce() == 0) {
+			remove();
+		}
+	}
+	
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
-		batch.draw(texture, getX(), getY(), getCenterX() - getX(), getCenterY() - getY(), texture.getTexture().getWidth(), texture.getTexture().getHeight(), 1f, 1f, -rotationAngle);
+		batch.draw(
+		 texture,
+		 getX(),
+		 getY(),
+		 getCenterX() - getX(),
+		 getCenterY() - getY(),
+		 texture.getTexture().getWidth(),
+		 texture.getTexture().getHeight(),
+		 1f,
+		 1f,
+		 -rotationAngle
+		);
 	}
 	
 	@Override
@@ -61,6 +95,6 @@ public class BulletActor extends RenderableActor {
 			remove();
 		}
 		
-		// check collisions
+		((BloonsTowerDefence)Gdx.app.getApplicationListener()).getMap().getBloonManager().checkCollision(this);
 	}
 }

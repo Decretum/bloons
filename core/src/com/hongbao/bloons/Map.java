@@ -11,12 +11,12 @@ public class Map {
 	public static final int TILE_HEIGHT = 50;
 	
 	private String backgroundImage;
-	private BloonCreator bloonCreator;
+	private BloonManager bloonManager;
 	private Pair<Float, Float>[][] directions;
 	
 	public Map(String backgroundImage, Stage stage) {
 		this.backgroundImage = backgroundImage;
-		this.bloonCreator = new BloonCreator(stage);
+		this.bloonManager = new BloonManager(stage);
 	}
 	
 	public void setDirections(Pair<Float, Float>[][] directions) {
@@ -43,8 +43,8 @@ public class Map {
 		}
 	}
 	
-	public BloonCreator getBloonCreator() {
-		return bloonCreator;
+	public BloonManager getBloonManager() {
+		return bloonManager;
 	}
 	
 }

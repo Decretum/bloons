@@ -3,7 +3,11 @@ package com.hongbao.bloons.entities;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.hongbao.bloons.entities.Bloon.Color.*;
+import static com.hongbao.bloons.entities.Bloon.Color.BLUE;
+import static com.hongbao.bloons.entities.Bloon.Color.GREEN;
+import static com.hongbao.bloons.entities.Bloon.Color.PINK;
+import static com.hongbao.bloons.entities.Bloon.Color.RED;
+import static com.hongbao.bloons.entities.Bloon.Color.YELLOW;
 
 public class Bloon {
 
@@ -106,10 +110,6 @@ public class Bloon {
 		this.regen = regen;
 	}
 
-	public int pop() {
-		return pop(1);
-	}
-
 	public int pop(int damage) {
 		int oldHealth = health;
 		health -= damage;
@@ -122,8 +122,8 @@ public class Bloon {
 		}
 		return oldHealth - health;
 	}
-
-	public static String createImageFileName(String color, boolean camo, boolean regen) {
+	
+	private static String createImageFileName(String color, boolean camo, boolean regen) {
 		StringBuilder fileNameBuilder = new StringBuilder(IMAGE_FOLDER);
 		fileNameBuilder.append(color);
 		if (camo) {
@@ -137,5 +137,5 @@ public class Bloon {
 
 		return fileNameBuilder.toString();
 	}
-
+	
 }
