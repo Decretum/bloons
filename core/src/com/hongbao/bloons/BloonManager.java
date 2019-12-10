@@ -1,6 +1,7 @@
 package com.hongbao.bloons;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.hongbao.bloons.actors.BloonActor;
 import com.hongbao.bloons.actors.BulletActor;
@@ -19,11 +20,13 @@ public class BloonManager {
 	// A dedicated collection of onstage bloons is maintained to (probably) speed up collision checking
 	// especially when there are a lot of bullets on screen.
 	private Set<BloonActor> onstageBloons;
+	private Sound popSound;
 	
 	public BloonManager(Stage stage) {
 		this.stage = stage;
 		onstageBloons = new HashSet<>();
 		lastActionTime = 0;
+		popSound = Gdx.audio.newSound(Gdx.files.internal("music/pop.mp3"));
 	}
 	
 	public void createBloon() {
@@ -67,6 +70,8 @@ public class BloonManager {
 		if (bloonActor.getBloon().getHealth() <= 0) {
 			onstageBloons.remove(bloonActor);
 		}
+		
+		popSound.play(0.5f);
 	}
 	
 	public boolean attackBloonIfInRange(GirlActor girlActor) {
