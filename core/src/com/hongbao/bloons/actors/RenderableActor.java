@@ -57,4 +57,12 @@ public abstract class RenderableActor extends Actor {
 		actor.act(delta);
 	}
 	
+	@Override
+	public boolean remove() {
+		if (textureRegion != null && textureRegion.getTexture() != null) {
+			textureRegion.getTexture().dispose();
+		}
+		return super.remove();
+	}
+	
 }

@@ -61,12 +61,14 @@ public class BloonActor extends RenderableActor {
 			float centerX = getCenterX();
 			float centerY = getCenterY();
 
+			texture.dispose();
 			texture = new Texture(Gdx.files.internal(bloon.getImageFileName()));
 			setX(centerX - texture.getWidth() * SCALE / 2f);
 			setY(centerY - texture.getHeight() * SCALE / 2f);
 			setBounds(getX(), getY(), texture.getWidth() * SCALE, texture.getHeight() * SCALE);
 			collisionRadius = texture.getWidth() * SCALE / 2f;
 		} else {
+			texture.dispose();
 			remove();
 		}
 		return popCount;
@@ -74,6 +76,7 @@ public class BloonActor extends RenderableActor {
 	
 	public void release() {
 		((BloonsTowerDefence)Gdx.app.getApplicationListener()).health -= bloon.getHealth();
+		texture.dispose();
 		remove();
 	}
 	
@@ -97,6 +100,9 @@ public class BloonActor extends RenderableActor {
 	public void act(float delta) {
 		BloonsTowerDefence app = (BloonsTowerDefence)Gdx.app.getApplicationListener();
 		Pair<Float, Float> direction = app.getMap().getDirection(getCenterX(), getCenterY());
+		if (direction.getKey() < 0) {
+			System.out.println(direction.getKey());
+		}
 		move(direction);
 	}
 }

@@ -3,11 +3,17 @@ package com.hongbao.bloons.entities;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.hongbao.bloons.entities.Bloon.Color.BLACK;
 import static com.hongbao.bloons.entities.Bloon.Color.BLUE;
+import static com.hongbao.bloons.entities.Bloon.Color.CERAMIC;
 import static com.hongbao.bloons.entities.Bloon.Color.GREEN;
+import static com.hongbao.bloons.entities.Bloon.Color.LEAD;
 import static com.hongbao.bloons.entities.Bloon.Color.PINK;
+import static com.hongbao.bloons.entities.Bloon.Color.RAINBOW;
 import static com.hongbao.bloons.entities.Bloon.Color.RED;
 import static com.hongbao.bloons.entities.Bloon.Color.YELLOW;
+import static com.hongbao.bloons.entities.Bloon.Color.ZEBRA;
+
 
 public class Bloon {
 
@@ -17,7 +23,12 @@ public class Bloon {
 		BLUE("blue"),
 		GREEN("green"),
 		YELLOW("yellow"),
-		PINK("pink");
+		PINK("pink"),
+		BLACK("black"),
+		LEAD("lead"),
+		ZEBRA("zebra"),
+		RAINBOW("rainbow"),
+		CERAMIC("ceramic");
 
 		private String value;
 
@@ -42,6 +53,34 @@ public class Bloon {
 			put(3, GREEN);
 			put(4, YELLOW);
 			put(5, PINK);
+			put(6, BLACK);
+			put(7, ZEBRA);
+			put(8, RAINBOW);
+			put(9, CERAMIC);
+			put(10, CERAMIC);
+			put(11, CERAMIC);
+			put(12, CERAMIC);
+			put(13, CERAMIC);
+			put(14, CERAMIC);
+			put(15, CERAMIC);
+			put(16, CERAMIC);
+			put(17, CERAMIC);
+			put(18, CERAMIC);
+		}
+	};
+	
+	public static final Map<Color, Integer> COLOR_TO_SPEED = new HashMap<Color, Integer>() {
+		{
+			put(RED, 5);
+			put(BLUE, 6);
+			put(GREEN, 7);
+			put(YELLOW, 8);
+			put(PINK, 9);
+			put(BLACK, 7);
+			put(LEAD, 5);
+			put(ZEBRA, 7);
+			put(RAINBOW, 8);
+			put(CERAMIC, 7);
 		}
 	};
 
@@ -54,10 +93,10 @@ public class Bloon {
 	private boolean camo;
 	private boolean regen;
 
-	public Bloon(Color color, int health, int speed, boolean camo, boolean regen) {
+	public Bloon(Color color, int health, boolean camo, boolean regen) {
 		this.color = color;
 		this.health = health;
-		this.speed = speed;
+		speed = COLOR_TO_SPEED.get(color);
 		this.camo = camo;
 		this.regen = regen;
 		this.imageFileName = createImageFileName(color.getValue(), camo, regen);
@@ -122,10 +161,10 @@ public class Bloon {
 	public int pop(int damage) {
 		int oldHealth = health;
 		health -= damage;
-		speed -= damage;
 		if (health > 0) {
 			color = HEALTH_TO_COLOR.get(health);
 			imageFileName = createImageFileName(color.getValue(), camo, regen);
+			speed = COLOR_TO_SPEED.get(color);
 		} else {
 			health = 0;
 		}
