@@ -78,9 +78,10 @@ public class BloonActor extends RenderableActor {
 	}
 	
 	public void move(Pair<Float, Float> direction) {
-		// this is generally fine if the bloon doesn't pop at the same time. Which it shouldn't, I think.
 		setX(getX() + direction.getKey() * bloon.getSpeed() / 5);
 		setY(getY() + direction.getValue() * bloon.getSpeed() / 5);
+		
+		bloon.incrementDistanceTravelled();
 		
 		if (getX() > 1500) {
 			release();

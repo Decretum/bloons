@@ -50,6 +50,7 @@ public class Bloon {
 	private String imageFileName;
 	private int health;
 	private int speed;
+	private int distanceTravelled;
 	private boolean camo;
 	private boolean regen;
 
@@ -92,6 +93,14 @@ public class Bloon {
 	
 	public void setSpeed(int speed) {
 		this.speed = speed;
+	}
+	
+	public int getDistanceTravelled() {
+		return distanceTravelled;
+	}
+	
+	public void incrementDistanceTravelled() {
+		distanceTravelled += speed;
 	}
 	
 	public boolean isCamo() {

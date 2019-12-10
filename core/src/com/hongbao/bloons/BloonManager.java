@@ -70,27 +70,54 @@ public class BloonManager {
 	}
 	
 	public boolean attackBloonIfInRange(GirlActor girlActor) {
+		Set<BloonActor> bloonsInRange = new HashSet<>();
+		
 		for (BloonActor bloonActor : onstageBloons) {
 			float distance = distanceBetweenActors(girlActor, bloonActor);
 			
 			if (distance < girlActor.getGirl().getVisualRange()) {
-				
-				BulletActor bulletActor = girlActor.createBulletActor(bloonActor);
-				stage.addActor(bulletActor);
-				return true;
+				bloonsInRange.add(bloonActor);
 			}
 		}
-		return false;
+		
+		if (bloonsInRange.isEmpty()) {
+			return false;
+		} else {
+			BloonActor bloonActor = bloonsInRange.iterator().next();
+			
+			for (BloonActor actor : bloonsInRange) {
+				if (actor.getBloon().getDistanceTravelled() > bloonActor.getBloon().getDistanceTravelled()) {
+					bloonActor = actor;
+				}
+			}
+			
+			BulletActor bulletActor = girlActor.createBulletActor(bloonActor);
+			stage.addActor(bulletActor);
+			return true;
+		}
 	}
 	
 	public void lookAtBloon(GirlActor girlActor) {
+		Set<BloonActor> bloonsInRange = new HashSet<>();
+		
 		for (BloonActor bloonActor : onstageBloons) {
 			float distance = distanceBetweenActors(girlActor, bloonActor);
 			
 			if (distance < girlActor.getGirl().getVisualRange()) {
-				girlActor.lookAtBloon(bloonActor);
-				return;
+				bloonsInRange.add(bloonActor);
 			}
+		}
+		
+		if (!bloonsInRange.isEmpty()) {
+			BloonActor bloonActor = bloonsInRange.iterator().next();
+			
+			for (BloonActor actor : bloonsInRange) {
+				if (actor.getBloon().getDistanceTravelled() > bloonActor.getBloon().getDistanceTravelled()) {
+					bloonActor = actor;
+				}
+			}
+			
+			girlActor.lookAtBloon(bloonActor);
 		}
 	}
 	
