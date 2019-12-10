@@ -1,7 +1,12 @@
 package com.hongbao.bloons.factories;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
+import com.hongbao.bloons.BloonQueue;
 import com.hongbao.bloons.entities.Bloon;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 
@@ -167,6 +172,50 @@ public class BloonFactory {
 		return new Bloon(Bloon.Color.CERAMIC, 18, true, true);
 	}
 	
+	public static Bloon createBloonOfType(String type) {
+		// todo george at some point add all the variations of bloons too :(
+		if ("red".equals(type)) {
+			return createRedBloon();
+		}
+		if ("red_camo".equals(type)) {
+			return createRedCamoBloon();
+		}
+		if ("red_regen".equals(type)) {
+			return createRedRegenBloon();
+		}
+		if ("red_camo_regen".equals(type)) {
+			return createRedCamoRegenBloon();
+		}
+		if ("blue".equals(type)) {
+			return createBlueBloon();
+		}
+		if ("green".equals(type)) {
+			return createGreenBloon();
+		}
+		if ("yellow".equals(type)) {
+			return createYellowBloon();
+		}
+		if ("pink".equals(type)) {
+			return createPinkBloon();
+		}
+		if ("black".equals(type)) {
+			return createBlackBloon();
+		}
+		if ("lead".equals(type)) {
+			return createLeadBloon();
+		}
+		if ("zebra".equals(type)) {
+			return createZebraBloon();
+		}
+		if ("rainbow".equals(type)) {
+			return createRainbowBloon();
+		}
+		if ("ceramic".equals(type)) {
+			return createCeramicBloon();
+		}
+		throw new RuntimeException("Unexpected bloon type: " +type);
+	}
+	
 	public static Bloon createRandomBloon() {
 		Random r = new Random();
 		
@@ -201,6 +250,41 @@ public class BloonFactory {
 		else {
 			return createCeramicBloon();
 		}
+	}
+	
+	public static BloonQueue createBloonQueue() {
+		return createBloonQueueFromFile("default.txt");
+	}
+	
+	public static BloonQueue createBloonQueueFromFile(String fileName) {
+		FileHandle file = Gdx.files.internal("bloon_queues/" + fileName);
+		String fileContents = file.readString();
+		String[] lines = fileContents.split("\n");
+		long timer = 0;
+		
+		List<Bloon> bloons = new ArrayList<>();
+		List<Long> intervals = new ArrayList<>();
+		
+		for (String line : lines) {
+			if (line.contains(" ")) {
+				String[] parts = line.split(" ");
+				if (parts.length == 2) {
+					String bloonType = parts[0];
+					long delay = Long.parseLong(parts[1]);
+					
+					Bloon bloon = createBloonOfType(bloonType);
+					bloons.add(bloon);
+					intervals.add(timer);
+					timer += delay;
+				} else {
+					System.out.println("BloonFactory.createBloonQueue(wtf2) { " + line + " }");
+				}
+			} else {
+				System.out.println("BloonFactory.createBloonQueue(wtf1) { " + line + " }");
+			}
+		}
+			
+		return new BloonQueue(bloons, intervals);
 	}
 	
 }

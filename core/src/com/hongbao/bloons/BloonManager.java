@@ -7,6 +7,7 @@ import com.hongbao.bloons.actors.BloonActor;
 import com.hongbao.bloons.actors.BulletActor;
 import com.hongbao.bloons.actors.GirlActor;
 import com.hongbao.bloons.actors.RenderableActor;
+import com.hongbao.bloons.entities.Bloon;
 import com.hongbao.bloons.factories.BloonFactory;
 
 import java.util.HashSet;
@@ -16,26 +17,29 @@ import java.util.Set;
 public class BloonManager {
 	
 	private Stage stage;
-	private long lastActionTime;
+	private long gameStartTime;
 	// A dedicated collection of onstage bloons is maintained to (probably) speed up collision checking
 	// especially when there are a lot of bullets on screen.
 	private Set<BloonActor> onstageBloons;
 	private Sound popSound;
+	private BloonQueue bloonQueue;
 	
 	public BloonManager(Stage stage) {
 		this.stage = stage;
 		onstageBloons = new HashSet<>();
-		lastActionTime = 0;
+		gameStartTime = System.currentTimeMillis();
 		popSound = Gdx.audio.newSound(Gdx.files.internal("music/pop.mp3"));
+		bloonQueue = BloonFactory.createBloonQueue();
 	}
 	
-	public void createBloon() {
+	public void createBloons() {
 		long time = System.currentTimeMillis();
-		if (time > lastActionTime + 200) {
-			BloonActor actor = new BloonActor(BloonFactory.createRandomBloon(), -25, 425);
+		Set<Bloon> bloonsToBeCreated = bloonQueue.getBloons(time - gameStartTime);
+		
+		for (Bloon bloon : bloonsToBeCreated) {
+			BloonActor actor = new BloonActor(bloon, -25, 425); // todo make these numbers an attribute in map or something
 			stage.addActor(actor);
 			onstageBloons.add(actor);
-			lastActionTime = time;
 		}
 	}
 	

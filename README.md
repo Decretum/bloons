@@ -15,7 +15,6 @@ Ideas that are not yet implemented that I would like to implement:
 - More Tower types
 - More maps
 - Instructions screen
-- Actual levels instead of just randomly generating bloons
 - Ability to upgrade towers
 - Ability to sell towers
 - Ability to purchase towers through an interface

@@ -44,12 +44,7 @@ public class BloonsTowerDefence implements ApplicationListener {
 		musicPlayer = new MusicPlayer();
 		
 		final RunnableAction bloonCreationAction = new RunnableAction();
-		bloonCreationAction.setRunnable(new Runnable() {
-			@Override
-			public void run() {
-				map.getBloonManager().createBloon();
-			}
-		});
+		bloonCreationAction.setRunnable(() -> map.getBloonManager().createBloons());
 		stage.addAction(Actions.repeat(RepeatAction.FOREVER, bloonCreationAction));
 		
 		Gdx.input.setInputProcessor(stage);
