@@ -14,24 +14,26 @@ public class BloonQueue {
 	private List<Bloon> bloons;
 	private List<Long> intervals;
 	private int currentIndex;
+	private int clock;
 	
 	public BloonQueue(List<Bloon> bloons, List<Long> intervals) {
 		this.bloons = bloons;
 		this.intervals = intervals;
 		currentIndex = 0;
+		clock = 0;
 	}
 	
-	public Set<Bloon> getBloons(long timeSinceGameStarted) {
+	public Set<Bloon> getBloons() {
 		HashSet<Bloon> generatedBloons = new HashSet<>();
 		while (currentIndex < bloons.size()) {
-			if (intervals.get(currentIndex) < timeSinceGameStarted) {
-				// todo george consider using the game render loop to count this instead of real time, so that if the game lags it doesn't become harder.
+			if (intervals.get(currentIndex) == clock) {
 				generatedBloons.add(bloons.get(currentIndex));
 				currentIndex++;
 			} else {
 				break;
 			}
 		}
+		clock++;
 		return generatedBloons;
 	}
 	

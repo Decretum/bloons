@@ -1,7 +1,7 @@
-20 500 red
-20 500 blue
-30 500 green
-30 500 yellow,pink
-10 250 black
-50 250 lead,zebra
-100 250 ceramic
+20 30 red
+20 30 blue
+30 30 green
+30 30 yellow,pink
+10 15 black
+50 15 lead,zebra
+100 15 ceramic

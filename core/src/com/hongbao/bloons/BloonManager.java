@@ -16,7 +16,6 @@ import java.util.Set;
 public class BloonManager {
 	
 	private Stage stage;
-	private long gameStartTime;
 	// A dedicated collection of onstage bloons is maintained to (probably) speed up collision checking
 	// especially when there are a lot of bullets on screen.
 	private Set<BloonActor> onstageBloons;
@@ -26,14 +25,12 @@ public class BloonManager {
 	public BloonManager(Stage stage) {
 		this.stage = stage;
 		onstageBloons = new HashSet<>();
-		gameStartTime = System.currentTimeMillis();
 		popSound = Gdx.audio.newSound(Gdx.files.internal("music/pop.mp3"));
 		bloonQueue = BloonFactory.createBloonQueue();
 	}
 	
 	public void createBloons() {
-		long time = System.currentTimeMillis();
-		Set<Bloon> bloonsToBeCreated = bloonQueue.getBloons(time - gameStartTime);
+		Set<Bloon> bloonsToBeCreated = bloonQueue.getBloons();
 		
 		for (Bloon bloon : bloonsToBeCreated) {
 			BloonActor actor = new BloonActor(bloon, -25, 425); // todo make these numbers an attribute in map or something
