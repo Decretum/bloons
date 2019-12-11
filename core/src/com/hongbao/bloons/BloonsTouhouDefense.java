@@ -6,6 +6,8 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.RepeatAction;
@@ -13,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.hongbao.bloons.actors.GirlActor;
@@ -27,12 +30,17 @@ import com.hongbao.bloons.helpers.ZIndex;
 
 public class BloonsTouhouDefense implements ApplicationListener {
 	
+	public static final boolean INFINITE_HEALTH = false; // for testing, mostly
+	public static final boolean INFINITE_MONEY = false;
+	
 	public boolean paused;
 
 	private Stage stage;
 	private Player player;
 	private Map map;
 	private MusicPlayer musicPlayer;
+	private ShapeRenderer shapeRenderer;
+	
 	
 	@Override
 	public void create() {
@@ -41,6 +49,7 @@ public class BloonsTouhouDefense implements ApplicationListener {
 		stage = new Stage();
 		player = new Player();
 		musicPlayer = new MusicPlayer();
+		shapeRenderer = new ShapeRenderer();
 		
 		final RunnableAction bloonCreationAction = new RunnableAction();
 		bloonCreationAction.setRunnable(() -> map.getBloonManager().createBloons());
@@ -85,6 +94,15 @@ public class BloonsTouhouDefense implements ApplicationListener {
 	}
 	
 	public void createMap() {
+		stage.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				if (event.getStage() != null) {
+					map.setSelectedGirl(null);
+				}
+			}
+		});
+		
 		map = MapFactory.createMapWithTurn(stage);
 		
 		Drawable drawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal(map.getBackgroundImageFilePath()))));
@@ -113,10 +131,6 @@ public class BloonsTouhouDefense implements ApplicationListener {
 			stage.act(Gdx.graphics.getDeltaTime());
 			
 			Girl girl = null;
-			
-			if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
-				girl = GirlFactory.createReimu();
-			}
 			
 			if (Gdx.input.isButtonJustPressed(Input.Buttons.MIDDLE)) {
 				girl = GirlFactory.createMarisa();
@@ -147,6 +161,13 @@ public class BloonsTouhouDefense implements ApplicationListener {
 			stage.getActors().sort(new SortByZIndex());
 		}
 		stage.draw();
+		
+		if (map.getSelectedGirl() != null) {
+			// Draw the radius of sight
+			shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+			shapeRenderer.circle(map.getSelectedGirl().getCenterX(), map.getSelectedGirl().getCenterY(), map.getSelectedGirl().getGirl().getVisualRange());
+			shapeRenderer.end();
+		}
 	}
 
 	@Override

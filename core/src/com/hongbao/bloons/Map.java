@@ -1,6 +1,8 @@
 package com.hongbao.bloons;
 
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.hongbao.bloons.actors.GirlActor;
 import com.hongbao.bloons.actors.RenderableActor;
 import javafx.util.Pair;
@@ -19,12 +21,14 @@ public class Map {
 	private BloonManager bloonManager;
 	private Pair<Float, Float>[][] directions;
 	private Set<GirlActor> onStageGirls;
+	private GirlActor selectedGirl;
 	private Stage stage;
 	
 	public Map(String backgroundImage, Stage stage) {
 		this.backgroundImage = backgroundImage;
 		this.bloonManager = new BloonManager(stage);
 		onStageGirls = new HashSet<>();
+		selectedGirl = null;
 		this.stage = stage;
 	}
 	
@@ -38,6 +42,14 @@ public class Map {
 	
 	public String getBackgroundImageFilePath() {
 		return BACKGROUND_MAPS_FOLDER + backgroundImage;
+	}
+	
+	public GirlActor getSelectedGirl() {
+		return selectedGirl;
+	}
+	
+	public void setSelectedGirl(GirlActor girlActor) {
+		selectedGirl = girlActor;
 	}
 	
 	public Pair<Float, Float> getDirection(float balloonX, float balloonY) {
@@ -92,6 +104,14 @@ public class Map {
 	public void placeGirl(GirlActor girlActor) {
 		onStageGirls.add(girlActor);
 		stage.addActor(girlActor);
+		selectedGirl = girlActor;
+		girlActor.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				selectedGirl = girlActor;
+				event.setStage(null); // a somewhat hacky way of communicating to the stage that this event has already handled.
+			}
+		});
 	}
 	
 	private static float getCenterXOfTile(int tile) {

@@ -8,6 +8,8 @@ import com.hongbao.bloons.entities.Bloon;
 import com.hongbao.bloons.helpers.ZIndex;
 import javafx.util.Pair;
 
+import static com.hongbao.bloons.BloonsTouhouDefense.INFINITE_HEALTH;
+
 
 public class BloonActor extends RenderableActor {
 
@@ -75,7 +77,9 @@ public class BloonActor extends RenderableActor {
 	}
 	
 	public void release() {
-		((BloonsTouhouDefense)Gdx.app.getApplicationListener()).getPlayer().decreaseHealth(bloon.getHealth());
+		if (!INFINITE_HEALTH) {
+			((BloonsTouhouDefense)Gdx.app.getApplicationListener()).getPlayer().decreaseHealth(bloon.getHealth());
+		}
 		texture.dispose();
 		remove();
 	}
