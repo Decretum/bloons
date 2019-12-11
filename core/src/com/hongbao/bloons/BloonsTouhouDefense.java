@@ -3,6 +3,7 @@ package com.hongbao.bloons;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -65,8 +66,7 @@ public class BloonsTouhouDefense implements ApplicationListener {
 	private void createMenu() {
 		Skin skin = new Skin(Gdx.files.internal("uiskins/uiskin.json"));
 
-		Drawable drawable = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("img/ui/header.png"))));
-		ImageButton title = new ImageButton(drawable);
+		ImageButton title = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("img/ui/header.png")))));
 		title.setPosition(1500, 0);
 		stage.addActor(new RenderableImageButton(title, ZIndex.MENU_Z_INDEX));
 
@@ -91,6 +91,102 @@ public class BloonsTouhouDefense implements ApplicationListener {
 		});
 		healthLabel.addAction(Actions.repeat(RepeatAction.FOREVER, healthLabelAction));
 		stage.addActor(new RenderableLabel(healthLabel, ZIndex.MENU_ITEM_Z_INDEX));
+		
+		ImageButton purchaseReimu = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("img/ui/reimu_box.png")))));
+		purchaseReimu.setPosition(1504, 676);
+		stage.addActor(new RenderableImageButton(purchaseReimu, ZIndex.MENU_Z_INDEX));
+		
+		Label reimuCost = new Label(String.valueOf(GirlFactory.createReimu().getCost()), skin);
+		reimuCost.setPosition(1680, 700);
+		reimuCost.setFontScale(1.5f,1.5f);
+		reimuCost.addAction(Actions.repeat(RepeatAction.FOREVER, createNewCostLabelAction()));
+		stage.addActor(new RenderableLabel(reimuCost, ZIndex.MENU_ITEM_Z_INDEX));
+		
+		ImageButton purchaseYukari = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("img/ui/yukari_box.png")))));
+		purchaseYukari.setPosition(1504, 604);
+		stage.addActor(new RenderableImageButton(purchaseYukari, ZIndex.MENU_Z_INDEX));
+		
+		Label yukariCost = new Label(String.valueOf(GirlFactory.createYukari().getCost()), skin);
+		yukariCost.setPosition(1680, 628);
+		yukariCost.setFontScale(1.5f,1.5f);
+		yukariCost.addAction(Actions.repeat(RepeatAction.FOREVER, createNewCostLabelAction()));
+		stage.addActor(new RenderableLabel(yukariCost, ZIndex.MENU_ITEM_Z_INDEX));
+		
+		ImageButton purchaseMarisa = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("img/ui/marisa_box.png")))));
+		purchaseMarisa.setPosition(1504, 532);
+		stage.addActor(new RenderableImageButton(purchaseMarisa, ZIndex.MENU_Z_INDEX));
+		
+		Label marisaCost = new Label(String.valueOf(GirlFactory.createMarisa().getCost()), skin);
+		marisaCost.setPosition(1680, 556);
+		marisaCost.setFontScale(1.5f,1.5f);
+		marisaCost.addAction(Actions.repeat(RepeatAction.FOREVER, createNewCostLabelAction()));
+		stage.addActor(new RenderableLabel(marisaCost, ZIndex.MENU_ITEM_Z_INDEX));
+		
+		ImageButton purchaseAlice = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("img/ui/alice_box.png")))));
+		purchaseAlice.setPosition(1504, 460);
+		stage.addActor(new RenderableImageButton(purchaseAlice, ZIndex.MENU_Z_INDEX));
+		
+		Label aliceCost = new Label(String.valueOf(GirlFactory.createAlice().getCost()), skin);
+		aliceCost.setPosition(1680, 484);
+		aliceCost.setFontScale(1.5f,1.5f);
+		aliceCost.addAction(Actions.repeat(RepeatAction.FOREVER, createNewCostLabelAction()));
+		stage.addActor(new RenderableLabel(aliceCost, ZIndex.MENU_ITEM_Z_INDEX));
+		
+		ImageButton purchaseSakuya = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("img/ui/sakuya_box.png")))));
+		purchaseSakuya.setPosition(1504, 388);
+		stage.addActor(new RenderableImageButton(purchaseSakuya, ZIndex.MENU_Z_INDEX));
+		
+		Label sakuyaCost = new Label(String.valueOf(GirlFactory.createSakuya().getCost()), skin);
+		sakuyaCost.setPosition(1680, 412);
+		sakuyaCost.setFontScale(1.5f,1.5f);
+		sakuyaCost.addAction(Actions.repeat(RepeatAction.FOREVER, createNewCostLabelAction()));
+		stage.addActor(new RenderableLabel(sakuyaCost, ZIndex.MENU_ITEM_Z_INDEX));
+		
+		ImageButton purchaseRemilia = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("img/ui/remilia_box.png")))));
+		purchaseRemilia.setPosition(1504, 316);
+		stage.addActor(new RenderableImageButton(purchaseRemilia, ZIndex.MENU_Z_INDEX));
+		
+		Label remiliaCost = new Label(String.valueOf(GirlFactory.createRemilia().getCost()), skin);
+		remiliaCost.setPosition(1680, 340);
+		remiliaCost.setFontScale(1.5f,1.5f);
+		remiliaCost.addAction(Actions.repeat(RepeatAction.FOREVER, createNewCostLabelAction()));
+		stage.addActor(new RenderableLabel(remiliaCost, ZIndex.MENU_ITEM_Z_INDEX));
+		
+		ImageButton purchaseYoumu = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("img/ui/youmu_box.png")))));
+		purchaseYoumu.setPosition(1504, 244);
+		stage.addActor(new RenderableImageButton(purchaseYoumu, ZIndex.MENU_Z_INDEX));
+		
+		Label youmuCost = new Label(String.valueOf(GirlFactory.createYoumu().getCost()), skin);
+		youmuCost.setPosition(1680, 268);
+		youmuCost.setFontScale(1.5f,1.5f);
+		youmuCost.addAction(Actions.repeat(RepeatAction.FOREVER, createNewCostLabelAction()));
+		stage.addActor(new RenderableLabel(youmuCost, ZIndex.MENU_ITEM_Z_INDEX));
+		
+		ImageButton purchaseYuyuko = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("img/ui/yuyuko_box.png")))));
+		purchaseYuyuko.setPosition(1504, 172);
+		stage.addActor(new RenderableImageButton(purchaseYuyuko, ZIndex.MENU_Z_INDEX));
+		
+		Label yuyukoCost = new Label(String.valueOf(GirlFactory.createYuyuko().getCost()), skin);
+		yuyukoCost.setPosition(1680, 196);
+		yuyukoCost.setFontScale(1.5f,1.5f);
+		yuyukoCost.addAction(Actions.repeat(RepeatAction.FOREVER, createNewCostLabelAction()));
+		stage.addActor(new RenderableLabel(yuyukoCost, ZIndex.MENU_ITEM_Z_INDEX));
+	}
+	
+	private RunnableAction createNewCostLabelAction() {
+		// Apparently they don't like sharing
+		RunnableAction costLabelAction = new RunnableAction();
+		costLabelAction.setRunnable(() -> {
+			Label label = (Label)costLabelAction.getActor();
+			int cost = Integer.parseInt(label.getText().toString());
+			
+			if (cost <= player.getMoney()) {
+				label.setColor(Color.WHITE);
+			} else {
+				label.setColor(Color.RED);
+			}
+		});
+		return costLabelAction;
 	}
 	
 	public void createMap() {
@@ -163,9 +259,11 @@ public class BloonsTouhouDefense implements ApplicationListener {
 		stage.draw();
 		
 		if (map.getSelectedGirl() != null) {
-			// Draw the radius of sight
+			// Draw the range of collision, the range of sight, and range of... well, range
 			shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+			shapeRenderer.circle(map.getSelectedGirl().getCenterX(), map.getSelectedGirl().getCenterY(), map.getSelectedGirl().getCollisionRadius());
 			shapeRenderer.circle(map.getSelectedGirl().getCenterX(), map.getSelectedGirl().getCenterY(), map.getSelectedGirl().getGirl().getVisualRange());
+			shapeRenderer.circle(map.getSelectedGirl().getCenterX(), map.getSelectedGirl().getCenterY(), map.getSelectedGirl().getGirl().getRange());
 			shapeRenderer.end();
 		}
 	}
