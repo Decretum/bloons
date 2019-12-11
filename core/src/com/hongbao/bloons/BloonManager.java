@@ -6,7 +6,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.hongbao.bloons.actors.BloonActor;
 import com.hongbao.bloons.actors.BulletActor;
 import com.hongbao.bloons.actors.GirlActor;
-import com.hongbao.bloons.actors.RenderableActor;
 import com.hongbao.bloons.entities.Bloon;
 import com.hongbao.bloons.factories.BloonFactory;
 
@@ -48,7 +47,7 @@ public class BloonManager {
 		
 		for (BloonActor bloonActor : onstageBloons) {
 			float collisionDistance = bloonActor.getCollisionRadius() + bulletActor.getCollisionRadius();
-			float distance = distanceBetweenActors(bulletActor, bloonActor);
+			float distance = Map.distanceBetweenActors(bulletActor, bloonActor);
 			
 			if (distance < collisionDistance) {
 				if (!bulletActor.getBullet().hasDamagedBloon(bloonActor.getBloon())) {
@@ -82,7 +81,7 @@ public class BloonManager {
 		Set<BloonActor> bloonsInRange = new HashSet<>();
 		
 		for (BloonActor bloonActor : onstageBloons) {
-			float distance = distanceBetweenActors(girlActor, bloonActor);
+			float distance = Map.distanceBetweenActors(girlActor, bloonActor);
 			
 			if (distance < girlActor.getGirl().getVisualRange()) {
 				bloonsInRange.add(bloonActor);
@@ -110,7 +109,7 @@ public class BloonManager {
 		Set<BloonActor> bloonsInRange = new HashSet<>();
 		
 		for (BloonActor bloonActor : onstageBloons) {
-			float distance = distanceBetweenActors(girlActor, bloonActor);
+			float distance = Map.distanceBetweenActors(girlActor, bloonActor);
 			
 			if (distance < girlActor.getGirl().getVisualRange()) {
 				bloonsInRange.add(bloonActor);
@@ -128,11 +127,6 @@ public class BloonManager {
 			
 			girlActor.lookAtBloon(bloonActor);
 		}
-	}
-	
-	private static float distanceBetweenActors(RenderableActor actor1, RenderableActor actor2) {
-		return (float)Math.sqrt(
-		 Math.pow(actor1.getCenterX() - actor2.getCenterX(), 2) + Math.pow(actor1.getCenterY() - actor2.getCenterY(), 2));
 	}
 	
 }

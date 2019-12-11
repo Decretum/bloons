@@ -4,4 +4,4 @@
 30 500 yellow,pink
 10 250 black
 50 250 lead,zebra
-25 250 ceramic
+100 250 ceramic

@@ -16,11 +16,13 @@ public class GirlActor extends RenderableActor {
 	
 	private Girl girl;
 	private float rotationAngle;
+	private float collisionRadius;
 	
 	public GirlActor(Girl girl, float x, float y) {
 		this.girl = girl;
 		textureRegion = new TextureRegion(new Texture(Gdx.files.internal(girl.getImageFileName())));
 		rotationAngle = 0;
+		collisionRadius = textureRegion.getTexture().getWidth() / 2f;
 		
 		setZIndex(ZIndex.GIRL_Z_INDEX);
 		setBounds(
@@ -45,6 +47,10 @@ public class GirlActor extends RenderableActor {
 	
 	public void setRotationAngle(float rotationAngle) {
 		this.rotationAngle = rotationAngle;
+	}
+	
+	public float getCollisionRadius() {
+		return collisionRadius;
 	}
 	
 	public BulletActor createBulletActor(BloonActor target) {

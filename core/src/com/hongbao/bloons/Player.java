@@ -46,6 +46,10 @@ public class Player {
 		}
 	}
 	
+	public boolean canPurchaseGirl(Girl girl) {
+		return money >= girl.getCost();
+	}
+	
 	public boolean purchaseGirl(Girl girl) {
 		// really regretting the class name choice now
 		return spendMoney(girl.getCost());

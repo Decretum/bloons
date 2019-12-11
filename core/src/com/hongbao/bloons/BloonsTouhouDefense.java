@@ -135,9 +135,12 @@ public class BloonsTouhouDefense implements ApplicationListener {
 			}
 			
 			if (girl != null) {
-				if (getPlayer().purchaseGirl(girl)) {
+				if (player.canPurchaseGirl(girl)) {
 					GirlActor girlActor = new GirlActor(girl, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
-					stage.addActor(girlActor);
+					if (map.canPlaceGirl(girlActor)) {
+						map.placeGirl(girlActor);
+						player.purchaseGirl(girl);
+					}
 				}
 			}
 			
