@@ -19,28 +19,27 @@ import com.hongbao.bloons.actors.GirlActor;
 import com.hongbao.bloons.actors.RenderableImageButton;
 import com.hongbao.bloons.actors.RenderableLabel;
 import com.hongbao.bloons.comparators.SortByZIndex;
+import com.hongbao.bloons.entities.Girl;
 import com.hongbao.bloons.factories.GirlFactory;
 import com.hongbao.bloons.factories.MapFactory;
 import com.hongbao.bloons.helpers.ZIndex;
 
 
 public class BloonsTouhouDefense implements ApplicationListener {
-
-	public int health;
-	public int money;
+	
 	public boolean paused;
 
 	private Stage stage;
+	private Player player;
 	private Map map;
 	private MusicPlayer musicPlayer;
 	
 	@Override
 	public void create() {
 		Gdx.graphics.setWindowedMode(1800, 900);
-		health = 100;
-		money = 0;
 		paused = false;
 		stage = new Stage();
+		player = new Player();
 		musicPlayer = new MusicPlayer();
 		
 		final RunnableAction bloonCreationAction = new RunnableAction();
@@ -62,31 +61,22 @@ public class BloonsTouhouDefense implements ApplicationListener {
 		title.setPosition(1500, 0);
 		stage.addActor(new RenderableImageButton(title, ZIndex.MENU_Z_INDEX));
 
-		Label moneyLabel = new Label(String.valueOf(money), skin);
+		Label moneyLabel = new Label(String.valueOf(player.getMoney()), skin);
 		moneyLabel.setPosition(1680, 765);
 		moneyLabel.setFontScale(1.5f,1.5f);
 		final RunnableAction moneyLabelAction = new RunnableAction();
-		moneyLabelAction.setRunnable(new Runnable() {
-			@Override
-			public void run() {
-				((Label)moneyLabelAction.getActor()).setText(String.valueOf(money));
-			}
-		});
+		moneyLabelAction.setRunnable(() -> ((Label)moneyLabelAction.getActor()).setText(String.valueOf(player.getMoney())));
 		moneyLabel.addAction(Actions.repeat(RepeatAction.FOREVER, moneyLabelAction));
 		stage.addActor(new RenderableLabel(moneyLabel, ZIndex.MENU_ITEM_Z_INDEX));
 		
-		Label healthLabel = new Label(String.valueOf(health), skin);
+		Label healthLabel = new Label(String.valueOf(player.getHealth()), skin);
 		healthLabel.setPosition(1540, 765);
 		healthLabel.setFontScale(1.5f,1.5f);
 		final RunnableAction healthLabelAction = new RunnableAction();
 		healthLabelAction.setRunnable(() -> {
-			if (health < 0) {
-				health = 0;
-			}
+			((Label)healthLabelAction.getActor()).setText(String.valueOf(player.getHealth()));
 			
-			((Label)healthLabelAction.getActor()).setText(String.valueOf(health));
-			
-			if (health == 0) {
+			if (player.getHealth() == 0) {
 				pause();
 			}
 		});
@@ -106,6 +96,10 @@ public class BloonsTouhouDefense implements ApplicationListener {
 	public Map getMap() {
 		return map;
 	}
+	
+	public Player getPlayer() {
+		return player;
+	}
 
 	@Override
 	public void resize(int width, int height) {
@@ -118,9 +112,33 @@ public class BloonsTouhouDefense implements ApplicationListener {
 			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 			stage.act(Gdx.graphics.getDeltaTime());
 			
+			Girl girl = null;
+			
 			if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
-				GirlActor girlActor = new GirlActor(GirlFactory.createSakuya(), Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
-				stage.addActor(girlActor);
+				girl = GirlFactory.createReimu();
+			}
+			
+			if (Gdx.input.isButtonJustPressed(Input.Buttons.MIDDLE)) {
+				girl = GirlFactory.createMarisa();
+			}
+			
+			if (Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)) {
+				girl = GirlFactory.createSakuya();
+			}
+			
+			if (Gdx.input.isButtonJustPressed(Input.Buttons.BACK)) {
+				girl = GirlFactory.createYukari();
+			}
+			
+			if (Gdx.input.isButtonJustPressed(Input.Buttons.FORWARD)) {
+				girl = GirlFactory.createYuyuko();
+			}
+			
+			if (girl != null) {
+				if (getPlayer().purchaseGirl(girl)) {
+					GirlActor girlActor = new GirlActor(girl, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
+					stage.addActor(girlActor);
+				}
 			}
 			
 			stage.getActors().sort(new SortByZIndex());

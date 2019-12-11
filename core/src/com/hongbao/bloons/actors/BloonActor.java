@@ -75,7 +75,7 @@ public class BloonActor extends RenderableActor {
 	}
 	
 	public void release() {
-		((BloonsTouhouDefense)Gdx.app.getApplicationListener()).health -= bloon.getHealth();
+		((BloonsTouhouDefense)Gdx.app.getApplicationListener()).getPlayer().decreaseHealth(bloon.getHealth());
 		texture.dispose();
 		remove();
 	}

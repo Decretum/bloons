@@ -13,6 +13,7 @@ public class Girl {
 	private float visualRange;
 	private String imageFileName;
 	private String bulletFileName;
+	private int cost;
 	
 	public Girl() {
 		attackDelay = 20;
@@ -24,9 +25,10 @@ public class Girl {
 		visualRange = 200;
 		imageFileName = IMAGE_FOLDER + "reimu.png";
 		bulletFileName = "red_spell_card.png";
+		cost = 100;
 	}
 	
-	public Girl(int attackDelay, float bulletSpeed, int damage, int pierce, float range, float visualRange, String imageFileName, String bulletFileName) {
+	public Girl(int attackDelay, float bulletSpeed, int damage, int pierce, float range, float visualRange, String imageFileName, String bulletFileName, int cost) {
 		this.attackDelay = attackDelay;
 		this.cooldown = attackDelay;
 		this.bulletSpeed = bulletSpeed;
@@ -36,6 +38,7 @@ public class Girl {
 		this.visualRange = visualRange;
 		this.imageFileName = IMAGE_FOLDER + imageFileName;
 		this.bulletFileName = bulletFileName;
+		this.cost = cost;
 	}
 	
 	public int getAttackDelay() {
@@ -96,6 +99,14 @@ public class Girl {
 	
 	public void setImageFileName(String imageFileName) {
 		this.imageFileName = IMAGE_FOLDER + imageFileName;
+	}
+	
+	public int getCost() {
+		return cost;
+	}
+	
+	public void setCost(int cost) {
+		this.cost = cost;
 	}
 	
 	public Bullet createBullet() {
