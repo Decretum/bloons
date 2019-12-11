@@ -69,7 +69,7 @@ public class BloonManager {
 	
 	public void popBloon(BloonActor bloonActor, int damage) {
 		int moneyEarned = bloonActor.pop(damage);
-		((BloonsTowerDefence)Gdx.app.getApplicationListener()).money += moneyEarned;
+		((BloonsTouhouDefense)Gdx.app.getApplicationListener()).money += moneyEarned;
 		
 		if (bloonActor.getBloon().getHealth() <= 0) {
 			onstageBloons.remove(bloonActor);

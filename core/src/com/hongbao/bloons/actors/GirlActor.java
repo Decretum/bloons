@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.hongbao.bloons.BloonsTowerDefence;
+import com.hongbao.bloons.BloonsTouhouDefense;
 import com.hongbao.bloons.entities.Bullet;
 import com.hongbao.bloons.entities.Girl;
 import com.hongbao.bloons.helpers.ZIndex;
@@ -88,12 +88,12 @@ public class GirlActor extends RenderableActor {
 	@Override
 	public void act(float delta) {
 		if (girl.getCooldown() == 0) {
-			boolean attacked = ((BloonsTowerDefence)Gdx.app.getApplicationListener()).getMap().getBloonManager().attackBloonIfInRange(this);
+			boolean attacked = ((BloonsTouhouDefense)Gdx.app.getApplicationListener()).getMap().getBloonManager().attackBloonIfInRange(this);
 			if (attacked) {
 				girl.resetCooldown();
 			}
 		} else {
-			((BloonsTowerDefence)Gdx.app.getApplicationListener()).getMap().getBloonManager().lookAtBloon(this);
+			((BloonsTouhouDefense)Gdx.app.getApplicationListener()).getMap().getBloonManager().lookAtBloon(this);
 			girl.decrementCooldown();
 		}
 	}

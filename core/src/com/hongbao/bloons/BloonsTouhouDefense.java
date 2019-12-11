@@ -19,12 +19,12 @@ import com.hongbao.bloons.actors.GirlActor;
 import com.hongbao.bloons.actors.RenderableImageButton;
 import com.hongbao.bloons.actors.RenderableLabel;
 import com.hongbao.bloons.comparators.SortByZIndex;
-import com.hongbao.bloons.entities.Girl;
+import com.hongbao.bloons.factories.GirlFactory;
 import com.hongbao.bloons.factories.MapFactory;
 import com.hongbao.bloons.helpers.ZIndex;
 
 
-public class BloonsTowerDefence implements ApplicationListener {
+public class BloonsTouhouDefense implements ApplicationListener {
 
 	public int health;
 	public int money;
@@ -79,18 +79,15 @@ public class BloonsTowerDefence implements ApplicationListener {
 		healthLabel.setPosition(1540, 765);
 		healthLabel.setFontScale(1.5f,1.5f);
 		final RunnableAction healthLabelAction = new RunnableAction();
-		healthLabelAction.setRunnable(new Runnable() {
-			@Override
-			public void run() {
-				if (health < 0) {
-					health = 0;
-				}
-				
-				((Label)healthLabelAction.getActor()).setText(String.valueOf(health));
-				
-				if (health == 0) {
-					pause();
-				}
+		healthLabelAction.setRunnable(() -> {
+			if (health < 0) {
+				health = 0;
+			}
+			
+			((Label)healthLabelAction.getActor()).setText(String.valueOf(health));
+			
+			if (health == 0) {
+				pause();
 			}
 		});
 		healthLabel.addAction(Actions.repeat(RepeatAction.FOREVER, healthLabelAction));
@@ -122,9 +119,7 @@ public class BloonsTowerDefence implements ApplicationListener {
 			stage.act(Gdx.graphics.getDeltaTime());
 			
 			if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
-				//BulletActor bulletActor = new BulletActor(new Bullet(), Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY(), 0.7071f, 0.7071f);
-				//stage.addActor(bulletActor);
-				GirlActor girlActor = new GirlActor(new Girl(), Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
+				GirlActor girlActor = new GirlActor(GirlFactory.createSakuya(), Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
 				stage.addActor(girlActor);
 			}
 			

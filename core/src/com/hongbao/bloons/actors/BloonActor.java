@@ -3,7 +3,7 @@ package com.hongbao.bloons.actors;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.hongbao.bloons.BloonsTowerDefence;
+import com.hongbao.bloons.BloonsTouhouDefense;
 import com.hongbao.bloons.entities.Bloon;
 import com.hongbao.bloons.helpers.ZIndex;
 import javafx.util.Pair;
@@ -75,7 +75,7 @@ public class BloonActor extends RenderableActor {
 	}
 	
 	public void release() {
-		((BloonsTowerDefence)Gdx.app.getApplicationListener()).health -= bloon.getHealth();
+		((BloonsTouhouDefense)Gdx.app.getApplicationListener()).health -= bloon.getHealth();
 		texture.dispose();
 		remove();
 	}
@@ -98,7 +98,7 @@ public class BloonActor extends RenderableActor {
 	
 	@Override
 	public void act(float delta) {
-		BloonsTowerDefence app = (BloonsTowerDefence)Gdx.app.getApplicationListener();
+		BloonsTouhouDefense app = (BloonsTouhouDefense)Gdx.app.getApplicationListener();
 		Pair<Float, Float> direction = app.getMap().getDirection(getCenterX(), getCenterY());
 		if (direction.getKey() < 0) {
 			System.out.println(direction.getKey());

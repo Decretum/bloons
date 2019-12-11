@@ -26,6 +26,18 @@ public class Girl {
 		bulletFileName = "red_spell_card.png";
 	}
 	
+	public Girl(int attackDelay, float bulletSpeed, int damage, int pierce, float range, float visualRange, String imageFileName, String bulletFileName) {
+		this.attackDelay = attackDelay;
+		this.cooldown = attackDelay;
+		this.bulletSpeed = bulletSpeed;
+		this.damage = damage;
+		this.pierce = pierce;
+		this.range = range;
+		this.visualRange = visualRange;
+		this.imageFileName = IMAGE_FOLDER + imageFileName;
+		this.bulletFileName = bulletFileName;
+	}
+	
 	public int getAttackDelay() {
 		return attackDelay;
 	}

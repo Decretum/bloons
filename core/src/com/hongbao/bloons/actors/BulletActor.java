@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.hongbao.bloons.BloonsTowerDefence;
+import com.hongbao.bloons.BloonsTouhouDefense;
 import com.hongbao.bloons.entities.Bullet;
 import com.hongbao.bloons.helpers.ZIndex;
 
@@ -91,6 +91,6 @@ public class BulletActor extends RenderableActor {
 			remove();
 		}
 		
-		((BloonsTowerDefence)Gdx.app.getApplicationListener()).getMap().getBloonManager().checkCollision(this);
+		((BloonsTouhouDefense)Gdx.app.getApplicationListener()).getMap().getBloonManager().checkCollision(this);
 	}
 }
