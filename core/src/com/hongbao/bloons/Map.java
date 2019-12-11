@@ -49,6 +49,10 @@ public class Map {
 	}
 	
 	public void setSelectedGirl(GirlActor girlActor) {
+		if (selectedGirl != null && !selectedGirl.isActive()) {
+			selectedGirl.remove();
+		}
+		
 		selectedGirl = girlActor;
 	}
 	
@@ -102,6 +106,7 @@ public class Map {
 	}
 	
 	public void placeGirl(GirlActor girlActor) {
+		girlActor.setActive(true);
 		onStageGirls.add(girlActor);
 		stage.addActor(girlActor);
 		selectedGirl = girlActor;

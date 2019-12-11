@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.RepeatAction;
 import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
@@ -225,32 +226,54 @@ public class BloonsTouhouDefense implements ApplicationListener {
 		if (!paused) {
 			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 			stage.act(Gdx.graphics.getDeltaTime());
+
+			if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
+				if (map.getSelectedGirl() != null && !map.getSelectedGirl().isActive()) {
+					if (map.canPlaceGirl(map.getSelectedGirl())) {
+						map.placeGirl(map.getSelectedGirl());
+						player.purchaseGirl(map.getSelectedGirl().getGirl());
+					}
+				}
+			}
+			
+			if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) || Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)) {
+				map.getSelectedGirl().remove();
+				map.setSelectedGirl(null);
+			}
 			
 			Girl girl = null;
 			
-			if (Gdx.input.isButtonJustPressed(Input.Buttons.MIDDLE)) {
-				girl = GirlFactory.createRemilia();
-			}
-			
-			if (Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)) {
-				girl = GirlFactory.createAlice();
-			}
-			
-			if (Gdx.input.isButtonJustPressed(Input.Buttons.BACK)) {
-				girl = GirlFactory.createYoumu();
-			}
-			
-			if (Gdx.input.isButtonJustPressed(Input.Buttons.FORWARD)) {
+			if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)) {
+				map.setSelectedGirl(null);
 				girl = GirlFactory.createReimu();
+			} else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_2)) {
+				map.setSelectedGirl(null);
+				girl = GirlFactory.createYukari();
+			} else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_3)) {
+				map.setSelectedGirl(null);
+				girl = GirlFactory.createMarisa();
+			} else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_4)) {
+				map.setSelectedGirl(null);
+				girl = GirlFactory.createAlice();
+			} else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_5)) {
+				map.setSelectedGirl(null);
+				girl = GirlFactory.createSakuya();
+			} else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_6)) {
+				map.setSelectedGirl(null);
+				girl = GirlFactory.createRemilia();
+			} else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_7)) {
+				map.setSelectedGirl(null);
+				girl = GirlFactory.createYoumu();
+			} else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_8)) {
+				map.setSelectedGirl(null);
+				girl = GirlFactory.createYuyuko();
 			}
 			
 			if (girl != null) {
 				if (player.canPurchaseGirl(girl)) {
 					GirlActor girlActor = new GirlActor(girl, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
-					if (map.canPlaceGirl(girlActor)) {
-						map.placeGirl(girlActor);
-						player.purchaseGirl(girl);
-					}
+					map.setSelectedGirl(girlActor);
+					stage.addActor(girlActor);
 				}
 			}
 			
@@ -260,6 +283,15 @@ public class BloonsTouhouDefense implements ApplicationListener {
 		
 		if (map.getSelectedGirl() != null) {
 			// Draw the range of collision, the range of sight, and range of... well, range
+			if (!map.getSelectedGirl().isActive()) {
+				map.getSelectedGirl().setX(Gdx.input.getX() - map.getSelectedGirl().getTextureRegion().getTexture().getWidth() / 2f);
+				map.getSelectedGirl().setY(Gdx.graphics.getHeight() - (Gdx.input.getY() + map.getSelectedGirl().getTextureRegion().getTexture().getHeight() / 2f));
+				if (!map.canPlaceGirl(map.getSelectedGirl())) {
+					shapeRenderer.setColor(Color.RED);
+				} else {
+					shapeRenderer.setColor(Color.WHITE);
+				}
+			}
 			shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
 			shapeRenderer.circle(map.getSelectedGirl().getCenterX(), map.getSelectedGirl().getCenterY(), map.getSelectedGirl().getCollisionRadius());
 			shapeRenderer.circle(map.getSelectedGirl().getCenterX(), map.getSelectedGirl().getCenterY(), map.getSelectedGirl().getGirl().getVisualRange());

@@ -42,7 +42,7 @@ public class GirlFactory {
 	
 	public static Girl createYuyuko() {
 		// 0.25
-		return new Girl(40, 10, 1, 10, 500, 200, "yuyuko.png", "pink_butterfly.png", 200);
+		return new Girl(40, 10, 1, 10, 500, 200, "yuyuko.png", "pink_butterfly.png", 160);
 	}
 	
 	

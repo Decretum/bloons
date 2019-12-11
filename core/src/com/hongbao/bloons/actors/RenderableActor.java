@@ -3,6 +3,7 @@ package com.hongbao.bloons.actors;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
 
 
 public abstract class RenderableActor extends Actor {
@@ -63,6 +64,11 @@ public abstract class RenderableActor extends Actor {
 			textureRegion.getTexture().dispose();
 		}
 		return super.remove();
+	}
+	
+	@Override
+	public boolean addListener(EventListener listener) {
+		return actor.addListener(listener);
 	}
 	
 }

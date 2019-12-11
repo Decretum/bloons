@@ -17,12 +17,14 @@ public class GirlActor extends RenderableActor {
 	private Girl girl;
 	private float rotationAngle;
 	private float collisionRadius;
+	private boolean active;
 	
 	public GirlActor(Girl girl, float x, float y) {
 		this.girl = girl;
 		textureRegion = new TextureRegion(new Texture(Gdx.files.internal(girl.getImageFileName())));
 		rotationAngle = 0;
 		collisionRadius = textureRegion.getTexture().getWidth() / 2f;
+		active = false;
 		
 		setZIndex(ZIndex.GIRL_Z_INDEX);
 		setBounds(
@@ -51,6 +53,14 @@ public class GirlActor extends RenderableActor {
 	
 	public float getCollisionRadius() {
 		return collisionRadius;
+	}
+	
+	public boolean isActive() {
+		return active;
+	}
+	
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 	
 	public BulletActor createBulletActor(BloonActor target) {
@@ -93,14 +103,16 @@ public class GirlActor extends RenderableActor {
 	
 	@Override
 	public void act(float delta) {
-		if (girl.getCooldown() == 0) {
-			boolean attacked = ((BloonsTouhouDefense)Gdx.app.getApplicationListener()).getMap().getBloonManager().attackBloonIfInRange(this);
-			if (attacked) {
-				girl.resetCooldown();
+		if (active) {
+			if (girl.getCooldown() == 0) {
+				boolean attacked = ((BloonsTouhouDefense)Gdx.app.getApplicationListener()).getMap().getBloonManager().attackBloonIfInRange(this);
+				if (attacked) {
+					girl.resetCooldown();
+				}
+			} else {
+				((BloonsTouhouDefense)Gdx.app.getApplicationListener()).getMap().getBloonManager().lookAtBloon(this);
+				girl.decrementCooldown();
 			}
-		} else {
-			((BloonsTouhouDefense)Gdx.app.getApplicationListener()).getMap().getBloonManager().lookAtBloon(this);
-			girl.decrementCooldown();
 		}
 	}
 	
