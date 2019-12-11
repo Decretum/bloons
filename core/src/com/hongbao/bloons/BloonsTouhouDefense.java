@@ -229,19 +229,19 @@ public class BloonsTouhouDefense implements ApplicationListener {
 			Girl girl = null;
 			
 			if (Gdx.input.isButtonJustPressed(Input.Buttons.MIDDLE)) {
-				girl = GirlFactory.createMarisa();
+				girl = GirlFactory.createRemilia();
 			}
 			
 			if (Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)) {
-				girl = GirlFactory.createSakuya();
+				girl = GirlFactory.createAlice();
 			}
 			
 			if (Gdx.input.isButtonJustPressed(Input.Buttons.BACK)) {
-				girl = GirlFactory.createYukari();
+				girl = GirlFactory.createYoumu();
 			}
 			
 			if (Gdx.input.isButtonJustPressed(Input.Buttons.FORWARD)) {
-				girl = GirlFactory.createYuyuko();
+				girl = GirlFactory.createReimu();
 			}
 			
 			if (girl != null) {

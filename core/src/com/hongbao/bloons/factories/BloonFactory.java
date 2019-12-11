@@ -174,6 +174,9 @@ public class BloonFactory {
 	
 	public static Bloon createBloonOfType(String type) {
 		// todo george at some point add all the variations of bloons too :(
+		if (type.endsWith("\r")) {
+			type = type.substring(0, type.length() - 1);
+		}
 		if ("red".equals(type)) {
 			return createRedBloon();
 		}
