@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -44,6 +45,7 @@ public class Map {
 	private RenderableLabel rightDataActor;
 	private RenderableLabel upgradeActor;
 	private RenderableLabel sellActor;
+	private boolean hoveringOverUpgrade;
 
 	public Map(String backgroundImage, Stage stage) {
 		this.backgroundImage = backgroundImage;
@@ -51,6 +53,7 @@ public class Map {
 		onStageGirls = new HashSet<>();
 		selectedGirl = null;
 		this.stage = stage;
+		hoveringOverUpgrade = false;
 
 		Skin skin = new Skin(Gdx.files.internal("uiskins/uiskin.json"));
 
@@ -61,11 +64,55 @@ public class Map {
 		Label leftDataBackground = new Label("DATA", skin);
 		leftDataBackground.setBounds(1510, 56, 292, 110);
 		leftDataBackground.setColor(Color.BLACK);
+		final RunnableAction leftDataLabelAction = new RunnableAction();
+		leftDataLabelAction.setRunnable(() -> {
+			Girl girl = getSelectedGirl().getGirl();
+			if (hoveringOverUpgrade) {
+				leftDataActor.getActor().setText(
+				 girl.getName() + "\n" +
+				  "Damage: " + girl.getDamage() + " (" + 2 + ")\n" + // todo real values here
+				  "Pierce: " + girl.getPierce() + " (" + 2 + ")\n" +
+				  "Cooldown: " + girl.getAttackDelay() + " (" + 2 + ")\n" +
+				  "Sight: " + (int)girl.getVisualRange() + " (" + 2 + ")"
+				);
+			} else {
+				leftDataActor.getActor().setText(
+				 girl.getName() + "\n" +
+				  "Damage: " + girl.getDamage() + "\n" +
+				  "Pierce: " + girl.getPierce() +"\n" +
+				  "Cooldown: " + girl.getAttackDelay() +"\n" +
+				  "Sight: " + (int)girl.getVisualRange()
+				);
+			}
+		});
+		leftDataBackground.addAction(Actions.repeat(RepeatAction.FOREVER, leftDataLabelAction));
 		leftDataActor = new RenderableLabel(leftDataBackground, ZIndex.MENU_ITEM_Z_INDEX);
 
 		Label rightDataBackground = new Label("DATA", skin);
 		rightDataBackground.setBounds(1658, 56, 292, 110);
 		rightDataBackground.setColor(Color.BLACK);
+		final RunnableAction rightDataLabelAction = new RunnableAction();
+		rightDataLabelAction.setRunnable(() -> {
+			Girl girl = getSelectedGirl().getGirl();
+			if (hoveringOverUpgrade) {
+				rightDataActor.getActor().setText(
+				  "Range: " + (int)girl.getRange() + " (" + 2 + ")\n" +
+				  "Upgrade: " + girl.getUpgradeCostString() + " (" + 2 + ")\n" +
+				  "Sell: $" + girl.getSellPrice() + " (" + 2 + ")\n" +
+				  " \n" +
+				  " "
+				);
+			} else {
+				rightDataActor.getActor().setText(
+				 "Range: " + (int)girl.getRange() +"\n" +
+				  "Upgrade: " + girl.getUpgradeCostString() + "\n" +
+				  "Sell: $" + girl.getSellPrice() + "\n" +
+				  " \n" +
+				  " "
+				);
+			}
+		});
+		rightDataBackground.addAction(Actions.repeat(RepeatAction.FOREVER, rightDataLabelAction));
 		rightDataActor = new RenderableLabel(rightDataBackground, ZIndex.MENU_ITEM_Z_INDEX);
 
 		Label upgradeBackground = new Label("UPGRADE", skin);
@@ -76,6 +123,16 @@ public class Map {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				upgradeSelectedGirl();
+			}
+			
+			@Override
+			public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+				hoveringOverUpgrade = true;
+			}
+			
+			@Override
+			public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+				hoveringOverUpgrade = false;
 			}
 		});
 		final RunnableAction upgradeLabelAction = new RunnableAction();
@@ -226,11 +283,11 @@ public class Map {
 				"Damage: " + girl.getDamage() + "\n" +
 				"Pierce: " + girl.getPierce() +"\n" +
 				"Cooldown: " + girl.getAttackDelay() +"\n" +
-				"Sight: " + girl.getVisualRange()
+				"Sight: " + (int)girl.getVisualRange()
 		);
 		rightDataActor.getActor().setText(
-				"Range: " + girl.getRange() +"\n" +
-				"Upgrade: $" + girl.getUpgradeCost() + "\n" +
+				"Range: " + (int)girl.getRange() +"\n" +
+				"Upgrade: " + girl.getUpgradeCostString() + "\n" +
 				"Sell: $" + girl.getSellPrice() + "\n" +
 				" \n" +
 				" "

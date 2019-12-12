@@ -333,8 +333,10 @@ public class BloonsTouhouDefense implements ApplicationListener {
 			}
 			
 			if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) || Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)) {
-				map.getSelectedGirl().remove();
-				map.setSelectedGirl(null);
+				if (map.getSelectedGirl() != null && !map.getSelectedGirl().isActive()) {
+					map.getSelectedGirl().remove();
+					map.setSelectedGirl(null);
+				}
 			}
 			
 			Girl girl = null;
