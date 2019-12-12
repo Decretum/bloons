@@ -3,7 +3,8 @@ package com.hongbao.bloons.entities;
 public class Girl {
 	
 	public static final String IMAGE_FOLDER = "img/characters/";
-	
+
+	private String name;
 	private int attackDelay;
 	private int cooldown;
 	private float bulletSpeed;
@@ -14,8 +15,10 @@ public class Girl {
 	private String imageFileName;
 	private String bulletFileName;
 	private int cost;
-	
+	private int upgradeCost;
+
 	public Girl() {
+		name = "Remiu";
 		attackDelay = 20;
 		cooldown = 20;
 		bulletSpeed = 20;
@@ -26,9 +29,11 @@ public class Girl {
 		imageFileName = IMAGE_FOLDER + "reimu.png";
 		bulletFileName = "red_spell_card.png";
 		cost = 100;
+		upgradeCost = 100;
 	}
 	
-	public Girl(int attackDelay, float bulletSpeed, int damage, int pierce, float range, float visualRange, String imageFileName, String bulletFileName, int cost) {
+	public Girl(String name, int attackDelay, float bulletSpeed, int damage, int pierce, float range, float visualRange, String imageFileName, String bulletFileName, int cost, int upgradeCost) {
+		this.name = name;
 		this.attackDelay = attackDelay;
 		this.cooldown = attackDelay;
 		this.bulletSpeed = bulletSpeed;
@@ -39,8 +44,17 @@ public class Girl {
 		this.imageFileName = IMAGE_FOLDER + imageFileName;
 		this.bulletFileName = bulletFileName;
 		this.cost = cost;
+		this.upgradeCost = upgradeCost;
 	}
-	
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public int getAttackDelay() {
 		return attackDelay;
 	}
@@ -108,7 +122,19 @@ public class Girl {
 	public void setCost(int cost) {
 		this.cost = cost;
 	}
-	
+
+	public int getUpgradeCost() {
+		return upgradeCost;
+	}
+
+	public void setUpgradeCost(int upgradeCost) {
+		this.upgradeCost = upgradeCost;
+	}
+
+	public int getSellPrice() {
+		return cost / 2;
+	}
+
 	public Bullet createBullet() {
 		return new Bullet(bulletSpeed, damage, pierce, range, bulletFileName);
 	}

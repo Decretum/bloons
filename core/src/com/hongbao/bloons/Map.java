@@ -1,10 +1,24 @@
 package com.hongbao.bloons;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
 import com.hongbao.bloons.actors.GirlActor;
 import com.hongbao.bloons.actors.RenderableActor;
+import com.hongbao.bloons.actors.RenderableImageButton;
+import com.hongbao.bloons.actors.RenderableLabel;
+import com.hongbao.bloons.entities.Girl;
+import com.hongbao.bloons.factories.GirlFactory;
+import com.hongbao.bloons.helpers.ZIndex;
 import javafx.util.Pair;
 
 import java.util.HashSet;
@@ -23,13 +37,60 @@ public class Map {
 	private Set<GirlActor> onStageGirls;
 	private GirlActor selectedGirl;
 	private Stage stage;
-	
+	private RenderableImageButton infoBackground;
+	private RenderableLabel leftDataActor;
+	private RenderableLabel rightDataActor;
+	private RenderableLabel upgradeActor;
+	private RenderableLabel sellActor;
+
 	public Map(String backgroundImage, Stage stage) {
 		this.backgroundImage = backgroundImage;
 		this.bloonManager = new BloonManager(stage);
 		onStageGirls = new HashSet<>();
 		selectedGirl = null;
 		this.stage = stage;
+
+		Skin skin = new Skin(Gdx.files.internal("uiskins/uiskin.json"));
+
+		ImageButton infoBackground = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("img/ui/girl_details_template.png")))));
+		infoBackground.setPosition(1504, 4);
+		this.infoBackground = new RenderableImageButton(infoBackground, ZIndex.MENU_ITEM_Z_INDEX);
+
+		Label leftDataBackground = new Label("DATA", skin);
+		leftDataBackground.setBounds(1510, 56, 292, 110);
+		leftDataBackground.setColor(Color.BLACK);
+		leftDataActor = new RenderableLabel(leftDataBackground, ZIndex.MENU_ITEM_Z_INDEX);
+
+		Label rightDataBackground = new Label("DATA", skin);
+		rightDataBackground.setBounds(1658, 56, 292, 110);
+		rightDataBackground.setColor(Color.BLACK);
+		rightDataActor = new RenderableLabel(rightDataBackground, ZIndex.MENU_ITEM_Z_INDEX);
+
+		Label upgradeBackground = new Label("UPGRADE", skin);
+		upgradeBackground.setBounds(1504, 4, 144, 50);
+		upgradeBackground.setAlignment(Align.center);
+		upgradeBackground.setColor(Color.BLUE);
+		upgradeBackground.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				upgradeSelectedGirl();
+			}
+		});
+		upgradeActor = new RenderableLabel(upgradeBackground, ZIndex.MENU_ITEM_Z_INDEX);
+
+		Label sellBackground = new Label("SELL", skin);
+		sellBackground.setBounds(1652, 4, 144, 50);
+		sellBackground.setAlignment(Align.center);
+		sellBackground.setColor(Color.RED);
+		upgradeBackground.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				sellSelectedGirl();
+			}
+		});
+		sellActor = new RenderableLabel(sellBackground, ZIndex.MENU_ITEM_Z_INDEX);
+
+
 	}
 	
 	public void setDirections(Pair<Float, Float>[][] directions) {
@@ -52,8 +113,13 @@ public class Map {
 		if (selectedGirl != null && !selectedGirl.isActive()) {
 			selectedGirl.remove();
 		}
-		
+
 		selectedGirl = girlActor;
+		if (girlActor == null) {
+			hideGirlDetailsModule();
+		} else {
+			showGirlDetailsModule();
+		}
 	}
 	
 	public Pair<Float, Float> getDirection(float balloonX, float balloonY) {
@@ -113,7 +179,7 @@ public class Map {
 		girlActor.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				selectedGirl = girlActor;
+				setSelectedGirl(girlActor);
 				event.setStage(null); // a somewhat hacky way of communicating to the stage that this event has already handled.
 			}
 		});
@@ -130,6 +196,50 @@ public class Map {
 	public static float distanceBetweenActors(RenderableActor actor1, RenderableActor actor2) {
 		return (float)Math.sqrt(
 		 Math.pow(actor1.getCenterX() - actor2.getCenterX(), 2) + Math.pow(actor1.getCenterY() - actor2.getCenterY(), 2));
+	}
+
+	public void showGirlDetailsModule() {
+		hideGirlDetailsModule();
+
+		Girl girl = getSelectedGirl().getGirl();
+
+		leftDataActor.getActor().setText(
+				girl.getName() + "\n" +
+				"Damage: " + girl.getDamage() + "\n" +
+				"Pierce: " + girl.getPierce() +"\n" +
+				"Cooldown: " + girl.getAttackDelay() +"\n" +
+				"Sight: " + girl.getVisualRange()
+		);
+		rightDataActor.getActor().setText(
+				"Range: " + girl.getRange() +"\n" +
+				"Upgrade: $" + girl.getUpgradeCost() + "\n" +
+				"Sell: $" + girl.getSellPrice() + "\n" +
+				" \n" +
+				" "
+		);
+		stage.addActor(infoBackground);
+		stage.addActor(leftDataActor);
+		stage.addActor(rightDataActor);
+		stage.addActor(upgradeActor);
+		stage.addActor(sellActor);
+	}
+
+	public void hideGirlDetailsModule() {
+		infoBackground.remove();
+		leftDataActor.remove();
+		rightDataActor.remove();
+		upgradeActor.remove();
+		sellActor.remove();
+	}
+
+	public void upgradeSelectedGirl() {
+		System.out.println("upgrading");
+		// todo
+	}
+
+	public void sellSelectedGirl() {
+		System.out.println("selling");
+		// todo
 	}
 	
 }

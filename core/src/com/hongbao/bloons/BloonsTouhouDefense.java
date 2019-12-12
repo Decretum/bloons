@@ -29,6 +29,7 @@ import com.hongbao.bloons.factories.GirlFactory;
 import com.hongbao.bloons.factories.MapFactory;
 import com.hongbao.bloons.helpers.ZIndex;
 
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -44,8 +45,7 @@ public class BloonsTouhouDefense implements ApplicationListener {
 	private Map map;
 	private MusicPlayer musicPlayer;
 	private ShapeRenderer shapeRenderer;
-	private Set<RenderableActor> infoActors;
-	
+
 	
 	@Override
 	public void create() {
@@ -55,7 +55,7 @@ public class BloonsTouhouDefense implements ApplicationListener {
 		player = new Player();
 		musicPlayer = new MusicPlayer();
 		shapeRenderer = new ShapeRenderer();
-		
+
 		final RunnableAction bloonCreationAction = new RunnableAction();
 		bloonCreationAction.setRunnable(() -> map.getBloonManager().createBloons());
 		stage.addAction(Actions.repeat(RepeatAction.FOREVER, bloonCreationAction));
@@ -305,15 +305,6 @@ public class BloonsTouhouDefense implements ApplicationListener {
 		ImageButton backgroundMap = new ImageButton(drawable);
 		backgroundMap.setPosition(0, 0);
 		stage.addActor(backgroundMap);
-	}
-	
-	public void showGirlDetailsModule(Girl girl) {
-		hideTowerDetailsModule();
-		
-	}
-	
-	public void hideTowerDetailsModule() {
-	
 	}
 	
 	public Map getMap() {

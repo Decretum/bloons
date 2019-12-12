@@ -9,5 +9,8 @@ public class RenderableLabel extends RenderableActor {
 		setActor(label);
 		setZIndex(zIndex);
 	}
-	
+
+	public Label getActor() {
+		return (Label)super.getActor();
+	}
 }

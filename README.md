@@ -16,7 +16,6 @@ Ideas that are not yet implemented that I would like to implement:
 - Instructions screen
 - Ability to upgrade towers
 - Ability to sell towers
-- Ability to purchase towers through an interface
 - Sound control
 - Regen and camo bloon functionality
 - Homing bullets for Reimu
