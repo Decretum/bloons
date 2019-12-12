@@ -17,7 +17,6 @@ import com.hongbao.bloons.actors.RenderableActor;
 import com.hongbao.bloons.actors.RenderableImageButton;
 import com.hongbao.bloons.actors.RenderableLabel;
 import com.hongbao.bloons.entities.Girl;
-import com.hongbao.bloons.factories.GirlFactory;
 import com.hongbao.bloons.helpers.ZIndex;
 import javafx.util.Pair;
 
@@ -82,7 +81,7 @@ public class Map {
 		sellBackground.setBounds(1652, 4, 144, 50);
 		sellBackground.setAlignment(Align.center);
 		sellBackground.setColor(Color.RED);
-		upgradeBackground.addListener(new ClickListener() {
+		sellBackground.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				sellSelectedGirl();
@@ -238,8 +237,14 @@ public class Map {
 	}
 
 	public void sellSelectedGirl() {
-		System.out.println("selling");
-		// todo
+		Player player = ((BloonsTouhouDefense)Gdx.app.getApplicationListener()).getPlayer();
+		GirlActor selectedGirl = getSelectedGirl();
+		
+		player.earnMoney(selectedGirl.getGirl().getSellPrice());
+		hideGirlDetailsModule();
+		onStageGirls.remove(selectedGirl);
+		selectedGirl.remove();
+		setSelectedGirl(null);
 	}
 	
 }
