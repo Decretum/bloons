@@ -20,7 +20,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.hongbao.bloons.actors.GirlActor;
-import com.hongbao.bloons.actors.RenderableActor;
 import com.hongbao.bloons.actors.RenderableImageButton;
 import com.hongbao.bloons.actors.RenderableLabel;
 import com.hongbao.bloons.comparators.SortByZIndex;
@@ -29,14 +28,12 @@ import com.hongbao.bloons.factories.GirlFactory;
 import com.hongbao.bloons.factories.MapFactory;
 import com.hongbao.bloons.helpers.ZIndex;
 
-import java.util.HashSet;
-import java.util.Set;
-
 
 public class BloonsTouhouDefense implements ApplicationListener {
 	
-	public static final boolean INFINITE_HEALTH = false; // for testing, mostly
-	public static final boolean INFINITE_MONEY = false;
+	public static final int MONEY = 200; // for testing, mostly
+	public static final int HEALTH = 999999999;
+	public static final boolean HELLA_BLOONS = false;
 	
 	public boolean paused;
 
@@ -52,7 +49,7 @@ public class BloonsTouhouDefense implements ApplicationListener {
 		Gdx.graphics.setWindowedMode(1800, 900);
 		paused = false;
 		stage = new Stage();
-		player = new Player();
+		player = new Player(MONEY, HEALTH);
 		musicPlayer = new MusicPlayer();
 		shapeRenderer = new ShapeRenderer();
 

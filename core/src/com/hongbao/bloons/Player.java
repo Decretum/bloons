@@ -2,8 +2,6 @@ package com.hongbao.bloons;
 
 import com.hongbao.bloons.entities.Girl;
 
-import static com.hongbao.bloons.BloonsTouhouDefense.INFINITE_MONEY;
-
 
 public class Player {
 	
@@ -49,17 +47,12 @@ public class Player {
 	}
 	
 	public boolean canPurchaseGirl(Girl girl) {
-		if (INFINITE_MONEY) {
-			return true;
-		}
 		return money >= girl.getCost();
 	}
 	
 	public void purchaseGirl(Girl girl) {
 		// really regretting the class name choice now
-		if (!INFINITE_MONEY) {
-			spendMoney(girl.getCost());
-		}
+		spendMoney(girl.getCost());
 	}
 	
 }

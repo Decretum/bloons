@@ -6,6 +6,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.RepeatAction;
+import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -75,6 +78,22 @@ public class Map {
 				upgradeSelectedGirl();
 			}
 		});
+		final RunnableAction upgradeLabelAction = new RunnableAction();
+		upgradeLabelAction.setRunnable(() -> {
+			if (getSelectedGirl().getGirl().getUpgradeCost() == Girl.NO_UPGRADES_AVAILABLE) {
+				upgradeBackground.setText("FULLY UPGRADED");
+				upgradeBackground.setColor(Color.GRAY);
+			} else {
+				Player player = ((BloonsTouhouDefense)Gdx.app.getApplicationListener()).getPlayer();
+				upgradeBackground.setText("UPGRADE");
+				if (player.getMoney() >= getSelectedGirl().getGirl().getUpgradeCost()) {
+					upgradeBackground.setColor(Color.BLUE);
+				} else {
+					upgradeBackground.setColor(Color.RED);
+				}
+			}
+		});
+		upgradeBackground.addAction(Actions.repeat(RepeatAction.FOREVER, upgradeLabelAction));
 		upgradeActor = new RenderableLabel(upgradeBackground, ZIndex.MENU_ITEM_Z_INDEX);
 
 		Label sellBackground = new Label("SELL", skin);
@@ -232,8 +251,14 @@ public class Map {
 	}
 
 	public void upgradeSelectedGirl() {
-		System.out.println("upgrading");
-		// todo
+		Player player = ((BloonsTouhouDefense)Gdx.app.getApplicationListener()).getPlayer();
+		GirlActor selectedGirl = getSelectedGirl();
+		
+		if (selectedGirl.getGirl().canUpgrade(player.getMoney())) {
+			int cost = selectedGirl.getGirl().upgrade();
+			player.spendMoney(cost);
+			showGirlDetailsModule();
+		}
 	}
 
 	public void sellSelectedGirl() {

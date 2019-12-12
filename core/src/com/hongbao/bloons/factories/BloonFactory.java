@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import static com.hongbao.bloons.BloonsTouhouDefense.HELLA_BLOONS;
+
 
 public class BloonFactory {
 	
@@ -256,7 +258,11 @@ public class BloonFactory {
 	}
 	
 	public static BloonQueue createBloonQueue() {
-		return createBloonQueueFromFile("default.txt");
+		if (HELLA_BLOONS) {
+			return createBloonQueueFromFile("hella_bloons.txt");
+		} else {
+			return createBloonQueueFromFile("default.txt");
+		}
 	}
 	
 	public static BloonQueue createBloonQueueFromFile(String fileName) {
