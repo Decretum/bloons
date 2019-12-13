@@ -21,7 +21,7 @@ public class BulletActor extends RenderableActor {
 	private float rotationAngle;
 	private float collisionRadius;
 	private BloonActor target;
-	private Set<BloonActor> damagedBloons; // todo make this work now that bloons make new bloons when popped
+	private Set<Long> damagedBloons;
 	
 	public BulletActor(Bullet bullet, float x, float y, float dx, float dy) {
 		this.bullet = bullet;
@@ -71,11 +71,22 @@ public class BulletActor extends RenderableActor {
 	}
 	
 	public boolean hasDamagedBloon(BloonActor bloonActor) {
-		return damagedBloons.contains(bloonActor);
+		if (damagedBloons.contains(bloonActor.getBloonId())) {
+			return true;
+		}
+		
+		Set<Long> parentIds = bloonActor.getParentBloonIds();
+		for (Long parentId : parentIds) {
+			if (damagedBloons.contains(parentId)) {
+				return true;
+			}
+		}
+		
+		return false;
 	}
 	
 	public void damageBloon(BloonActor bloonActor) {
-		damagedBloons.add(bloonActor);
+		damagedBloons.add(bloonActor.getBloonId());
 	}
 	
 	public BloonActor getTarget() {

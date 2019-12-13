@@ -14,10 +14,8 @@ To run the "game", just run DesktopLauncher.
 I'm currently reading up on examples from https://www.gamefromscratch.com/page/LibGDX-Tutorial-series.aspx, which is a little dated but otherwise fine.
 I'm using https://www.iloveimg.com/crop-image/crop-png since Microsoft paint doesn't seem to let me crop with a transparent background.
 
-Ideas that are not yet implemented that I would like to implement:
 
-- Have bloons potentially spawn multiple lesser bloons when popped
--- Revamp how popping works
+Ideas that are not yet implemented that I would like to implement:
 
 - More bloon types
 -- Blimps that may need its own class and needs to be able to rotate based on its direction
