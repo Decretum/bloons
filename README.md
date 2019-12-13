@@ -30,6 +30,8 @@ Ideas that are not yet implemented that I would like to implement:
 
 - Instructions screen
 
+- Actual levels
+
 - Sound control
 
 - Spell cards (ultimate attacks) for towers that have a separate cooldown

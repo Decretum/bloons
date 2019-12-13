@@ -119,6 +119,7 @@ public class BulletActor extends RenderableActor {
 				dx /= distance;
 				dy /= distance;
 			}
+			calculateRotationAngle();
 		}
 		
 		setX(getX() + dx * bullet.getSpeed() / 5);
