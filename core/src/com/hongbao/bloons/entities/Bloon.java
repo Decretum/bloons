@@ -1,5 +1,7 @@
 package com.hongbao.bloons.entities;
 
+import com.hongbao.bloons.helpers.BloonPoppedResult;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -47,7 +49,7 @@ public class Bloon {
 	public static final String IMAGE_FILE_EXTENSION = ".png";
 
 	public static final Map<Integer, Color> HEALTH_TO_COLOR = new HashMap<Integer, Color>() {
-		{
+		{ // todo probably make this a method once blimps exist
 			put(1, RED);
 			put(2, BLUE);
 			put(3, GREEN);
@@ -157,18 +159,24 @@ public class Bloon {
 	public void setRegen(boolean regen) {
 		this.regen = regen;
 	}
-
-	public int pop(int damage) {
-		int oldHealth = health;
-		health -= damage;
-		if (health > 0) {
-			color = HEALTH_TO_COLOR.get(health);
-			imageFileName = createImageFileName(color.getValue(), camo, regen);
-			speed = COLOR_TO_SPEED.get(color);
-		} else {
-			health = 0;
+	
+	public boolean willPopBloon(int damage) {
+		int resultingHealth = health - damage;
+		
+		if (resultingHealth <= 0) {
+			return true;
 		}
-		return oldHealth - health;
+		
+		Color resultingColor = HEALTH_TO_COLOR.get(resultingHealth);
+		return resultingColor != color;
+	}
+	
+	public void damage(int damage) {
+		this.health -= damage;
+	}
+
+	public BloonPoppedResult pop(int damage) {
+		return new BloonPoppedResult(this, damage);
 	}
 	
 	private static String createImageFileName(String color, boolean camo, boolean regen) {

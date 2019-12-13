@@ -174,6 +174,13 @@ public class BloonFactory {
 		return new Bloon(Bloon.Color.CERAMIC, 18, true, true);
 	}
 	
+	public static Bloon createBloonOfType(String type, int health) {
+		// In the case of bullets that do more than 1 damage, we could (for example) pop a parent bloon so hard that the resulting bloons end up damaged.
+		Bloon createdBloon = createBloonOfType(type);
+		createdBloon.setHealth(health);
+		return createdBloon;
+	}
+	
 	public static Bloon createBloonOfType(String type) {
 		// todo george at some point add all the variations of bloons too :(
 		if (type.endsWith("\r")) {

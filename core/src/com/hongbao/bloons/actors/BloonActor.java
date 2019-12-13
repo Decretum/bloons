@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.hongbao.bloons.BloonsTouhouDefense;
 import com.hongbao.bloons.entities.Bloon;
+import com.hongbao.bloons.helpers.BloonPoppedResult;
 import com.hongbao.bloons.helpers.ZIndex;
 import javafx.util.Pair;
 
@@ -53,25 +54,17 @@ public class BloonActor extends RenderableActor {
 		this.collisionRadius = collisionRadius;
 	}
 	
+	// Please avoid calling this method directly, instead use the BloonManager damage()
+	public void damage(int damage) {
+		bloon.damage(damage);
+	}
 	
 	// Please avoid calling this method directly, instead use the BloonManager pop()
-	public int pop(int damage) {
-		int popCount = bloon.pop(damage);
-		if (bloon.getHealth() > 0) {
-			float centerX = getCenterX();
-			float centerY = getCenterY();
-
-			texture.dispose();
-			texture = new Texture(Gdx.files.internal(bloon.getImageFileName()));
-			setX(centerX - texture.getWidth() * SCALE / 2f);
-			setY(centerY - texture.getHeight() * SCALE / 2f);
-			setBounds(getX(), getY(), texture.getWidth() * SCALE, texture.getHeight() * SCALE);
-			collisionRadius = texture.getWidth() * SCALE / 2f;
-		} else {
-			texture.dispose();
-			remove();
-		}
-		return popCount;
+	public BloonPoppedResult pop(int damage) {
+		BloonPoppedResult bloonPoppedResult = bloon.pop(damage);
+		texture.dispose();
+		remove();
+		return bloonPoppedResult;
 	}
 	
 	public void release() {

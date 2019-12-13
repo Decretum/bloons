@@ -8,6 +8,8 @@ import com.hongbao.bloons.actors.BulletActor;
 import com.hongbao.bloons.actors.GirlActor;
 import com.hongbao.bloons.entities.Bloon;
 import com.hongbao.bloons.factories.BloonFactory;
+import com.hongbao.bloons.helpers.BloonPoppedResult;
+import javafx.util.Pair;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -16,14 +18,16 @@ import java.util.Set;
 public class BloonManager {
 	
 	private Stage stage;
+	private Map map;
 	// A dedicated collection of onstage bloons is maintained to (probably) speed up collision checking
 	// especially when there are a lot of bullets on screen.
 	private Set<BloonActor> onstageBloons;
-	private Sound popSound;
+	private Sound popSound; // todo another sound for damaging bloons
 	private BloonQueue bloonQueue;
 	
-	public BloonManager(Stage stage) {
+	public BloonManager(Stage stage, Map map) {
 		this.stage = stage;
+		this.map = map;
 		onstageBloons = new HashSet<>();
 		popSound = Gdx.audio.newSound(Gdx.files.internal("music/pop.mp3"));
 		bloonQueue = BloonFactory.createBloonQueue();
@@ -68,14 +72,33 @@ public class BloonManager {
 	}
 	
 	public void popBloon(BloonActor bloonActor, int damage) {
-		int moneyEarned = bloonActor.pop(damage);
-		((BloonsTouhouDefense)Gdx.app.getApplicationListener()).getPlayer().earnMoney(moneyEarned);
+		Player player = ((BloonsTouhouDefense)Gdx.app.getApplicationListener()).getPlayer();
 		
-		if (bloonActor.getBloon().getHealth() <= 0) {
+		if (bloonActor.getBloon().willPopBloon(damage)) {
 			onstageBloons.remove(bloonActor);
+			BloonPoppedResult result = bloonActor.pop(damage);
+			player.earnMoney(result.getCashGenerated());
+			
+			BloonActor previousBloonActor = null;
+			for (Bloon bloon : result.getBloonsGenerated()) {
+				BloonActor generatedBloonActor;
+				if (previousBloonActor == null) {
+					 generatedBloonActor = new BloonActor(bloon, bloonActor.getCenterX(), bloonActor.getCenterY());
+				} else {
+					Pair<Float, Float> direction = map.getDirection(previousBloonActor.getCenterX(), previousBloonActor.getCenterY());
+					generatedBloonActor = new BloonActor(bloon, previousBloonActor.getCenterX() - direction.getKey(), previousBloonActor.getCenterY() - direction.getValue());
+				}
+				stage.addActor(generatedBloonActor);
+				onstageBloons.add(generatedBloonActor);
+				previousBloonActor = generatedBloonActor;
+			}
+			
+			popSound.play(0.5f);
+		} else {
+			bloonActor.damage(damage);
+			player.earnMoney(damage);
+			// todo play some other sound I guess
 		}
-		
-		popSound.play(0.5f);
 	}
 	
 	public boolean attackBloonIfInRange(GirlActor girlActor) {

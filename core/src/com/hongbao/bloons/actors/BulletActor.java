@@ -21,7 +21,7 @@ public class BulletActor extends RenderableActor {
 	private float rotationAngle;
 	private float collisionRadius;
 	private BloonActor target;
-	private Set<BloonActor> damagedBloons;
+	private Set<BloonActor> damagedBloons; // todo make this work now that bloons make new bloons when popped
 	
 	public BulletActor(Bullet bullet, float x, float y, float dx, float dy) {
 		this.bullet = bullet;

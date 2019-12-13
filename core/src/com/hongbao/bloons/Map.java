@@ -49,7 +49,7 @@ public class Map {
 
 	public Map(String backgroundImage, Stage stage) {
 		this.backgroundImage = backgroundImage;
-		this.bloonManager = new BloonManager(stage);
+		this.bloonManager = new BloonManager(stage, this);
 		onStageGirls = new HashSet<>();
 		selectedGirl = null;
 		this.stage = stage;

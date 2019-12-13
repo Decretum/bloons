@@ -61,7 +61,7 @@ public class BloonsTouhouDefense implements ApplicationListener {
 		
 		createMap();
 		createMenu();
-		//musicPlayer.playTitleMusic();
+		musicPlayer.playTitleMusic();
 	}
 
 	private void createMenu() {
