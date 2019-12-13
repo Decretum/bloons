@@ -16,9 +16,6 @@ I'm using https://www.iloveimg.com/crop-image/crop-png since Microsoft paint doe
 
 Ideas that are not yet implemented that I would like to implement:
 
-- Ability to upgrade towers
--- Maybe make hovering over the upgrade button show the upgraded tower stats in the UI
-
 - Homing bullets for Reimu
 -- Should probably lock on to a different nearby bloon if the original target has expired.
 

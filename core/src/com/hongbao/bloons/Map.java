@@ -67,17 +67,18 @@ public class Map {
 		final RunnableAction leftDataLabelAction = new RunnableAction();
 		leftDataLabelAction.setRunnable(() -> {
 			Girl girl = getSelectedGirl().getGirl();
-			if (hoveringOverUpgrade) {
+			Girl upgradedStats = girl.getUpgradedStats();
+			if (hoveringOverUpgrade && girl.getUpgradeCost() != Girl.NO_UPGRADES_AVAILABLE) {
 				leftDataActor.getActor().setText(
-				 girl.getName() + "\n" +
-				  "Damage: " + girl.getDamage() + " (" + 2 + ")\n" + // todo real values here
-				  "Pierce: " + girl.getPierce() + " (" + 2 + ")\n" +
-				  "Cooldown: " + girl.getAttackDelay() + " (" + 2 + ")\n" +
-				  "Sight: " + (int)girl.getVisualRange() + " (" + 2 + ")"
+				 girl.getName() + " " + (girl.getLevel() + 1) + "\n" +
+				  "Damage: " + girl.getDamage() + " (" + upgradedStats.getDamage() + ")\n" +
+				  "Pierce: " + girl.getPierce() + " (" + upgradedStats.getPierce() + ")\n" +
+				  "Cooldown: " + girl.getAttackDelay() + " (" + upgradedStats.getAttackDelay() + ")\n" +
+				  "Sight: " + (int)girl.getVisualRange() + " (" + upgradedStats.getVisualRange() + ")"
 				);
 			} else {
 				leftDataActor.getActor().setText(
-				 girl.getName() + "\n" +
+				 girl.getName() + " " + (girl.getLevel() + 1) + "\n" +
 				  "Damage: " + girl.getDamage() + "\n" +
 				  "Pierce: " + girl.getPierce() +"\n" +
 				  "Cooldown: " + girl.getAttackDelay() +"\n" +
@@ -94,11 +95,12 @@ public class Map {
 		final RunnableAction rightDataLabelAction = new RunnableAction();
 		rightDataLabelAction.setRunnable(() -> {
 			Girl girl = getSelectedGirl().getGirl();
-			if (hoveringOverUpgrade) {
+			Girl upgradedStats = girl.getUpgradedStats();
+			if (hoveringOverUpgrade && girl.getUpgradeCost() != Girl.NO_UPGRADES_AVAILABLE) {
 				rightDataActor.getActor().setText(
-				  "Range: " + (int)girl.getRange() + " (" + 2 + ")\n" +
-				  "Upgrade: " + girl.getUpgradeCostString() + " (" + 2 + ")\n" +
-				  "Sell: $" + girl.getSellPrice() + " (" + 2 + ")\n" +
+				  "Range: " + (int)girl.getRange() + " (" + upgradedStats.getRange() + ")\n" +
+				  "Upgrade: " + girl.getUpgradeCostString() + " (" + upgradedStats.getUpgradeCostString() + ")\n" +
+				  "Sell: $" + girl.getSellPrice() + "\n" +
 				  " \n" +
 				  " "
 				);
@@ -279,7 +281,7 @@ public class Map {
 		Girl girl = getSelectedGirl().getGirl();
 
 		leftDataActor.getActor().setText(
-				girl.getName() + "\n" +
+		 		girl.getName() + " " + (girl.getLevel() + 1) + "\n" +
 				"Damage: " + girl.getDamage() + "\n" +
 				"Pierce: " + girl.getPierce() +"\n" +
 				"Cooldown: " + girl.getAttackDelay() +"\n" +

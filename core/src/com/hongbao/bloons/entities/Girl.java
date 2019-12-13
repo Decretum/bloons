@@ -22,7 +22,7 @@ public class Girl {
 	private List<Integer> upgradeCost;
 	private int level;
 	private int totalInvestment;
-
+	
 	
 	public Girl(String name, List<Integer> attackDelay, List<Float> bulletSpeed, List<Integer> damage, List<Integer> pierce, List<Float> range, List<Float> visualRange, String imageFileName, String bulletFileName, int cost, List<Integer> upgradeCost) {
 		this.name = name;
@@ -100,6 +100,10 @@ public class Girl {
 	public int getSellPrice() {
 		return totalInvestment / 2;
 	}
+	
+	public int getLevel() {
+		return level;
+	}
 
 	public Bullet createBullet() {
 		return new Bullet(bulletSpeed.get(level), getDamage(), getPierce(), getRange(), bulletFileName);
@@ -117,6 +121,28 @@ public class Girl {
 			return false;
 		}
 		return currentCash >= getUpgradeCost();
+	}
+	
+	public Girl getUpgradedStats() {
+		if (getUpgradeCost() != NO_UPGRADES_AVAILABLE) {
+			Girl upgradedGirl = new Girl(
+			 name,
+			 attackDelay,
+			 bulletSpeed,
+			 damage,
+			 pierce,
+			 range,
+			 visualRange,
+			 imageFileName,
+			 bulletFileName,
+			 cost,
+			 upgradeCost
+			);
+			upgradedGirl.level = level + 1;
+			return upgradedGirl;
+		} else {
+			return null;
+		}
 	}
 	
 }
