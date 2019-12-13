@@ -1,9 +1,5 @@
 package com.hongbao.bloons.entities;
 
-import java.util.HashSet;
-import java.util.Set;
-
-
 public class Bullet {
 	
 	public static final String IMAGE_FOLDER = "img/projectiles/";
@@ -11,10 +7,10 @@ public class Bullet {
 	private float speed;
 	private int damage;
 	private int pierce;
-	private float maxRange; // because of how actions are evaluated, this is an approximation. But that's fine.
+	private float maxRange; // Because of how actions are evaluated, this is an approximation. But that's fine.
 	private float distanceTraveled;
+	private boolean homing;
 	private String imageFileName;
-	private Set<Bloon> damagedBloons;
 	
 	public Bullet() {
 		speed = 20f;
@@ -22,18 +18,18 @@ public class Bullet {
 		pierce = 2;
 		maxRange = 500;
 		distanceTraveled = 0;
+		homing = false;
 		imageFileName = IMAGE_FOLDER + "red_spell_card.png";
-		damagedBloons = new HashSet<>(pierce);
 	}
 	
-	public Bullet(float speed, int damage, int pierce, float maxRange, String imageFileName) {
+	public Bullet(float speed, int damage, int pierce, float maxRange, boolean homing, String imageFileName) {
 		this.speed = speed;
 		this.damage = damage;
 		this.pierce = pierce;
 		this.maxRange = maxRange;
 		this.imageFileName = IMAGE_FOLDER + imageFileName;
 		distanceTraveled = 0;
-		damagedBloons = new HashSet<>(pierce);
+		this.homing = homing;
 	}
 	
 	public float getSpeed() {
@@ -76,20 +72,20 @@ public class Bullet {
 		distanceTraveled += speed / 5;
 	}
 	
+	public boolean isHoming() {
+		return homing;
+	}
+	
+	public void setHoming(boolean homing) {
+		this.homing = homing;
+	}
+	
 	public String getImageFileName() {
 		return imageFileName;
 	}
 	
 	public void setImageFileName(String imageFileName) {
 		this.imageFileName = IMAGE_FOLDER + imageFileName;
-	}
-	
-	public boolean hasDamagedBloon(Bloon bloon) {
-		return damagedBloons.contains(bloon);
-	}
-	
-	public void damageBloon(Bloon bloon) {
-		damagedBloons.add(bloon);
 	}
 	
 }

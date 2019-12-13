@@ -61,7 +61,7 @@ public class BloonsTouhouDefense implements ApplicationListener {
 		
 		createMap();
 		createMenu();
-		musicPlayer.playTitleMusic();
+		//musicPlayer.playTitleMusic();
 	}
 
 	private void createMenu() {
@@ -311,7 +311,7 @@ public class BloonsTouhouDefense implements ApplicationListener {
 	public Player getPlayer() {
 		return player;
 	}
-
+	
 	@Override
 	public void resize(int width, int height) {
 

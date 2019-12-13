@@ -47,8 +47,8 @@ public class BloonManager {
 			float distance = Map.distanceBetweenActors(bulletActor, bloonActor);
 			
 			if (distance < collisionDistance) {
-				if (!bulletActor.getBullet().hasDamagedBloon(bloonActor.getBloon())) {
-					bulletActor.getBullet().damageBloon(bloonActor.getBloon());
+				if (!bulletActor.hasDamagedBloon(bloonActor)) {
+					bulletActor.damageBloon(bloonActor);
 					bloonsToBePopped.add(bloonActor);
 					bulletActor.decrementPierce();
 					
@@ -58,6 +58,10 @@ public class BloonManager {
 					}
 				}
 			}
+		}
+		
+		if (bulletActor.getBullet().isHoming()) {
+			bulletActor.setTarget(null);
 		}
 		
 		bloonsToBePopped.forEach((bloonActor) -> popBloon(bloonActor, bulletActor.getBullet().getDamage()));
@@ -124,6 +128,31 @@ public class BloonManager {
 			
 			girlActor.lookAtBloon(bloonActor);
 		}
+	}
+	
+	public boolean containsBloon(BloonActor target) {
+		return onstageBloons.contains(target);
+	}
+	
+	public BloonActor getNewHomingTarget(BulletActor bulletActor) {
+		// Gets the closest bloon to the current bullet
+		if (onstageBloons.isEmpty()) {
+			return null;
+		}
+		
+		BloonActor bloonActor = null;
+		
+		for (BloonActor actor : onstageBloons) {
+			if (!bulletActor.hasDamagedBloon(actor)) {
+				if (bloonActor == null) {
+					bloonActor = actor;
+				} else if (Map.distanceBetweenActors(actor, bulletActor) < Map.distanceBetweenActors(bloonActor, bulletActor)) {
+					bloonActor = actor;
+				}
+			}
+		}
+		
+		return bloonActor;
 	}
 	
 }

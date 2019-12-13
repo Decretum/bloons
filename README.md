@@ -16,9 +16,6 @@ I'm using https://www.iloveimg.com/crop-image/crop-png since Microsoft paint doe
 
 Ideas that are not yet implemented that I would like to implement:
 
-- Homing bullets for Reimu
--- Should probably lock on to a different nearby bloon if the original target has expired.
-
 - Have bloons potentially spawn multiple lesser bloons when popped
 -- Revamp how popping works
 
