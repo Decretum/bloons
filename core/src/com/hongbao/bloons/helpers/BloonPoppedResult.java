@@ -88,7 +88,7 @@ public class BloonPoppedResult {
 		return healthDifference;
 	}
 	
-	private static int getTotalHealthOfBloon(Bloon bloon) {
+	public static int getTotalHealthOfBloon(Bloon bloon) {
 		if (bloon.getHealth() <= 5) {
 			// Normal bloon (Red to Pink)
 			return bloon.getHealth();

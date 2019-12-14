@@ -217,4 +217,8 @@ public class Bloon {
 		return ZOMG;
 	}
 	
+	public boolean isBlimp() {
+		return color == MOAB || color == BFB || color == ZOMG;
+	}
+	
 }

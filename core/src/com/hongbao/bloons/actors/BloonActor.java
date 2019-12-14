@@ -3,6 +3,7 @@ package com.hongbao.bloons.actors;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.hongbao.bloons.BloonsTouhouDefense;
 import com.hongbao.bloons.entities.Bloon;
 import com.hongbao.bloons.helpers.BloonPoppedResult;
@@ -22,17 +23,16 @@ public class BloonActor extends RenderableActor {
 	private Set<Long> parentBloonIds;
 	private Long bloonId;
 	private Bloon bloon;
-	private Texture texture;
 	private float collisionRadius;
 	
 	public BloonActor(Bloon bloon, float x, float y, BloonActor parent) {
 		this.bloon = bloon;
-		texture = new Texture(Gdx.files.internal(bloon.getImageFileName()));
+		textureRegion = new TextureRegion(new Texture(Gdx.files.internal(bloon.getImageFileName())));
 
-		collisionRadius = texture.getWidth() * SCALE / 2f;
+		collisionRadius = textureRegion.getTexture().getWidth() * SCALE / 2f;
 		
 		setZIndex(ZIndex.BLOON_Z_INDEX);
-		setBounds(x - texture.getWidth() * SCALE / 2f, y - texture.getHeight() * SCALE / 2f, texture.getWidth() * SCALE, texture.getHeight() * SCALE);
+		setBounds(x - textureRegion.getTexture().getWidth() * SCALE / 2f, y - textureRegion.getTexture().getHeight() * SCALE / 2f, textureRegion.getTexture().getWidth() * SCALE, textureRegion.getTexture().getHeight() * SCALE);
 		
 		if (parent != null) {
 			parentBloonIds = new HashSet(parent.getParentBloonIds());
@@ -53,12 +53,12 @@ public class BloonActor extends RenderableActor {
 	
 	@Override
 	public float getCenterX() {
-		return getX() + texture.getWidth() * SCALE / 2f;
+		return getX() + textureRegion.getTexture().getWidth() * SCALE / 2f;
 	}
 	
 	@Override
 	public float getCenterY() {
-		return getY() + texture.getHeight() * SCALE / 2f;
+		return getY() + textureRegion.getTexture().getHeight() * SCALE / 2f;
 	}
 	
 	public float getCollisionRadius() {
@@ -85,14 +85,14 @@ public class BloonActor extends RenderableActor {
 	// Please avoid calling this method directly, instead use the BloonManager pop()
 	public BloonPoppedResult pop(int damage) {
 		BloonPoppedResult bloonPoppedResult = bloon.pop(damage);
-		texture.dispose();
+		textureRegion.getTexture().dispose();
 		remove();
 		return bloonPoppedResult;
 	}
 	
 	public void release() {
-		((BloonsTouhouDefense)Gdx.app.getApplicationListener()).getPlayer().decreaseHealth(bloon.getHealth());
-		texture.dispose();
+		((BloonsTouhouDefense)Gdx.app.getApplicationListener()).getPlayer().decreaseHealth(BloonPoppedResult.getTotalHealthOfBloon(bloon));
+		textureRegion.getTexture().dispose();
 		remove();
 	}
 	
@@ -102,14 +102,32 @@ public class BloonActor extends RenderableActor {
 		
 		bloon.incrementDistanceTravelled();
 		
-		if (getX() > 1500) {
+		if (getCenterX() > 1500) {
 			release();
 		}
 	}
 
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
-		batch.draw(texture, getX(), getY(), texture.getWidth() * SCALE, texture.getHeight() * SCALE);
+		if (bloon.isBlimp()) {
+			BloonsTouhouDefense app = (BloonsTouhouDefense)Gdx.app.getApplicationListener();
+			Pair<Float, Float> direction = app.getMap().getDirection(getCenterX(), getCenterY());
+			float rotationAngle = (float)(Math.atan2(direction.getKey(), direction.getValue()) / Math.PI * 180);
+			batch.draw(
+			 textureRegion,
+			 getX(),
+			 getY(),
+			 getCenterX() - getX(),
+			 getCenterY() - getY(),
+			 textureRegion.getTexture().getWidth() * SCALE,
+			 textureRegion.getTexture().getHeight() * SCALE,
+			 1f,
+			 1f,
+			 -rotationAngle
+			);
+		} else {
+			batch.draw(textureRegion.getTexture(), getX(), getY(), textureRegion.getTexture().getWidth() * SCALE, textureRegion.getTexture().getHeight() * SCALE);
+		}
 	}
 	
 	@Override
