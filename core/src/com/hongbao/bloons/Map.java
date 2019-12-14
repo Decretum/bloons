@@ -225,7 +225,7 @@ public class Map {
 		float y = girlActor.getCenterY();
 		float r = girlActor.getCollisionRadius();
 		
-		if (y < 0 || y > 900 || x < 0 || x > 1500) {
+		if (y < 0 || y > 900 || x < 0 || x > 1550) {
 			return false;
 		}
 		

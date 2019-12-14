@@ -9,7 +9,7 @@ import static com.hongbao.bloons.entities.Girl.NO_UPGRADES_AVAILABLE;
 
 public class GirlFactory {
 
-	public static Girl createReimu() {
+	public static Girl createReimu() { // 689
 		return new Girl(
 		 "Reimu",
 		 Arrays.asList(20, 15, 10),
@@ -26,7 +26,7 @@ public class GirlFactory {
 		);
 	}
 	
-	public static Girl createYukari() {
+	public static Girl createYukari() { // 3600
 		return new Girl("Yukari",
 		 Arrays.asList(30, 25, 5),
 		 Arrays.asList(50f, 100f, 150f),
@@ -42,7 +42,7 @@ public class GirlFactory {
 		);
 	}
 	
-	public static Girl createMarisa() {
+	public static Girl createMarisa() { // 1403
 		return new Girl(
 		 "Marisa",
 		 Arrays.asList(20, 20, 20),
@@ -59,7 +59,7 @@ public class GirlFactory {
 		);
 	}
 	
-	public static Girl createAlice() {
+	public static Girl createAlice() { // 3500
 		return new Girl(
 		 "Alice",
 		 Arrays.asList(30, 20, 10),
@@ -76,7 +76,7 @@ public class GirlFactory {
 		);
 	}
 	
-	public static Girl createSakuya() {
+	public static Girl createSakuya() { // 500
 		return new Girl("Sakuya",
 		 Arrays.asList(10, 5, 2),
 		 Arrays.asList(20f, 20f, 20f),
@@ -92,7 +92,7 @@ public class GirlFactory {
 		);
 	}
 	
-	public static Girl createRemilia() {
+	public static Girl createRemilia() { // 3000
 		return new Girl(
 		 "Remilia",
 		 Arrays.asList(10, 10, 10),
@@ -109,7 +109,7 @@ public class GirlFactory {
 		);
 	}
 	
-	public static Girl createYoumu() {
+	public static Girl createYoumu() { // 500
 		return new Girl(
 		 "Youmu",
 		 Arrays.asList(50, 45, 40),
@@ -126,7 +126,7 @@ public class GirlFactory {
 		);
 	}
 	
-	public static Girl createYuyuko() {
+	public static Girl createYuyuko() { // 6500
 		return new Girl(
 		 "Yuyuko",
 		 Arrays.asList(40, 40, 30),

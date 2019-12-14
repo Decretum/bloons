@@ -5,16 +5,19 @@ import com.hongbao.bloons.helpers.BloonPoppedResult;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.hongbao.bloons.entities.Bloon.Color.BFB;
 import static com.hongbao.bloons.entities.Bloon.Color.BLACK;
 import static com.hongbao.bloons.entities.Bloon.Color.BLUE;
 import static com.hongbao.bloons.entities.Bloon.Color.CERAMIC;
 import static com.hongbao.bloons.entities.Bloon.Color.GREEN;
 import static com.hongbao.bloons.entities.Bloon.Color.LEAD;
+import static com.hongbao.bloons.entities.Bloon.Color.MOAB;
 import static com.hongbao.bloons.entities.Bloon.Color.PINK;
 import static com.hongbao.bloons.entities.Bloon.Color.RAINBOW;
 import static com.hongbao.bloons.entities.Bloon.Color.RED;
 import static com.hongbao.bloons.entities.Bloon.Color.YELLOW;
 import static com.hongbao.bloons.entities.Bloon.Color.ZEBRA;
+import static com.hongbao.bloons.entities.Bloon.Color.ZOMG;
 
 
 public class Bloon {
@@ -30,7 +33,10 @@ public class Bloon {
 		LEAD("lead"),
 		ZEBRA("zebra"),
 		RAINBOW("rainbow"),
-		CERAMIC("ceramic");
+		CERAMIC("ceramic"),
+		MOAB("moab"),
+		BFB("bfb"),
+		ZOMG("zomg");
 
 		private String value;
 
@@ -48,8 +54,8 @@ public class Bloon {
 	public static final String REGROWTH_BLOON_DENOTATION = "_regrowth";
 	public static final String IMAGE_FILE_EXTENSION = ".png";
 
-	public static final Map<Integer, Color> HEALTH_TO_COLOR = new HashMap<Integer, Color>() {
-		{ // todo probably make this a method once blimps exist
+	private static final Map<Integer, Color> HEALTH_TO_COLOR = new HashMap<Integer, Color>() {
+		{
 			put(1, RED);
 			put(2, BLUE);
 			put(3, GREEN);
@@ -58,16 +64,6 @@ public class Bloon {
 			put(6, BLACK);
 			put(7, ZEBRA);
 			put(8, RAINBOW);
-			put(9, CERAMIC);
-			put(10, CERAMIC);
-			put(11, CERAMIC);
-			put(12, CERAMIC);
-			put(13, CERAMIC);
-			put(14, CERAMIC);
-			put(15, CERAMIC);
-			put(16, CERAMIC);
-			put(17, CERAMIC);
-			put(18, CERAMIC);
 		}
 	};
 	
@@ -83,6 +79,9 @@ public class Bloon {
 			put(ZEBRA, 7);
 			put(RAINBOW, 8);
 			put(CERAMIC, 7);
+			put(MOAB, 5);
+			put(BFB, 3);
+			put(ZOMG, 2);
 		}
 	};
 
@@ -140,6 +139,10 @@ public class Bloon {
 		return distanceTravelled;
 	}
 	
+	public void setDistanceTravelled(int distanceTravelled) {
+		this.distanceTravelled = distanceTravelled;
+	}
+	
 	public void incrementDistanceTravelled() {
 		distanceTravelled += speed;
 	}
@@ -167,7 +170,7 @@ public class Bloon {
 			return true;
 		}
 		
-		Color resultingColor = HEALTH_TO_COLOR.get(resultingHealth);
+		Color resultingColor = getColorFromHealth(resultingHealth);
 		return resultingColor != color;
 	}
 	
@@ -192,6 +195,26 @@ public class Bloon {
 		fileNameBuilder.append(IMAGE_FILE_EXTENSION);
 
 		return fileNameBuilder.toString();
+	}
+	
+	public static Color getColorFromHealth(int health) {
+		if (HEALTH_TO_COLOR.containsKey(health)) {
+			return HEALTH_TO_COLOR.get(health);
+		}
+		
+		if (health <= 18) {
+			return CERAMIC;
+		}
+		
+		if (health <= 218) {
+			return MOAB;
+		}
+		
+		if (health <= 918) {
+			return BFB;
+		}
+		
+		return ZOMG;
 	}
 	
 }

@@ -174,6 +174,18 @@ public class BloonFactory {
 		return new Bloon(Bloon.Color.CERAMIC, 18, true, true);
 	}
 	
+	public static Bloon createMOAB() {
+		return new Bloon(Bloon.Color.MOAB, 218, false, false);
+	}
+	
+	public static Bloon createBFB() {
+		return new Bloon(Bloon.Color.BFB, 918, false, false);
+	}
+	
+	public static Bloon createZOMG() {
+		return new Bloon(Bloon.Color.ZOMG, 4918, false, false);
+	}
+	
 	public static Bloon createBloonOfType(String type, int health) {
 		// In the case of bullets that do more than 1 damage, we could (for example) pop a parent bloon so hard that the resulting bloons end up damaged.
 		Bloon createdBloon = createBloonOfType(type);
@@ -224,6 +236,15 @@ public class BloonFactory {
 		}
 		if ("ceramic".equals(type)) {
 			return createCeramicBloon();
+		}
+		if ("moab".equals(type)) {
+			return createMOAB();
+		}
+		if ("bfb".equals(type)) {
+			return createBFB();
+		}
+		if ("zomg".equals(type)) {
+			return createZOMG();
 		}
 		throw new RuntimeException("Unexpected bloon type: " +type);
 	}

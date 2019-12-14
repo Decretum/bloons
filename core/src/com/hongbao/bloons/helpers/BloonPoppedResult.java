@@ -8,24 +8,28 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import static com.hongbao.bloons.entities.Bloon.Color.BFB;
 import static com.hongbao.bloons.entities.Bloon.Color.BLACK;
 import static com.hongbao.bloons.entities.Bloon.Color.BLUE;
 import static com.hongbao.bloons.entities.Bloon.Color.CERAMIC;
 import static com.hongbao.bloons.entities.Bloon.Color.GREEN;
 import static com.hongbao.bloons.entities.Bloon.Color.LEAD;
+import static com.hongbao.bloons.entities.Bloon.Color.MOAB;
 import static com.hongbao.bloons.entities.Bloon.Color.PINK;
 import static com.hongbao.bloons.entities.Bloon.Color.RAINBOW;
 import static com.hongbao.bloons.entities.Bloon.Color.RED;
 import static com.hongbao.bloons.entities.Bloon.Color.YELLOW;
 import static com.hongbao.bloons.entities.Bloon.Color.ZEBRA;
-import static com.hongbao.bloons.entities.Bloon.HEALTH_TO_COLOR;
+import static com.hongbao.bloons.entities.Bloon.Color.ZOMG;
 
 
 public class BloonPoppedResult {
 	
 	public static final Map<Bloon.Color, Integer> COLOR_TO_RATIO = new HashMap<Bloon.Color, Integer>() {
 		{
-			// todo later have blimps here too
+			put(ZOMG, 1);
+			put(BFB, 4);
+			put(MOAB, 16);
 			put(CERAMIC, 64);
 			put(RAINBOW, 128);
 			put(ZEBRA, 256);
@@ -48,12 +52,14 @@ public class BloonPoppedResult {
 		if (bloon.getHealth() > damage) {
 			Bloon.Color originalColor = bloon.getColor();
 			int newBloonHealth = bloon.getHealth() - damage;
-			Bloon.Color poppedColor = HEALTH_TO_COLOR.get(newBloonHealth);
+			Bloon.Color poppedColor = Bloon.getColorFromHealth(newBloonHealth);
 			
 			int bloonsToBeCreated = COLOR_TO_RATIO.get(poppedColor) / COLOR_TO_RATIO.get(originalColor);
 			
 			for (int x = 0; x < bloonsToBeCreated; x++) {
-				bloonsGenerated.add(BloonFactory.createBloonOfType(poppedColor.getValue(), newBloonHealth));
+				Bloon bloonOfType = BloonFactory.createBloonOfType(poppedColor.getValue(), newBloonHealth);
+				bloonOfType.setDistanceTravelled(bloon.getDistanceTravelled());
+				bloonsGenerated.add(bloonOfType);
 			}
 		}
 		
@@ -98,8 +104,16 @@ public class BloonPoppedResult {
 		} else if (bloon.getHealth() <= 18) {
 			// Ceramic bloon (two rainbow bloons plus whatever health is left on the shell of the bloon)
 			return 94 + (bloon.getHealth() - 8);
-		} // todo blimps later
-		return 0;
+		} else if (bloon.getHealth() <= 218) {
+			// Moab (with 4 ceramic bloons)
+			return 416 + (bloon.getHealth() - 18);
+		} else if (bloon.getHealth() <= 918) {
+			// BFB (with 4 MOABs)
+			return 2464 + (bloon.getHealth() - 218);
+		} else {
+			// ZOMG (with 4 BFBs)
+			return 12656 + (bloon.getHealth() - 918);
+		}
 	}
 	
 }
