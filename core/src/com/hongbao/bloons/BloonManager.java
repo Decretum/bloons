@@ -135,7 +135,7 @@ public class BloonManager {
 		for (BloonActor bloonActor : onstageBloons) {
 			float distance = Map.distanceBetweenActors(girlActor, bloonActor);
 			
-			if (distance < girlActor.getGirl().getVisualRange()) {
+			if (distance - bloonActor.getCollisionRadius() < girlActor.getGirl().getVisualRange()) {
 				bloonsInRange.add(bloonActor);
 			}
 		}

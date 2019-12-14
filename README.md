@@ -21,8 +21,6 @@ Ideas that are not yet implemented that I would like to implement:
 -- Need to figure out which towers shouldn't detect camo bloons... Probably just Marisa and Youmu but idk lol
 -- Regen should probably wait after the "Have bloons potentially spawn multiple lesser bloons"
 
-- More maps
-
 - Instructions screen
 
 - Actual levels
