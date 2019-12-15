@@ -61,7 +61,7 @@ public class BloonsTouhouDefense implements ApplicationListener {
 		
 		createMap();
 		createMenu();
-		musicPlayer.playTitleMusic();
+		musicPlayer.playStageMusic();
 	}
 
 	private void createMenu() {
@@ -73,6 +73,9 @@ public class BloonsTouhouDefense implements ApplicationListener {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				map.getBloonManager().nextLevel();
+				if (map.getBloonManager().getLevel() == 40) {
+					musicPlayer.playFinalBossMusic();
+				}
 			}
 		});
 		stage.addActor(new RenderableImageButton(title, ZIndex.MENU_Z_INDEX));

@@ -42,6 +42,10 @@ public class BloonManager {
 	public boolean canGoToNextLevel() {
 		return bloonQueue.hasNextLevel() && onstageBloons.isEmpty() && bloonQueue.isEmpty();
 	}
+
+	public int getLevel() {
+		return bloonQueue.getLevel();
+	}
 	
 	public void createBloons() {
 		Set<Bloon> bloonsToBeCreated = bloonQueue.getBloons();

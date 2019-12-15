@@ -39,6 +39,10 @@ public class BloonQueue {
 		return generatedBloons;
 	}
 
+	public int getLevel() {
+		return currentLevel;
+	}
+
 	public void nextLevel() {
 		currentLevel++;
 		currentIndex = 0;

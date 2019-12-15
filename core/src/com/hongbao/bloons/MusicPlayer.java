@@ -13,22 +13,45 @@ public class MusicPlayer {
 	}
 	
 	public void playTitleMusic() {
+		stopMusic();
 		backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("music/title.mp3"));
+		backgroundMusic.setVolume(0.5f);
+		backgroundMusic.setLooping(true);
+		backgroundMusic.play();
+	}
+
+	public void playStageMusic() {
+		stopMusic();
+		backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("music/demystify_feast.mp3"));
+		backgroundMusic.setVolume(0.5f);
+		backgroundMusic.setLooping(true);
+		backgroundMusic.play();
+	}
+
+	public void playFinalBossMusic() {
+		stopMusic();
+		backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("music/night_falls.mp3"));
 		backgroundMusic.setVolume(0.5f);
 		backgroundMusic.setLooping(true);
 		backgroundMusic.play();
 	}
 	
 	public void pause() {
-		backgroundMusic.pause();
+		if (backgroundMusic != null) {
+			backgroundMusic.pause();
+		}
 	}
 	
 	public void resume() {
-		backgroundMusic.play();
+		if (backgroundMusic != null) {
+			backgroundMusic.play();
+		}
 	}
 	
 	public void stopMusic() {
-		backgroundMusic.stop();
+		if (backgroundMusic != null) {
+			backgroundMusic.stop();
+		}
 	}
 
 }
