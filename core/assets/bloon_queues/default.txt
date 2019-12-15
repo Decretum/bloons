@@ -1,10 +1,39 @@
 20 30 red
-20 30 blue
-30 30 green
-30 30 yellow,pink
-10 15 black
-50 15 lead,zebra
-100 15 ceramic
-1 600 moab
-1 1200 bfb
-1 1 zomg
+END
+35 30 red
+END
+25 20 red
+5 30 blue
+END
+35 20 red
+18 30 blue
+END
+5 20 red
+27 20 blue
+END
+15 20 red
+15 20 blue
+4 20 green
+END
+20 20 red
+20 20 blue
+5 20 green
+END
+10 20 red
+20 20 blue
+14 20 green
+END
+30 20 green
+END
+102 15 blue
+END
+6 10 red
+12 20 blue
+12 20 green
+3 20 yellow
+END
+15 20 blue
+10 20 green
+5 20 yellow
+END
+// TODO MORE BLOONS

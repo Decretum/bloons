@@ -69,6 +69,12 @@ public class BloonsTouhouDefense implements ApplicationListener {
 
 		ImageButton title = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("img/ui/header.png")))));
 		title.setPosition(1500, 0);
+		title.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				map.getBloonManager().nextLevel();
+			}
+		});
 		stage.addActor(new RenderableImageButton(title, ZIndex.MENU_Z_INDEX));
 
 		Label moneyLabel = new Label(String.valueOf(player.getMoney()), skin);

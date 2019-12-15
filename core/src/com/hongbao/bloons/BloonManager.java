@@ -32,6 +32,16 @@ public class BloonManager {
 		popSound = Gdx.audio.newSound(Gdx.files.internal("music/pop.mp3"));
 		bloonQueue = BloonFactory.createBloonQueue();
 	}
+
+	public void nextLevel() {
+		if (canGoToNextLevel()) {
+			bloonQueue.nextLevel();
+		}
+	}
+
+	public boolean canGoToNextLevel() {
+		return bloonQueue.hasNextLevel() && onstageBloons.isEmpty() && bloonQueue.isEmpty();
+	}
 	
 	public void createBloons() {
 		Set<Bloon> bloonsToBeCreated = bloonQueue.getBloons();

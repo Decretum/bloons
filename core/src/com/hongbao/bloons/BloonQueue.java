@@ -11,23 +11,25 @@ public class BloonQueue {
 	
 	// Defines a sequence of bloons appearing on the map as well as when they should appear
 	
-	private List<Bloon> bloons;
-	private List<Long> intervals;
+	private List<List<Bloon>> bloons;
+	private List<List<Long>> intervals;
+	private int currentLevel;
 	private int currentIndex;
 	private int clock;
 	
-	public BloonQueue(List<Bloon> bloons, List<Long> intervals) {
+	public BloonQueue(List<List<Bloon>> bloons, List<List<Long>> intervals) {
 		this.bloons = bloons;
 		this.intervals = intervals;
+		currentLevel = 0;
 		currentIndex = 0;
 		clock = 0;
 	}
 	
 	public Set<Bloon> getBloons() {
 		HashSet<Bloon> generatedBloons = new HashSet<>();
-		while (currentIndex < bloons.size()) {
-			if (intervals.get(currentIndex) == clock) {
-				generatedBloons.add(bloons.get(currentIndex));
+		while (currentIndex < bloons.get(currentLevel).size()) {
+			if (intervals.get(currentLevel).get(currentIndex) == clock) {
+				generatedBloons.add(bloons.get(currentLevel).get(currentIndex));
 				currentIndex++;
 			} else {
 				break;
@@ -35,6 +37,20 @@ public class BloonQueue {
 		}
 		clock++;
 		return generatedBloons;
+	}
+
+	public void nextLevel() {
+		currentLevel++;
+		currentIndex = 0;
+		clock = 0;
+	}
+
+	public boolean hasNextLevel() {
+		return currentLevel != bloons.size() - 1;
+	}
+
+	public boolean isEmpty() {
+		return currentIndex == bloons.get(currentLevel).size();
 	}
 	
 }

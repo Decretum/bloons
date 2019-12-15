@@ -298,12 +298,17 @@ public class BloonFactory {
 		String fileContents = file.readString();
 		String[] lines = fileContents.split("\n");
 		long timer = 0;
-		
+
+		List<List<Bloon>> bloonLevels = new ArrayList<>();
+		List<List<Long>> intervalLevels = new ArrayList<>();
+
 		List<Bloon> bloons = new ArrayList<>();
 		List<Long> intervals = new ArrayList<>();
 		
 		for (String line : lines) {
-			if (line.contains(" ")) {
+			if (line.startsWith("//")) {
+				// do nothing
+			} else if (line.contains(" ")) {
 				String[] parts = line.split(" ");
 				if (parts.length == 3) {
 					int amount = Integer.parseInt(parts[0]);
@@ -322,12 +327,18 @@ public class BloonFactory {
 				} else {
 					System.out.println("BloonFactory.createBloonQueue(wtf2) { " + line + " }");
 				}
+			} else if (line.contains("END")) {
+				bloonLevels.add(bloons);
+				intervalLevels.add(intervals);
+				bloons = new ArrayList<>();
+				intervals = new ArrayList<>();
+				timer = 0;
 			} else {
 				System.out.println("BloonFactory.createBloonQueue(wtf1) { " + line + " }");
 			}
 		}
 			
-		return new BloonQueue(bloons, intervals);
+		return new BloonQueue(bloonLevels, intervalLevels);
 	}
 	
 }
