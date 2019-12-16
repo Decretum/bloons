@@ -413,6 +413,8 @@ public class BloonsTouhouDefense implements ApplicationListener {
 				girl = GirlFactory.createYuyuko();
 			} else if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
 				tripleSpeed = !tripleSpeed;
+			} else if (Gdx.input.isKeyJustPressed(Input.Keys.N)) {
+				map.getBloonManager().nextLevel();
 			}
 			
 			if (girl != null) {

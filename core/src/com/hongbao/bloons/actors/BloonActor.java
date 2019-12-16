@@ -101,9 +101,10 @@ public class BloonActor extends RenderableActor {
 		setY(getY() + direction.getValue() * bloon.getSpeed() / 5);
 		
 		bloon.incrementDistanceTravelled();
-		
+
 		if (getCenterX() > 1500) {
 			release();
+			((BloonsTouhouDefense)Gdx.app.getApplicationListener()).getMap().getBloonManager().removeBloonFromStage(this);
 		}
 	}
 

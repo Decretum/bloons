@@ -170,6 +170,10 @@ public class BloonManager {
 	public boolean containsBloon(BloonActor target) {
 		return onstageBloons.contains(target);
 	}
+
+	public void removeBloonFromStage(BloonActor actor) {
+		onstageBloons.remove(actor);
+	}
 	
 	public BloonActor getNewHomingTarget(BulletActor bulletActor) {
 		// Gets the closest bloon to the current bullet
