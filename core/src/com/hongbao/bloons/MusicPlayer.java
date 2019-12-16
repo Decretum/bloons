@@ -11,29 +11,31 @@ public class MusicPlayer {
 	public MusicPlayer() {
 		backgroundMusic = null;
 	}
-	
-	public void playTitleMusic() {
+
+	private void playMusic(String fileName) {
+		boolean wasPlaying = true;
+		if (backgroundMusic != null) {
+			wasPlaying = backgroundMusic.isPlaying();
+		}
 		stopMusic();
-		backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("music/title.mp3"));
+		backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal(fileName));
 		backgroundMusic.setVolume(0.5f);
 		backgroundMusic.setLooping(true);
-		backgroundMusic.play();
+		if (wasPlaying) {
+			backgroundMusic.play();
+		}
+	}
+
+	public void playTitleMusic() {
+		playMusic("music/title.mp3");
 	}
 
 	public void playStageMusic() {
-		stopMusic();
-		backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("music/demystify_feast.mp3"));
-		backgroundMusic.setVolume(0.5f);
-		backgroundMusic.setLooping(true);
-		backgroundMusic.play();
+		playMusic("music/demystify_feast.mp3");
 	}
 
 	public void playFinalBossMusic() {
-		stopMusic();
-		backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("music/night_falls.mp3"));
-		backgroundMusic.setVolume(0.5f);
-		backgroundMusic.setLooping(true);
-		backgroundMusic.play();
+		playMusic("music/night_falls.mp3");
 	}
 	
 	public void pause() {
@@ -51,6 +53,16 @@ public class MusicPlayer {
 	public void stopMusic() {
 		if (backgroundMusic != null) {
 			backgroundMusic.stop();
+		}
+	}
+
+	public void toggleMusic() {
+		if (backgroundMusic != null) {
+			if (backgroundMusic.isPlaying()) {
+				pause();
+			} else {
+				resume();
+			}
 		}
 	}
 

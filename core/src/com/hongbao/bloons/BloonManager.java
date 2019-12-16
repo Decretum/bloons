@@ -36,6 +36,12 @@ public class BloonManager {
 	public void nextLevel() {
 		if (canGoToNextLevel()) {
 			bloonQueue.nextLevel();
+			MusicPlayer musicPlayer = ((BloonsTouhouDefense) Gdx.app.getApplicationListener()).getMusicPlayer();
+			if (map.getBloonManager().getLevel() == 1) {
+				musicPlayer.playStageMusic();
+			} else if (map.getBloonManager().getLevel() == 40) {
+				musicPlayer.playFinalBossMusic();
+			}
 		}
 	}
 
@@ -45,6 +51,10 @@ public class BloonManager {
 
 	public int getLevel() {
 		return bloonQueue.getLevel();
+	}
+
+	public boolean hasWonGame() {
+		return !bloonQueue.hasNextLevel() && onstageBloons.isEmpty() && bloonQueue.isEmpty();
 	}
 	
 	public void createBloons() {

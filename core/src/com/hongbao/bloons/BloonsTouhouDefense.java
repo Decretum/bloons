@@ -83,11 +83,6 @@ public class BloonsTouhouDefense implements ApplicationListener {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				map.getBloonManager().nextLevel();
-				if (map.getBloonManager().getLevel() == 1) {
-					musicPlayer.playStageMusic();
-				} else if (map.getBloonManager().getLevel() == 40) {
-					musicPlayer.playFinalBossMusic();
-				}
 			}
 		});
 		final RunnableAction titleAction = new RunnableAction();
@@ -101,8 +96,13 @@ public class BloonsTouhouDefense implements ApplicationListener {
 				}
 				titleActor.setColor(Color.BLACK);
 			} else {
-				titleActor.setText("Bloons Touhou Defense\nLevel " + (map.getBloonManager().getLevel()));
-				titleActor.setColor(Color.WHITE);
+				if (map.getBloonManager().hasWonGame()) {
+					titleActor.setText("YOU WIN!");
+					titleActor.setColor(Color.GOLD);
+				} else {
+					titleActor.setText("Bloons Touhou Defense\nLevel " + (map.getBloonManager().getLevel()));
+					titleActor.setColor(Color.WHITE);
+				}
 			}
 		});
 		title.addAction(Actions.repeat(RepeatAction.FOREVER, titleAction));
@@ -349,6 +349,10 @@ public class BloonsTouhouDefense implements ApplicationListener {
 	public Player getPlayer() {
 		return player;
 	}
+
+	public MusicPlayer getMusicPlayer() {
+		return musicPlayer;
+	}
 	
 	@Override
 	public void resize(int width, int height) {
@@ -411,10 +415,12 @@ public class BloonsTouhouDefense implements ApplicationListener {
 			} else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_8)) {
 				map.setSelectedGirl(null);
 				girl = GirlFactory.createYuyuko();
-			} else if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+			} else if (Gdx.input.isKeyJustPressed(Input.Keys.C)) {
 				tripleSpeed = !tripleSpeed;
-			} else if (Gdx.input.isKeyJustPressed(Input.Keys.N)) {
+			} else if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
 				map.getBloonManager().nextLevel();
+			} else if (Gdx.input.isKeyJustPressed(Input.Keys.V)) {
+				musicPlayer.toggleMusic();
 			}
 			
 			if (girl != null) {
