@@ -37,6 +37,7 @@ public class BloonsTouhouDefense implements ApplicationListener {
 	public static final boolean HELLA_BLOONS = false;
 	
 	public boolean paused;
+	public boolean tripleSpeed;
 
 	private Stage stage;
 	private Player player;
@@ -49,6 +50,7 @@ public class BloonsTouhouDefense implements ApplicationListener {
 	public void create() {
 		Gdx.graphics.setWindowedMode(1800, 900);
 		paused = false;
+		tripleSpeed = false;
 		stage = new Stage();
 		player = new Player(MONEY, HEALTH);
 		musicPlayer = new MusicPlayer();
@@ -57,7 +59,7 @@ public class BloonsTouhouDefense implements ApplicationListener {
 		final RunnableAction bloonCreationAction = new RunnableAction();
 		bloonCreationAction.setRunnable(() -> map.getBloonManager().createBloons());
 		stage.addAction(Actions.repeat(RepeatAction.FOREVER, bloonCreationAction));
-		
+
 		Gdx.input.setInputProcessor(stage);
 		
 		createMap();
@@ -357,7 +359,15 @@ public class BloonsTouhouDefense implements ApplicationListener {
 	public void render() {
 		if (!paused) {
 			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-			stage.act(Gdx.graphics.getDeltaTime());
+			if (tripleSpeed) {
+				for (int x = 0; x < 9; x++) {
+					stage.act(Gdx.graphics.getDeltaTime());
+				}
+			} else {
+				for (int x = 0; x < 3; x++) {
+					stage.act(Gdx.graphics.getDeltaTime());
+				}
+			}
 
 			if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
 				if (map.getSelectedGirl() != null && !map.getSelectedGirl().isActive()) {
@@ -401,6 +411,8 @@ public class BloonsTouhouDefense implements ApplicationListener {
 			} else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_8)) {
 				map.setSelectedGirl(null);
 				girl = GirlFactory.createYuyuko();
+			} else if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+				tripleSpeed = !tripleSpeed;
 			}
 			
 			if (girl != null) {

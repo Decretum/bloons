@@ -17,13 +17,7 @@ I'm using https://www.iloveimg.com/crop-image/crop-png since Microsoft paint doe
 
 Ideas that are not yet implemented that I would like to implement:
 
-- Regen and camo bloon functionality
--- Need to figure out which towers shouldn't detect camo bloons... Probably just Marisa and Youmu but idk lol
--- Regen should probably wait after the "Have bloons potentially spawn multiple lesser bloons"
-
 - Instructions screen
-
-- Actual levels
 
 - Sound control
 
