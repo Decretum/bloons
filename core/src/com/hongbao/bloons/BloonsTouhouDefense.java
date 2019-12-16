@@ -19,6 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
 import com.hongbao.bloons.actors.GirlActor;
 import com.hongbao.bloons.actors.RenderableImageButton;
 import com.hongbao.bloons.actors.RenderableLabel;
@@ -61,24 +62,50 @@ public class BloonsTouhouDefense implements ApplicationListener {
 		
 		createMap();
 		createMenu();
-		musicPlayer.playStageMusic();
+		musicPlayer.playTitleMusic();
 	}
 
 	private void createMenu() {
 		Skin skin = new Skin(Gdx.files.internal("uiskins/uiskin.json"));
 
-		ImageButton title = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("img/ui/header.png")))));
-		title.setPosition(1500, 0);
+		ImageButton background = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("img/ui/header.png")))));
+		background.setPosition(1500, 0);
+		stage.addActor(new RenderableImageButton(background, ZIndex.MENU_Z_INDEX));
+
+		Label title = new Label("Bloons Touhou Defense\nLevel 1", skin);
+		title.setPosition(1600, 820);
+		title.setBounds(1500, 800, 300, 100);
+		title.setFontScale(1.5f,1.5f);
+		title.setAlignment(Align.center);
 		title.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				map.getBloonManager().nextLevel();
-				if (map.getBloonManager().getLevel() == 40) {
+				if (map.getBloonManager().getLevel() == 1) {
+					musicPlayer.playStageMusic();
+				} else if (map.getBloonManager().getLevel() == 40) {
 					musicPlayer.playFinalBossMusic();
 				}
 			}
 		});
-		stage.addActor(new RenderableImageButton(title, ZIndex.MENU_Z_INDEX));
+		final RunnableAction titleAction = new RunnableAction();
+		titleAction.setRunnable(() -> {
+			Label titleActor = (Label) titleAction.getActor();
+			if (map.getBloonManager().canGoToNextLevel()) {
+				if (map.getBloonManager().getLevel() == 0) {
+					titleActor.setText("START\n(click here)");
+				} else {
+					titleActor.setText("NEXT LEVEL\n(click here)");
+				}
+				titleActor.setColor(Color.BLACK);
+			} else {
+				titleActor.setText("Bloons Touhou Defense\nLevel " + (map.getBloonManager().getLevel()));
+				titleActor.setColor(Color.WHITE);
+			}
+		});
+		title.addAction(Actions.repeat(RepeatAction.FOREVER, titleAction));
+		stage.addActor(new RenderableLabel(title, ZIndex.MENU_ITEM_Z_INDEX));
+
 
 		Label moneyLabel = new Label(String.valueOf(player.getMoney()), skin);
 		moneyLabel.setPosition(1680, 765);
