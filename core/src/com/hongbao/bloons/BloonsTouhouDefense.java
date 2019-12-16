@@ -32,8 +32,8 @@ import com.hongbao.bloons.helpers.ZIndex;
 
 public class BloonsTouhouDefense implements ApplicationListener {
 	
-	public static final int MONEY = 200; // for testing, mostly
-	public static final int HEALTH = 999999999;
+	public static final int MONEY = 1000;
+	public static final int HEALTH = 100;
 	public static final boolean HELLA_BLOONS = false;
 	
 	public boolean paused;

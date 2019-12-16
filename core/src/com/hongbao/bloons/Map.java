@@ -74,7 +74,7 @@ public class Map {
 				  "Damage: " + girl.getDamage() + " (" + upgradedStats.getDamage() + ")\n" +
 				  "Pierce: " + girl.getPierce() + " (" + upgradedStats.getPierce() + ")\n" +
 				  "Cooldown: " + girl.getAttackDelay() + " (" + upgradedStats.getAttackDelay() + ")\n" +
-				  "Sight: " + (int)girl.getVisualRange() + " (" + upgradedStats.getVisualRange() + ")"
+				  "Sight: " + (int)girl.getVisualRange() + " (" + (int)upgradedStats.getVisualRange() + ")"
 				);
 			} else {
 				leftDataActor.getActor().setText(
@@ -98,7 +98,7 @@ public class Map {
 			Girl upgradedStats = girl.getUpgradedStats();
 			if (hoveringOverUpgrade && girl.getUpgradeCost() != Girl.NO_UPGRADES_AVAILABLE) {
 				rightDataActor.getActor().setText(
-				  "Range: " + (int)girl.getRange() + " (" + upgradedStats.getRange() + ")\n" +
+				  "Range: " + (int)girl.getRange() + " (" + (int)upgradedStats.getRange() + ")\n" +
 				  "Upgrade: " + girl.getUpgradeCostString() + " (" + upgradedStats.getUpgradeCostString() + ")\n" +
 				  "Sell: $" + girl.getSellPrice() + "\n" +
 				  " \n" +
