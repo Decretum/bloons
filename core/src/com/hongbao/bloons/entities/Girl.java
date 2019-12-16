@@ -16,7 +16,7 @@ public class Girl {
 	private List<Integer> pierce;
 	private List<Float> range;
 	private List<Float> visualRange;
-	private boolean homing;
+	private List<Boolean> homing;
 	private String imageFileName;
 	private String bulletFileName;
 	private int cost;
@@ -25,7 +25,7 @@ public class Girl {
 	private int totalInvestment;
 	
 	
-	public Girl(String name, List<Integer> attackDelay, List<Float> bulletSpeed, List<Integer> damage, List<Integer> pierce, List<Float> range, List<Float> visualRange, boolean homing, String imageFileName, String bulletFileName, int cost, List<Integer> upgradeCost) {
+	public Girl(String name, List<Integer> attackDelay, List<Float> bulletSpeed, List<Integer> damage, List<Integer> pierce, List<Float> range, List<Float> visualRange, List<Boolean> homing, String imageFileName, String bulletFileName, int cost, List<Integer> upgradeCost) {
 		this.name = name;
 		this.attackDelay = attackDelay;
 		this.cooldown = attackDelay.get(0);
@@ -78,7 +78,11 @@ public class Girl {
 	public float getVisualRange() {
 		return visualRange.get(level);
 	}
-	
+
+	public boolean isHoming() {
+		return homing.get(level);
+	}
+
 	public String getImageFileName() {
 		return imageFileName;
 	}
@@ -108,7 +112,7 @@ public class Girl {
 	}
 
 	public Bullet createBullet() {
-		return new Bullet(bulletSpeed.get(level), getDamage(), getPierce(), getRange(), homing, bulletFileName);
+		return new Bullet(bulletSpeed.get(level), getDamage(), getPierce(), getRange(), isHoming(), bulletFileName);
 	}
 	
 	public int upgrade() {
