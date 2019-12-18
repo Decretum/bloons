@@ -11,9 +11,5 @@ I'm using https://www.iloveimg.com/crop-image/crop-png since Microsoft paint doe
 
 Ideas that are not yet implemented that I would like to implement:
 
-- Instructions screen
-
-- Sound control
-
 - Spell cards (ultimate attacks) for towers that have a separate cooldown
 -- This sounds hard but would be really cool

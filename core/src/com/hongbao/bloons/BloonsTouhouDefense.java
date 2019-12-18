@@ -29,6 +29,9 @@ import com.hongbao.bloons.factories.GirlFactory;
 import com.hongbao.bloons.factories.MapFactory;
 import com.hongbao.bloons.helpers.ZIndex;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class BloonsTouhouDefense implements ApplicationListener {
 	
@@ -44,7 +47,8 @@ public class BloonsTouhouDefense implements ApplicationListener {
 	private Map map;
 	private MusicPlayer musicPlayer;
 	private ShapeRenderer shapeRenderer;
-
+	public List<RenderableImageButton> instructions;
+	
 	
 	@Override
 	public void create() {
@@ -55,6 +59,7 @@ public class BloonsTouhouDefense implements ApplicationListener {
 		player = new Player(MONEY, HEALTH);
 		musicPlayer = new MusicPlayer();
 		shapeRenderer = new ShapeRenderer();
+		instructions = new ArrayList<>();
 
 		final RunnableAction bloonCreationAction = new RunnableAction();
 		bloonCreationAction.setRunnable(() -> map.getBloonManager().createBloons());
@@ -64,9 +69,79 @@ public class BloonsTouhouDefense implements ApplicationListener {
 		
 		createMap();
 		createMenu();
+		createInstructions();
 		musicPlayer.playTitleMusic();
 	}
 
+	private void createInstructions() {
+		ImageButton instructions1 = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("img/instructions/title.png")))));
+		instructions1.setPosition(376, 300);
+		instructions1.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				updateInstructions();
+			}
+		});
+		ImageButton instructions2 = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("img/instructions/objective.png")))));
+		instructions2.setPosition(376, 300);
+		instructions2.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				updateInstructions();
+			}
+		});
+		ImageButton instructions3 = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("img/instructions/bloons.png")))));
+		instructions3.setPosition(376, 300);
+		instructions3.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				updateInstructions();
+			}
+		});
+		ImageButton instructions4 = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("img/instructions/blimps.png")))));
+		instructions4.setPosition(376, 300);
+		instructions4.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				updateInstructions();
+			}
+		});
+		ImageButton instructions5 = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("img/instructions/girls.png")))));
+		instructions5.setPosition(376, 300);
+		instructions5.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				updateInstructions();
+			}
+		});
+		ImageButton instructions6 = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("img/instructions/shortcuts.png")))));
+		instructions6.setPosition(376, 300);
+		instructions6.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				updateInstructions();
+			}
+		});
+		
+		instructions.add(new RenderableImageButton(instructions1, ZIndex.MENU_ITEM_Z_INDEX));
+		instructions.add(new RenderableImageButton(instructions2, ZIndex.MENU_ITEM_Z_INDEX));
+		instructions.add(new RenderableImageButton(instructions3, ZIndex.MENU_ITEM_Z_INDEX));
+		instructions.add(new RenderableImageButton(instructions4, ZIndex.MENU_ITEM_Z_INDEX));
+		instructions.add(new RenderableImageButton(instructions5, ZIndex.MENU_ITEM_Z_INDEX));
+		instructions.add(new RenderableImageButton(instructions6, ZIndex.MENU_ITEM_Z_INDEX));
+		
+		stage.addActor(instructions.get(0));
+	}
+	
+	private void updateInstructions() {
+		instructions.get(0).remove();
+		instructions.remove(0);
+
+		if (instructions.size() != 0) {
+			stage.addActor(instructions.get(0));
+		}
+	}
+	
 	private void createMenu() {
 		Skin skin = new Skin(Gdx.files.internal("uiskins/uiskin.json"));
 
@@ -136,12 +211,14 @@ public class BloonsTouhouDefense implements ApplicationListener {
 		purchaseReimu.addCaptureListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				map.setSelectedGirl(null);
-				Girl girl = GirlFactory.createReimu();
-				if (player.canPurchaseGirl(girl)) {
-					GirlActor girlActor = new GirlActor(girl, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
-					map.setSelectedGirl(girlActor);
-					stage.addActor(girlActor);
+				if (instructions.isEmpty()) {
+					map.setSelectedGirl(null);
+					Girl girl = GirlFactory.createReimu();
+					if (player.canPurchaseGirl(girl)) {
+						GirlActor girlActor = new GirlActor(girl, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
+						map.setSelectedGirl(girlActor);
+						stage.addActor(girlActor);
+					}
 				}
 			}
 		});
@@ -158,12 +235,14 @@ public class BloonsTouhouDefense implements ApplicationListener {
 		purchaseYukari.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				map.setSelectedGirl(null);
-				Girl girl = GirlFactory.createYukari();
-				if (player.canPurchaseGirl(girl)) {
-					GirlActor girlActor = new GirlActor(girl, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
-					map.setSelectedGirl(girlActor);
-					stage.addActor(girlActor);
+				if (instructions.isEmpty()) {
+					map.setSelectedGirl(null);
+					Girl girl = GirlFactory.createYukari();
+					if (player.canPurchaseGirl(girl)) {
+						GirlActor girlActor = new GirlActor(girl, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
+						map.setSelectedGirl(girlActor);
+						stage.addActor(girlActor);
+					}
 				}
 			}
 		});
@@ -180,12 +259,14 @@ public class BloonsTouhouDefense implements ApplicationListener {
 		purchaseMarisa.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				map.setSelectedGirl(null);
-				Girl girl = GirlFactory.createMarisa();
-				if (player.canPurchaseGirl(girl)) {
-					GirlActor girlActor = new GirlActor(girl, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
-					map.setSelectedGirl(girlActor);
-					stage.addActor(girlActor);
+				if (instructions.isEmpty()) {
+					map.setSelectedGirl(null);
+					Girl girl = GirlFactory.createMarisa();
+					if (player.canPurchaseGirl(girl)) {
+						GirlActor girlActor = new GirlActor(girl, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
+						map.setSelectedGirl(girlActor);
+						stage.addActor(girlActor);
+					}
 				}
 			}
 		});
@@ -202,12 +283,14 @@ public class BloonsTouhouDefense implements ApplicationListener {
 		purchaseAlice.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				map.setSelectedGirl(null);
-				Girl girl = GirlFactory.createAlice();
-				if (player.canPurchaseGirl(girl)) {
-					GirlActor girlActor = new GirlActor(girl, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
-					map.setSelectedGirl(girlActor);
-					stage.addActor(girlActor);
+				if (instructions.isEmpty()) {
+					map.setSelectedGirl(null);
+					Girl girl = GirlFactory.createAlice();
+					if (player.canPurchaseGirl(girl)) {
+						GirlActor girlActor = new GirlActor(girl, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
+						map.setSelectedGirl(girlActor);
+						stage.addActor(girlActor);
+					}
 				}
 			}
 		});
@@ -224,12 +307,14 @@ public class BloonsTouhouDefense implements ApplicationListener {
 		purchaseSakuya.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				map.setSelectedGirl(null);
-				Girl girl = GirlFactory.createSakuya();
-				if (player.canPurchaseGirl(girl)) {
-					GirlActor girlActor = new GirlActor(girl, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
-					map.setSelectedGirl(girlActor);
-					stage.addActor(girlActor);
+				if (instructions.isEmpty()) {
+					map.setSelectedGirl(null);
+					Girl girl = GirlFactory.createSakuya();
+					if (player.canPurchaseGirl(girl)) {
+						GirlActor girlActor = new GirlActor(girl, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
+						map.setSelectedGirl(girlActor);
+						stage.addActor(girlActor);
+					}
 				}
 			}
 		});
@@ -246,12 +331,14 @@ public class BloonsTouhouDefense implements ApplicationListener {
 		purchaseRemilia.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				map.setSelectedGirl(null);
-				Girl girl = GirlFactory.createRemilia();
-				if (player.canPurchaseGirl(girl)) {
-					GirlActor girlActor = new GirlActor(girl, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
-					map.setSelectedGirl(girlActor);
-					stage.addActor(girlActor);
+				if (instructions.isEmpty()) {
+					map.setSelectedGirl(null);
+					Girl girl = GirlFactory.createRemilia();
+					if (player.canPurchaseGirl(girl)) {
+						GirlActor girlActor = new GirlActor(girl, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
+						map.setSelectedGirl(girlActor);
+						stage.addActor(girlActor);
+					}
 				}
 			}
 		});
@@ -268,12 +355,14 @@ public class BloonsTouhouDefense implements ApplicationListener {
 		purchaseYoumu.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				map.setSelectedGirl(null);
-				Girl girl = GirlFactory.createYoumu();
-				if (player.canPurchaseGirl(girl)) {
-					GirlActor girlActor = new GirlActor(girl, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
-					map.setSelectedGirl(girlActor);
-					stage.addActor(girlActor);
+				if (instructions.isEmpty()) {
+					map.setSelectedGirl(null);
+					Girl girl = GirlFactory.createYoumu();
+					if (player.canPurchaseGirl(girl)) {
+						GirlActor girlActor = new GirlActor(girl, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
+						map.setSelectedGirl(girlActor);
+						stage.addActor(girlActor);
+					}
 				}
 			}
 		});
@@ -290,12 +379,14 @@ public class BloonsTouhouDefense implements ApplicationListener {
 		purchaseYuyuko.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				map.setSelectedGirl(null);
-				Girl girl = GirlFactory.createYuyuko();
-				if (player.canPurchaseGirl(girl)) {
-					GirlActor girlActor = new GirlActor(girl, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
-					map.setSelectedGirl(girlActor);
-					stage.addActor(girlActor);
+				if (instructions.isEmpty()) {
+					map.setSelectedGirl(null);
+					Girl girl = GirlFactory.createYuyuko();
+					if (player.canPurchaseGirl(girl)) {
+						GirlActor girlActor = new GirlActor(girl, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
+						map.setSelectedGirl(girlActor);
+						stage.addActor(girlActor);
+					}
 				}
 			}
 		});
@@ -418,7 +509,11 @@ public class BloonsTouhouDefense implements ApplicationListener {
 			} else if (Gdx.input.isKeyJustPressed(Input.Keys.C)) {
 				tripleSpeed = !tripleSpeed;
 			} else if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-				map.getBloonManager().nextLevel();
+				if (instructions.isEmpty()) {
+					map.getBloonManager().nextLevel();
+				} else {
+					updateInstructions();
+				}
 			} else if (Gdx.input.isKeyJustPressed(Input.Keys.V)) {
 				musicPlayer.toggleMusic();
 			}
