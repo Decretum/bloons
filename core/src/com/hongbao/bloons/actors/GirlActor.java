@@ -85,6 +85,14 @@ public class GirlActor extends RenderableActor {
 		rotationAngle = (float)(Math.atan2(dx, dy) / Math.PI * 180);
 	}
 	
+	public SpellCardActor createSpellCardActor() {
+		if (true) { // todo Girl should have a method that checks the cooldown or something
+			// maybe some direction based on the girl's direction
+			return new SpellCardActor(girl.createSpellCard(), getCenterX(), getCenterY());
+		}
+		return null;
+	}
+	
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
 		batch.draw(

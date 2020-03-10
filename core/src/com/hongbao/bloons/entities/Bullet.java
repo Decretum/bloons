@@ -12,6 +12,9 @@ public class Bullet {
 	private boolean homing;
 	private String imageFileName;
 	
+	private float initialDXOverride;
+	private float initialDYOverride;
+	
 	public Bullet() {
 		speed = 20f;
 		damage = 2;
@@ -88,4 +91,19 @@ public class Bullet {
 		this.imageFileName = IMAGE_FOLDER + imageFileName;
 	}
 	
+	public float getInitialDXOverride() {
+		return initialDXOverride;
+	}
+	
+	public void setInitialDXOverride(float initialDXOverride) {
+		this.initialDXOverride = initialDXOverride;
+	}
+	
+	public float getInitialDYOverride() {
+		return initialDYOverride;
+	}
+	
+	public void setInitialDYOverride(float initialDYOverride) {
+		this.initialDYOverride = initialDYOverride;
+	}
 }

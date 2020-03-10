@@ -9,7 +9,9 @@ I was reading up on examples from https://www.gamefromscratch.com/page/LibGDX-Tu
 I was using https://www.iloveimg.com/crop-image/crop-png since Microsoft paint doesn't seem to let me crop with a transparent background.
 The image assets were mostly found on the bloons tower defense wiki, or from the Touhou game Imperishable Night by ZUN.
 
+What's new: Put down Reimu, have her selected, and press X and she will use her spell card!
+
 Ideas that are not yet implemented that I would like to implement:
 
-- Spell cards (ultimate attacks) for towers that have a separate cooldown
--- This sounds hard but would be really cool
+- Spell cards (ultimate attacks) for towers that have a separate cooldown (partially implemented)
+-- This sounds hard but would be really cool (it was both hard and pretty cool)

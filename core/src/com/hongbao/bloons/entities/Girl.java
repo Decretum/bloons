@@ -115,6 +115,13 @@ public class Girl {
 		return new Bullet(bulletSpeed.get(level), getDamage(), getPierce(), getRange(), isHoming(), bulletFileName);
 	}
 	
+	public SpellCard createSpellCard() {
+		if (name.equals("Reimu")) {
+			return SpellCard.createReimuSpellCard();
+		}
+		return null;
+	}
+	
 	public int upgrade() {
 		int upgradeCost = getUpgradeCost();
 		level++;

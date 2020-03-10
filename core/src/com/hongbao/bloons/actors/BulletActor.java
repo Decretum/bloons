@@ -8,6 +8,7 @@ import com.hongbao.bloons.BloonManager;
 import com.hongbao.bloons.BloonsTouhouDefense;
 import com.hongbao.bloons.entities.Bullet;
 import com.hongbao.bloons.helpers.ZIndex;
+import javafx.util.Pair;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -20,8 +21,10 @@ public class BulletActor extends RenderableActor {
 	private float dy;
 	private float rotationAngle;
 	private float collisionRadius;
+	private int frames;
 	private BloonActor target;
 	private Set<Long> damagedBloons;
+	private String spellCardOverride; // todo could be an enum
 	
 	public BulletActor(Bullet bullet, float x, float y, float dx, float dy) {
 		this.bullet = bullet;
@@ -61,6 +64,10 @@ public class BulletActor extends RenderableActor {
 	
 	public void setCollisionRadius(float collisionRadius) {
 		this.collisionRadius = collisionRadius;
+	}
+	
+	public void setSpellCardOverride(String spellCardOverride) {
+		this.spellCardOverride = spellCardOverride;
 	}
 	
 	public void decrementPierce() {
@@ -115,7 +122,39 @@ public class BulletActor extends RenderableActor {
 	
 	@Override
 	public void act(float delta) {
+		frames++;
 		BloonManager bloonManager = ((BloonsTouhouDefense)Gdx.app.getApplicationListener()).getMap().getBloonManager();
+		
+		setDirectionIfApplicable(bloonManager);
+		
+		setX(getX() + dx * bullet.getSpeed() / 5);
+		setY(getY() + dy * bullet.getSpeed() / 5);
+		
+		if (getY() < 0 || getY() > 900 || getX() < 0 || getX() > 1500) {
+			remove();
+		}
+		
+		bullet.incrementDistanceTraveled();
+		if (bullet.getDistanceTraveled() >= bullet.getMaxRange()) {
+			remove();
+		}
+		
+		bloonManager.checkCollision(this);
+	}
+	
+	private void setDirectionIfApplicable(BloonManager bloonManager) {
+		if (spellCardOverride != null) {
+			if (spellCardOverride.equals("Reimu")) {
+				Pair<Float, Float> overrideDirection = reimuSpellCardOverride();
+				if (overrideDirection != null) {
+					dx = overrideDirection.getKey();
+					dy = overrideDirection.getValue();
+					calculateRotationAngle();
+					return;
+				}
+			}
+		}
+		
 		if (bullet.isHoming()) {
 			if (!bloonManager.containsBloon(target)) {
 				target = bloonManager.getNewHomingTarget(this);
@@ -132,19 +171,23 @@ public class BulletActor extends RenderableActor {
 			}
 			calculateRotationAngle();
 		}
-		
-		setX(getX() + dx * bullet.getSpeed() / 5);
-		setY(getY() + dy * bullet.getSpeed() / 5);
-		
-		if (getY() < 0 || getY() > 900 || getX() < 0 || getX() > 1500) {
-			remove();
-		}
-		
-		bullet.incrementDistanceTraveled();
-		if (bullet.getDistanceTraveled() >= bullet.getMaxRange()) {
-			remove();
-		}
-		
-		bloonManager.checkCollision(this);
 	}
+	
+	// I don't like how this code is but I couldn't think of any better ways for the time being
+	// spell card directional overrides
+	// they return null if they no longer override the direction of the bullet
+	
+	private Pair<Float, Float> reimuSpellCardOverride() {
+		if (frames > 200) {
+			return null;
+		} else if (frames < 20) {
+			return new Pair<>(dx, dy);
+		} else {
+			double currentAngle = Math.atan2(dy, dx);
+			double desiredAngle = currentAngle + (2 * Math.PI / 120);
+
+			return new Pair<>((float) Math.cos(desiredAngle), (float) Math.sin(desiredAngle));
+		}
+	}
+	
 }

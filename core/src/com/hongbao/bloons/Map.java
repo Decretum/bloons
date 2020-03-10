@@ -262,6 +262,12 @@ public class Map {
 		});
 	}
 	
+	public void placeSpellCard() {
+		if (selectedGirl != null) {
+			stage.addActor(selectedGirl.createSpellCardActor());
+		}
+	}
+	
 	private static float getCenterXOfTile(int tile) {
 		return tile * TILE_LENGTH + (TILE_LENGTH / 2f);
 	}

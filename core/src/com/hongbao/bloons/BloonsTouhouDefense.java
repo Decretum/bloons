@@ -516,6 +516,8 @@ public class BloonsTouhouDefense implements ApplicationListener {
 				}
 			} else if (Gdx.input.isKeyJustPressed(Input.Keys.V)) {
 				musicPlayer.toggleMusic();
+			} else if (Gdx.input.isKeyJustPressed(Input.Keys.X)) {
+				getMap().placeSpellCard();
 			}
 			
 			if (girl != null) {
