@@ -11,14 +11,18 @@ import java.util.Map;
 
 public class SpellCard {
 	
+	public static final String IMAGE_FOLDER = "img/spellcards/";
+	
 	private Map<Integer, List<Bullet>> bulletsToCreate;
 	private String overrideName;
+	private String imageFileName;
 	private int frame;
 	private int lastFrame;
 	
-	public SpellCard(String overrideName, Map<Integer, List<Bullet>> bulletsToCreate) {
+	public SpellCard(String overrideName, Map<Integer, List<Bullet>> bulletsToCreate, String imageFileName) {
 		this.overrideName = overrideName;
 		this.bulletsToCreate = bulletsToCreate;
+		this.imageFileName = IMAGE_FOLDER + imageFileName;
 		frame = 0;
 		
 		lastFrame = bulletsToCreate.keySet().stream()
@@ -28,6 +32,10 @@ public class SpellCard {
 	
 	public String getOverrideName() {
 		return overrideName;
+	}
+	
+	public String getImageFileName() {
+		return imageFileName;
 	}
 	
 	public List<Bullet> getBulletsToCreateAndIncrementFrame() {
@@ -43,7 +51,7 @@ public class SpellCard {
 	public static SpellCard createReimuSpellCard() {
 		Map<Integer, List<Bullet>> bulletsToCreate = new HashMap<>();
 		for (int x = 0; x < 1000; x += 25) {
-			Bullet bullet1 = GirlFactory.createReimu().createBullet(); // todo This can probably have custom params in the future
+			Bullet bullet1 = GirlFactory.createReimu().createBullet();
 			bullet1.setMaxRange(5000);
 			bullet1.setInitialDXOverride(0);
 			bullet1.setInitialDYOverride(1);
@@ -75,7 +83,7 @@ public class SpellCard {
 			
 			bulletsToCreate.put(x, Arrays.asList(bullet1, bullet2, bullet3, bullet4, bullet5, bullet6));
 		}
-		return new SpellCard("Reimu", bulletsToCreate);
+		return new SpellCard("Reimu", bulletsToCreate, "reimu_spell.png");
 	}
 	
 

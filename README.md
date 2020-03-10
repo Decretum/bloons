@@ -14,4 +14,7 @@ What's new: Put down Reimu, have her selected, and press X and she will use her 
 Ideas that are not yet implemented that I would like to implement:
 
 - Spell cards (ultimate attacks) for towers that have a separate cooldown (partially implemented)
--- This sounds hard but would be really cool (it was both hard and pretty cool)
+-- spell cards might need a direction and rotation of their own (not Reimu's or Yukari's though)
+-- some spell card attacks involve very large static bullets, you need to make those expire without the conventional distance travelled metric
+-- spell cards for Yukari, Marisa, Alice, Sakuya, Remilia, Youmu, Yuyuko
+-- Maybe Youmu's spell card will involve her moving around the map? Maybe.
