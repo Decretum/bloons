@@ -41,6 +41,7 @@ public class BloonsTouhouDefense implements ApplicationListener {
 	
 	public boolean paused;
 	public boolean tripleSpeed;
+	public boolean autoContinue;
 
 	private Stage stage;
 	private Player player;
@@ -55,6 +56,7 @@ public class BloonsTouhouDefense implements ApplicationListener {
 		Gdx.graphics.setWindowedMode(1800, 900);
 		paused = false;
 		tripleSpeed = false;
+		autoContinue = false;
 		stage = new Stage();
 		player = new Player(MONEY, HEALTH);
 		musicPlayer = new MusicPlayer();
@@ -164,12 +166,16 @@ public class BloonsTouhouDefense implements ApplicationListener {
 		titleAction.setRunnable(() -> {
 			Label titleActor = (Label) titleAction.getActor();
 			if (map.getBloonManager().canGoToNextLevel()) {
-				if (map.getBloonManager().getLevel() == 0) {
-					titleActor.setText("START\n(click here)");
+				if (autoContinue) {
+					map.getBloonManager().nextLevel();
 				} else {
-					titleActor.setText("NEXT LEVEL\n(click here)");
+					if (map.getBloonManager().getLevel() == 0) {
+						titleActor.setText("START\n(click here)");
+					} else {
+						titleActor.setText("NEXT LEVEL\n(click here)");
+					}
+					titleActor.setColor(Color.BLACK);
 				}
-				titleActor.setColor(Color.BLACK);
 			} else {
 				if (map.getBloonManager().hasWonGame()) {
 					titleActor.setText("YOU WIN!");
@@ -518,6 +524,8 @@ public class BloonsTouhouDefense implements ApplicationListener {
 				musicPlayer.toggleMusic();
 			} else if (Gdx.input.isKeyJustPressed(Input.Keys.X)) {
 				getMap().placeSpellCard();
+			} else if (Gdx.input.isKeyJustPressed(Input.Keys.Z)) {
+				autoContinue = !autoContinue;
 			}
 			
 			if (girl != null) {
