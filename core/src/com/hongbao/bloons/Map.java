@@ -29,11 +29,11 @@ import java.util.Set;
 
 
 public class Map {
-	
+
 	public static final String BACKGROUND_MAPS_FOLDER = "img/maps/";
 	public static final int TILE_LENGTH = 50;
 	public static final int TILE_HEIGHT = 50;
-	
+
 	private String backgroundImage;
 	private BloonManager bloonManager;
 	private Pair<Float, Float>[][] directions;
@@ -126,12 +126,12 @@ public class Map {
 			public void clicked(InputEvent event, float x, float y) {
 				upgradeSelectedGirl();
 			}
-			
+
 			@Override
 			public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
 				hoveringOverUpgrade = true;
 			}
-			
+
 			@Override
 			public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
 				hoveringOverUpgrade = false;
@@ -139,7 +139,9 @@ public class Map {
 		});
 		final RunnableAction upgradeLabelAction = new RunnableAction();
 		upgradeLabelAction.setRunnable(() -> {
-			if (getSelectedGirl().getGirl().getUpgradeCost() == Girl.NO_UPGRADES_AVAILABLE) {
+            if (getSelectedGirl() != null && !getSelectedGirl().isActive()) {
+                upgradeBackground.setColor(Color.GRAY);
+            } else if (getSelectedGirl().getGirl().getUpgradeCost() == Girl.NO_UPGRADES_AVAILABLE) {
 				upgradeBackground.setText("FULLY UPGRADED");
 				upgradeBackground.setColor(Color.GRAY);
 			} else {
@@ -165,27 +167,35 @@ public class Map {
 				sellSelectedGirl();
 			}
 		});
+
+		final RunnableAction sellLabelAction = new RunnableAction();
+		sellLabelAction.setRunnable(() -> {
+			if (getSelectedGirl() != null && !getSelectedGirl().isActive()) {
+				sellBackground.setColor(Color.GRAY);
+			} else {
+				sellBackground.setColor(Color.RED);
+			}
+        });
+        sellBackground.addAction(Actions.repeat(RepeatAction.FOREVER, sellLabelAction));
 		sellActor = new RenderableLabel(sellBackground, ZIndex.MENU_ITEM_Z_INDEX);
-
-
 	}
-	
+
 	public void setDirections(Pair<Float, Float>[][] directions) {
 		this.directions = directions;
 	}
-	
+
 	public void setBackgroundImage(String backgroundImage) {
 		this.backgroundImage = backgroundImage;
 	}
-	
+
 	public String getBackgroundImageFilePath() {
 		return BACKGROUND_MAPS_FOLDER + backgroundImage;
 	}
-	
+
 	public GirlActor getSelectedGirl() {
 		return selectedGirl;
 	}
-	
+
 	public void setSelectedGirl(GirlActor girlActor) {
 		if (selectedGirl != null && !selectedGirl.isActive()) {
 			selectedGirl.remove();
@@ -198,7 +208,7 @@ public class Map {
 			showGirlDetailsModule();
 		}
 	}
-	
+
 	public Pair<Float, Float> getDirection(float balloonX, float balloonY) {
 		// Each "direction tile" is 50x50 px, maybe some minor tweaking later
 		// There is an extra tile on the left and right of the screen so we have a smol x offset for that
@@ -210,21 +220,21 @@ public class Map {
 			return new Pair<>(0f, 0f);
 		}
 	}
-	
+
 	public BloonManager getBloonManager() {
 		return bloonManager;
 	}
-	
+
 	public boolean canPlaceGirl(GirlActor girlActor) {
 		// You can't place a girl down if it violates any of the following rules:
 		// It's out of bounds
 		// It's colliding with the bloon path
 		// It's colliding with another girl
-		
+
 		float x = girlActor.getCenterX() + TILE_LENGTH; // x is always offset by one tile because we have that extra tile on the left
 		float y = girlActor.getCenterY();
 		float r = girlActor.getCollisionRadius();
-		
+
 		if (y < 0 || y > 900 || x < 0 || x > 1550) {
 			return false;
 		}
@@ -316,6 +326,11 @@ public class Map {
 	}
 
 	public void upgradeSelectedGirl() {
+        if (getSelectedGirl() != null && !getSelectedGirl().isActive()) {
+            // We're in the middle of placing a girl, so we shouldn't be able to set it yet.
+            return;
+        }
+
 		Player player = ((BloonsTouhouDefense)Gdx.app.getApplicationListener()).getPlayer();
 		GirlActor selectedGirl = getSelectedGirl();
 		
@@ -327,9 +342,14 @@ public class Map {
 	}
 
 	public void sellSelectedGirl() {
-		Player player = ((BloonsTouhouDefense)Gdx.app.getApplicationListener()).getPlayer();
-		GirlActor selectedGirl = getSelectedGirl();
-		
+        if (getSelectedGirl() != null && !getSelectedGirl().isActive()) {
+            // We're in the middle of placing a girl, so we shouldn't be able to set it yet.
+            return;
+        }
+
+        Player player = ((BloonsTouhouDefense)Gdx.app.getApplicationListener()).getPlayer();
+        GirlActor selectedGirl = getSelectedGirl();
+
 		player.earnMoney(selectedGirl.getGirl().getSellPrice());
 		hideGirlDetailsModule();
 		onStageGirls.remove(selectedGirl);
