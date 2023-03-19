@@ -2,7 +2,7 @@ package com.hongbao.bloons.factories;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.hongbao.bloons.Map;
-import javafx.util.Pair;
+import com.hongbao.bloons.helpers.Pair;
 
 
 public class MapFactory {

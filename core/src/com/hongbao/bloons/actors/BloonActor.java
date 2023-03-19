@@ -8,7 +8,7 @@ import com.hongbao.bloons.BloonsTouhouDefense;
 import com.hongbao.bloons.entities.Bloon;
 import com.hongbao.bloons.helpers.BloonPoppedResult;
 import com.hongbao.bloons.helpers.ZIndex;
-import javafx.util.Pair;
+import com.hongbao.bloons.helpers.Pair;
 
 import java.util.HashSet;
 import java.util.Random;
@@ -97,8 +97,8 @@ public class BloonActor extends RenderableActor {
 	}
 	
 	public void move(Pair<Float, Float> direction) {
-		setX(getX() + direction.getKey() * bloon.getSpeed() / 5);
-		setY(getY() + direction.getValue() * bloon.getSpeed() / 5);
+		setX(getX() + direction.getFirst() * bloon.getSpeed() / 5);
+		setY(getY() + direction.getSecond() * bloon.getSpeed() / 5);
 		
 		bloon.incrementDistanceTravelled();
 
@@ -113,7 +113,7 @@ public class BloonActor extends RenderableActor {
 		if (bloon.isBlimp()) {
 			BloonsTouhouDefense app = (BloonsTouhouDefense)Gdx.app.getApplicationListener();
 			Pair<Float, Float> direction = app.getMap().getDirection(getCenterX(), getCenterY());
-			float rotationAngle = (float)(Math.atan2(direction.getKey(), direction.getValue()) / Math.PI * 180);
+			float rotationAngle = (float)(Math.atan2(direction.getFirst(), direction.getSecond()) / Math.PI * 180);
 			batch.draw(
 			 textureRegion,
 			 getX(),
@@ -135,8 +135,8 @@ public class BloonActor extends RenderableActor {
 	public void act(float delta) {
 		BloonsTouhouDefense app = (BloonsTouhouDefense)Gdx.app.getApplicationListener();
 		Pair<Float, Float> direction = app.getMap().getDirection(getCenterX(), getCenterY());
-		if (direction.getKey() < 0) {
-			System.out.println(direction.getKey());
+		if (direction.getFirst() < 0) {
+			System.out.println(direction.getFirst());
 		}
 		move(direction);
 	}

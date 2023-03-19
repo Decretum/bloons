@@ -8,7 +8,7 @@ import com.hongbao.bloons.BloonManager;
 import com.hongbao.bloons.BloonsTouhouDefense;
 import com.hongbao.bloons.entities.Bullet;
 import com.hongbao.bloons.helpers.ZIndex;
-import javafx.util.Pair;
+import com.hongbao.bloons.helpers.Pair;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -147,8 +147,8 @@ public class BulletActor extends RenderableActor {
 			if (spellCardOverride.equals("Reimu")) {
 				Pair<Float, Float> overrideDirection = reimuSpellCardOverride();
 				if (overrideDirection != null) {
-					dx = overrideDirection.getKey();
-					dy = overrideDirection.getValue();
+					dx = overrideDirection.getFirst();
+					dy = overrideDirection.getSecond();
 					calculateRotationAngle();
 					return;
 				}

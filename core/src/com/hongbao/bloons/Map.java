@@ -22,7 +22,7 @@ import com.hongbao.bloons.actors.RenderableImageButton;
 import com.hongbao.bloons.actors.RenderableLabel;
 import com.hongbao.bloons.entities.Girl;
 import com.hongbao.bloons.helpers.ZIndex;
-import javafx.util.Pair;
+import com.hongbao.bloons.helpers.Pair;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -231,7 +231,7 @@ public class Map {
 		
 		for (int i = 0; i < directions.length; i++) {
 			for (int j = 0; j < directions[i].length; j++) {
-				if (directions[i][j] != null && (directions[i][j].getKey() != 0 || directions[i][j].getValue() != 0)) {
+				if (directions[i][j] != null && (directions[i][j].getFirst() != 0 || directions[i][j].getSecond() != 0)) {
 					if (Math.abs(x - getCenterXOfTile(i)) < r + (TILE_LENGTH / 2f) && Math.abs(y - getCenterYOfTile(j)) < r + (TILE_HEIGHT / 2f)) {
 						return false;
 					}

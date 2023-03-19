@@ -9,7 +9,7 @@ import com.hongbao.bloons.actors.GirlActor;
 import com.hongbao.bloons.entities.Bloon;
 import com.hongbao.bloons.factories.BloonFactory;
 import com.hongbao.bloons.helpers.BloonPoppedResult;
-import javafx.util.Pair;
+import com.hongbao.bloons.helpers.Pair;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -110,7 +110,7 @@ public class BloonManager {
 					 generatedBloonActor = new BloonActor(bloon, bloonActor.getCenterX(), bloonActor.getCenterY(), bloonActor);
 				} else {
 					Pair<Float, Float> direction = map.getDirection(previousBloonActor.getCenterX(), previousBloonActor.getCenterY());
-					generatedBloonActor = new BloonActor(bloon, previousBloonActor.getCenterX() - direction.getKey(), previousBloonActor.getCenterY() - direction.getValue(), bloonActor);
+					generatedBloonActor = new BloonActor(bloon, previousBloonActor.getCenterX() - direction.getFirst(), previousBloonActor.getCenterY() - direction.getSecond(), bloonActor);
 				}
 				stage.addActor(generatedBloonActor);
 				onstageBloons.add(generatedBloonActor);
