@@ -11,7 +11,11 @@ public class Bullet {
 	private float distanceTraveled;
 	private boolean homing;
 	private String imageFileName;
-	
+
+	private float initialXOffset;
+
+	private float initialYOffset;
+
 	private float initialDXOverride;
 	private float initialDYOverride;
 	
@@ -90,7 +94,23 @@ public class Bullet {
 	public void setImageFileName(String imageFileName) {
 		this.imageFileName = IMAGE_FOLDER + imageFileName;
 	}
-	
+
+	public float getInitialXOffset() {
+		return initialXOffset;
+	}
+
+	public void setInitialXOffset(float initialXOffset) {
+		this.initialXOffset = initialXOffset;
+	}
+
+	public float getInitialYOffset() {
+		return initialYOffset;
+	}
+
+	public void setInitialYOffset(float initialYOffset) {
+		this.initialYOffset = initialYOffset;
+	}
+
 	public float getInitialDXOverride() {
 		return initialDXOverride;
 	}

@@ -29,6 +29,8 @@ public class BulletActor extends RenderableActor {
 	public BulletActor(Bullet bullet, float x, float y, float dx, float dy) {
 		this.bullet = bullet;
 		textureRegion = new TextureRegion(new Texture(Gdx.files.internal(bullet.getImageFileName())));
+		x += bullet.getInitialXOffset();
+		y += bullet.getInitialYOffset();
 		this.dx = dx;
 		this.dy = dy;
 		calculateRotationAngle();
@@ -144,14 +146,18 @@ public class BulletActor extends RenderableActor {
 	
 	private void setDirectionIfApplicable(BloonManager bloonManager) {
 		if (spellCardOverride != null) {
+			Pair<Float, Float> overrideDirection = null;
 			if (spellCardOverride.equals("Reimu")) {
-				Pair<Float, Float> overrideDirection = reimuSpellCardOverride();
-				if (overrideDirection != null) {
-					dx = overrideDirection.getFirst();
-					dy = overrideDirection.getSecond();
-					calculateRotationAngle();
-					return;
-				}
+				overrideDirection = reimuSpellCardOverride();
+			} else if (spellCardOverride.equals("Yuyuko")) {
+				overrideDirection = yuyukoSpellCardOverride();
+			}
+
+			if (overrideDirection != null) {
+				dx = overrideDirection.getFirst();
+				dy = overrideDirection.getSecond();
+				calculateRotationAngle();
+				return;
 			}
 		}
 		
@@ -179,15 +185,33 @@ public class BulletActor extends RenderableActor {
 	
 	private Pair<Float, Float> reimuSpellCardOverride() {
 		if (frames > 200) {
+			// Beyond 200 frames, use the default bullet behavior (homing)
 			return null;
 		} else if (frames < 20) {
+			// For the first few frames, go in a straight line (direction unchanged)
 			return new Pair<>(dx, dy);
 		} else {
+			// For the middle frames, start going in a circle
 			double currentAngle = Math.atan2(dy, dx);
 			double desiredAngle = currentAngle + (2 * Math.PI / 120);
 
 			return new Pair<>((float) Math.cos(desiredAngle), (float) Math.sin(desiredAngle));
 		}
 	}
-	
+
+	private Pair<Float, Float> yuyukoSpellCardOverride() {
+		// Alternate between turning left and right
+		if (frames % 150 < 75) {
+			double currentAngle = Math.atan2(dy, dx);
+			double desiredAngle = currentAngle - (2 * Math.PI / 300);
+
+			return new Pair<>((float) Math.cos(desiredAngle), (float) Math.sin(desiredAngle));
+		} else {
+			double currentAngle = Math.atan2(dy, dx);
+			double desiredAngle = currentAngle + (2 * Math.PI / 300);
+
+			return new Pair<>((float) Math.cos(desiredAngle), (float) Math.sin(desiredAngle));
+		}
+	}
+
 }

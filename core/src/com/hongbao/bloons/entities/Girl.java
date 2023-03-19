@@ -119,6 +119,9 @@ public class Girl {
 		if (name.equals("Reimu")) {
 			return SpellCard.createReimuSpellCard();
 		}
+		if (name.equals("Yuyuko")) {
+			return SpellCard.createYuyukoSpellCard();
+		}
 		return null;
 	}
 	

@@ -2,11 +2,7 @@ package com.hongbao.bloons.entities;
 
 import com.hongbao.bloons.factories.GirlFactory;
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 public class SpellCard {
@@ -18,11 +14,13 @@ public class SpellCard {
 	private String imageFileName;
 	private int frame;
 	private int lastFrame;
+	private float scale;
 	
-	public SpellCard(String overrideName, Map<Integer, List<Bullet>> bulletsToCreate, String imageFileName) {
+	public SpellCard(String overrideName, Map<Integer, List<Bullet>> bulletsToCreate, String imageFileName, float scale) {
 		this.overrideName = overrideName;
 		this.bulletsToCreate = bulletsToCreate;
 		this.imageFileName = IMAGE_FOLDER + imageFileName;
+		this.scale = scale;
 		frame = 0;
 		
 		lastFrame = bulletsToCreate.keySet().stream()
@@ -46,6 +44,10 @@ public class SpellCard {
 	
 	public boolean isExpired() {
 		return frame > lastFrame;
+	}
+
+	public float getScale() {
+		return scale;
 	}
 	
 	public static SpellCard createReimuSpellCard() {
@@ -83,8 +85,59 @@ public class SpellCard {
 			
 			bulletsToCreate.put(x, Arrays.asList(bullet1, bullet2, bullet3, bullet4, bullet5, bullet6));
 		}
-		return new SpellCard("Reimu", bulletsToCreate, "reimu_spell.png");
+		return new SpellCard("Reimu", bulletsToCreate, "reimu_spell.png", 5.0f);
 	}
-	
+
+	public static SpellCard createYuyukoSpellCard() {
+		Map<Integer, List<Bullet>> bulletsToCreate = new HashMap<>();
+		Girl yuyuko = GirlFactory.createYuyuko();
+
+		for (int x = 0; x < 1500; x += 25) {
+			List<Bullet> bulletsForCurrentFrame = new ArrayList<>();
+			double offset;
+			int bullets;
+
+			// Shoots more bullets as time goes on
+			if (x < 500) {
+				offset = 2 * Math.PI / 4; // Quarter rotation
+				bullets = 4;
+			} else if (x < 1000) {
+				offset = 2 * Math.PI / 8; // 1/8th rotation
+				bullets = 8;
+			} else {
+				offset = 2 * Math.PI / 16; // 1/16th rotation
+				bullets = 16;
+			}
+
+			for (int i = 0; i < bullets; i++) {
+				Bullet bullet = yuyuko.createBullet();
+				bullet.setSpeed(5f);
+				bullet.setMaxRange(5000);
+				double currentAngle = offset * i;
+				double desiredAngle = currentAngle + (x * Math.PI / 500);
+				bullet.setInitialXOffset(-125);
+				bullet.setInitialDXOverride((float) Math.cos(desiredAngle));
+				bullet.setInitialDYOverride((float) Math.sin(desiredAngle));
+
+				bulletsForCurrentFrame.add(bullet);
+			}
+
+			for (int i = 0; i < bullets; i++) {
+				Bullet bullet = yuyuko.createBullet();
+				bullet.setSpeed(5f);
+				bullet.setMaxRange(5000);
+				double currentAngle = offset * i;
+				double desiredAngle = currentAngle - (x * Math.PI / 500);
+				bullet.setInitialXOffset(125);
+				bullet.setInitialDXOverride((float) Math.cos(desiredAngle));
+				bullet.setInitialDYOverride((float) Math.sin(desiredAngle));
+
+				bulletsForCurrentFrame.add(bullet);
+			}
+
+			bulletsToCreate.put(x, bulletsForCurrentFrame);
+		}
+		return new SpellCard("Yuyuko", bulletsToCreate, "yuyuko_fan.png", 1.0f);
+	}
 
 }

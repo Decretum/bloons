@@ -46,8 +46,8 @@ public class SpellCardActor extends RenderableActor {
 		 getCenterY() - getY(),
 		 textureRegion.getTexture().getWidth(),
 		 textureRegion.getTexture().getHeight(),
-		 5f,
-		 5f,
+		 spellCard.getScale(),
+		 spellCard.getScale(),
 		 -rotationAngle
 		);
 	}
